@@ -1,6 +1,12 @@
 # vmodel.js
 模組化 jQuery 的編寫結構
 
+文件內都含有 Demo，線上範例可參考
+
+基本： http://jsfiddle.net/voef9o6t/2/
+
+進階： http://jsfiddle.net/2mue24kj/1/
+
 基本用法
 
     $(".box").vmodel(function (){
@@ -129,8 +135,3 @@
     console.log($.vmodel.get("model_result"));
 
 
-文件內都含有 Demo，線上範例可參考
-
-基本： http://jsfiddle.net/voef9o6t/2/
-
-進階： http://jsfiddle.net/2mue24kj/1/
