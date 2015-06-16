@@ -5,12 +5,13 @@
     <title>Vmodel</title>
     <style></style>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="src/jquery.vmodel.js"></script>
+    <script src="src/jquery.vmodel.min.js"></script>
     <script src="src/auto_demo.js"></script> <!-- 自動化測試, 非範例 -->
     <script>
     $(function (){
 
-        // 結果模組
+        // 結果模組, 第一個參數為選用，可設定外部呼叫時的倉儲名稱, 
+        // 如要呼叫可用 $.vmodel.get("model_result").add(str);
         $(".result").vmodel("model_result", function (){
 
             this.autoload = ['init', 'remove'];
@@ -101,7 +102,12 @@
 
         });
 
+
+        //取得所有倉儲
         console.log($.vmodel.get());
+
+        //取得命名為 model_result 的倉儲
+        console.log($.vmodel.get("model_result"));
 
     })
     </script>
