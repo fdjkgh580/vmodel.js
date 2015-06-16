@@ -7,7 +7,7 @@
 
 進階： http://jsfiddle.net/2mue24kj/1/
 
-基本用法
+## 基本用法
 
     $(".box").vmodel(function (){
 
@@ -33,7 +33,7 @@
         }
     });
 
-進階用法
+## 進階用法
 
     // 結果模組, 第一個參數為選用，可設定外部呼叫時的倉儲名稱, 
     // 如要呼叫可用 $.vmodel.get("model_result").add(str);
