@@ -1,6 +1,8 @@
 # vmodel.js
 模組化 jQuery 的編寫結構
 
+線上範例可參考： 
+
     $(".box").vmodel(function (){
 
         // 自動掛載要觸發的方法
@@ -24,3 +26,6 @@
             })
         }
     });
+
+基本範例：http://jsfiddle.net/voef9o6t/
+進階範例：http://jsfiddle.net/2mue24kj/
