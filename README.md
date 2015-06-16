@@ -10,19 +10,16 @@
             return ['start', 'call'];
         }
 
-        //HTML樣式，這只是範例，正確來說不建議讓 HTML 與 JS 混雜
         this.element = function (text) {
             return "<li>" + text + "</li>";
         }
-        
-        //我們添加一些元素進去
+
         this.start = function (){
             $(".box").append(this.element("項目一"));
             $(".box").append(this.element("項目二"));
             $(".box").append(this.element("項目三"));
         }
 
-        //綁定點擊事件
         this.call = function (){
             this.root.on("click", "li", function (){
                 $(".debug").html("我是" + $(this).html());
@@ -32,8 +29,9 @@
 
 進階用法
 
-    // 結果模組
-    var model_result = $(".result").vmodel(function (){
+    // 結果模組, 第一個參數為選用，可設定外部呼叫時的倉儲名稱, 
+    // 如要呼叫可用 $.vmodel.get("model_result").add(str);
+    $(".result").vmodel("model_result", function (){
 
         this.autoload = ['init', 'remove'];
         
@@ -58,7 +56,7 @@
 
 
     // 表單模組
-    $(".form_site").vmodel(function (){
+    $(".form_site").vmodel("model_form", function (){
 
         //需要自動加載 create_element 方法
         this.autoload = ['init', 'create_element', 'form_submit'];
@@ -84,7 +82,7 @@
 
                 //放入列表
                 var text = _this.root.find(".title").val();
-                model_result.add(text);
+                $.vmodel.get("model_result").add(text);
 
                 //清除文字
                 _this.reset_input();
@@ -122,6 +120,13 @@
         }
 
     });
+
+
+    //取得所有倉儲
+    console.log($.vmodel.get());
+
+    //取得命名為 model_result 的倉儲
+    console.log($.vmodel.get("model_result"));
 
 
 文件內都含有 Demo，線上範例可參考
