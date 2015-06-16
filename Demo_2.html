@@ -11,7 +11,7 @@
     $(function (){
 
         // 結果模組
-        var model_result = $(".result").vmodel(function (){
+        var model_result = $(".result").vmodel("model_result", function (){
 
             this.autoload = ['init', 'remove'];
             
@@ -100,8 +100,6 @@
             }
 
         });
-
-        $.triggermmmm();
 
     })
     </script>

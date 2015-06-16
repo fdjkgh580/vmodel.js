@@ -6,7 +6,7 @@
      * this.root    會得到 $(selector);
      * this.select  會得到 $(selector) 中的 selector
      */
-    $.fn.vmodel = function(outerfun) {
+    $.fn.vmodel = function(p_1, p_2) {
 
         // 內部
         var _local   = this;
@@ -14,10 +14,15 @@
         // 選擇器
         var selector = _local.selector;
 
-
-        // 這是使用者定義的function, 我們將他實體化
-        var obj      = new outerfun();
-
+        // 若第一個參數為倉儲命名
+        if ($.type(p_1) == "string") {
+            var obj      = new p_2();
+        }
+        else {
+            // 這是使用者定義的function, 我們將他實體化
+            var obj      = new p_1();
+        }
+        
         // 擴充，外部不可使用這些關鍵字
         obj.selector = selector;
         obj.root     = $(selector);
@@ -83,12 +88,22 @@
             return obj;
         }
 
+        var result = this.main();
+
+        // 放入倉儲
+        if ($.type(p_1) == "string") {
+            $.vmodel.storage[p_1] = result;
+            console.log($.vmodel);
+        }
+
         // 返回實體化的，可供外部調用
-        return this.main();
+        return result;
     }
 
 
-    $.triggermmmm = function (){
-        alert()
-    }
+    $.vmodel = {};
+
+    // 實體化的倉儲，提供外部呼叫
+    $.vmodel.storage = {}; 
+
 }( jQuery ));
