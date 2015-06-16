@@ -62,7 +62,8 @@
 
                     //放入列表
                     var text = _this.root.find(".title").val();
-                    model_result.add(text);
+                    // model_result.add(text);
+                    $.vmodel.storage.model_result.add(text);
 
                     //清除文字
                     _this.reset_input();
