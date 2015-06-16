@@ -1,10 +1,39 @@
+/**
+ * v 1.1
+ * 在 function 中可使用擴增的屬性
+ *
+ * this.root    會得到 $(selector);
+ * this.select  會得到 $(selector) 中的 selector
+ */
 (function ($) {
+
+    $.vmodel = {};
+
+    // 實體化的存放倉儲，提供內部呼叫。
+    $.vmodel.storage = {}; 
+
     /**
-     * v 1.0
-     * 在 function 中可使用擴增的屬性
-     *
-     * this.root    會得到 $(selector);
-     * this.select  會得到 $(selector) 中的 selector
+     * 取得倉儲
+     * @param   string name (選) 倉儲的存放名稱。當為空時，返回所有倉儲
+     * @return  object
+     */
+    $.vmodel.get = function (name){
+
+        if (!name) return $.vmodel.storage;
+
+        var target = $.vmodel.storage[name];
+        if (!target) {
+            console.log("呼叫的倉儲名稱 "+ name +" 不存在。");
+            return false;
+        }
+        return $.vmodel.storage[name];
+    }
+
+    /**
+     * 主要模式
+     * @param  mix       p_1 若是 string 倉儲命名；若是 function 代表準備在內部實體化的方法 
+     * @param  function  p_2 (選用) 若 p_1 為 string，就必須使用 p_2
+     * @return this      
      */
     $.fn.vmodel = function(p_1, p_2) {
 
@@ -22,7 +51,7 @@
             // 這是使用者定義的function, 我們將他實體化
             var obj      = new p_1();
         }
-        
+
         // 擴充，外部不可使用這些關鍵字
         obj.selector = selector;
         obj.root     = $(selector);
@@ -93,17 +122,13 @@
         // 放入倉儲
         if ($.type(p_1) == "string") {
             $.vmodel.storage[p_1] = result;
-            console.log($.vmodel);
         }
 
         // 返回實體化的，可供外部調用
-        return result;
+        return this;
     }
 
 
-    $.vmodel = {};
-
-    // 實體化的倉儲，提供外部呼叫
-    $.vmodel.storage = {}; 
+    
 
 }( jQuery ));

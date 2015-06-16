@@ -11,7 +11,7 @@
     $(function (){
 
         // 結果模組
-        var model_result = $(".result").vmodel("model_result", function (){
+        $(".result").vmodel("model_result", function (){
 
             this.autoload = ['init', 'remove'];
             
@@ -36,7 +36,7 @@
 
 
         // 表單模組
-        $(".form_site").vmodel(function (){
+        $(".form_site").vmodel("model_form", function (){
 
             //需要自動加載 create_element 方法
             this.autoload = ['init', 'create_element', 'form_submit'];
@@ -62,8 +62,7 @@
 
                     //放入列表
                     var text = _this.root.find(".title").val();
-                    // model_result.add(text);
-                    $.vmodel.storage.model_result.add(text);
+                    $.vmodel.get("model_result").add(text);
 
                     //清除文字
                     _this.reset_input();
@@ -101,6 +100,8 @@
             }
 
         });
+
+        console.log($.vmodel.get());
 
     })
     </script>
