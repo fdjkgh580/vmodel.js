@@ -86,4 +86,9 @@
         // 返回實體化的，可供外部調用
         return this.main();
     }
+
+
+    $.triggermmmm = function (){
+        alert()
+    }
 }( jQuery ));
