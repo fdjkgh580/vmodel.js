@@ -19,13 +19,17 @@
      */
     $.vmodel.get = function (name){
 
-        if (!name) return $.vmodel.storage;
+        if (!name) {
+            return $.vmodel.storage;
+        }
 
         var target = $.vmodel.storage[name];
+        
         if (!target) {
             console.log("呼叫的倉儲名稱 "+ name +" 不存在。");
             return false;
         }
+
         return $.vmodel.storage[name];
     }
 
