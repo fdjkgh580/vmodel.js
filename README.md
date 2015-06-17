@@ -178,17 +178,17 @@ $(".demo_4").vmodel(function (){
 ```
 
 ## 模組間的交互運用
-[線上看](http://jsfiddle.net/gyxoe4ec/)
+[線上看](http://jsfiddle.net/gyxoe4ec/1/)
 ```javascript
 // 控制鈕模組
 $(".demo_5 .ctrl").vmodel("d5/ctrl", function (){
 
     var _this = this;
     
-    this.autoload = ['first_add', 'first_delete'];
+    this.autoload = ['add', 'delete'];
 
     // 增加
-    this.first_add = function (){
+    this.add = function (){
         this.root.on("click", ".add", function (){
 
             //動作
@@ -200,7 +200,7 @@ $(".demo_5 .ctrl").vmodel("d5/ctrl", function (){
     }
 
     // 刪除
-    this.first_delete = function (){
+    this.delete = function (){
         this.root.on("click", ".delete", function (){
 
             //動作...
