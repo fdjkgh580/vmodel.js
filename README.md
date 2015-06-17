@@ -342,7 +342,8 @@ $(".box").vmodel(function (){
 ```javascript
 $(".box").vmodel(function (){
     this.say = function (){
-        //記得只能用在公開的 function 內部
+        // 記得只能用在公開的 function 內部
+        // 等同 $(".box").find(".item").length;
         var num = this.root.find(".item").length;
     }
 })
