@@ -6,42 +6,253 @@
     <style></style>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="src/jquery.vmodel.min.js"></script>
+</head>
+<body>
+    
+    <h2>基本用法</h2>
     <script>
     $(function (){
+        $(".demo_1").vmodel(function (){
+            this.autoload = ['get'];
 
-        $(".box").vmodel(function (){
-
-            // 自動掛載要觸發的方法
-            this.autoload = function(){
-                return ['start', 'call'];
+            this.get = function (){
+                // 使用 this.root 可以取得 $(".box_wrap")
+                this.root.on("click", ".say", function (){
+                    alert("Demo. Hello World")
+                })
             }
+        })
+    });
+    </script>
+    <div class="demo_1">
+        <input type="button" class="say" value="click me">
+    </div>
 
-            this.element = function (text) {
-                return "<li>" + text + "</li>";
+    <h2>取得內部元素</h2>
+    <script>
+    $(function (){
+        $(".demo_2").vmodel(function (){
+            
+            var _this = this;
+
+            this.autoload = ['get_title'];
+
+            this.get_title = function (){
+                this.root.on("click", ".say", function (){
+                    // 改用 _this
+                    alert( _this.root.find(".title").val() );
+                })
             }
+        })
+    });
+    </script>
+    <div class="demo_2">
+        <input type="text" class="title" value="Demo2. Hello World">
+        <input type="button" class="say" value="click me">
+    </div>
 
-            this.start = function (){
-                $(".box").append(this.element("項目一"));
-                $(".box").append(this.element("項目二"));
-                $(".box").append(this.element("項目三"));
-            }
-
-            this.call = function (){
-                this.root.on("click", "li", function (){
-                    $(".debug").html("我是" + $(this).html());
+    <h2>複製自己</h2>
+    <script>
+    $(function (){
+        $(".demo_3").vmodel(function (){
+            var _this = this;
+            this.autoload = ['clone'];
+            this.clone = function (){
+                this.root.on("click", ".clone", function (){
+                    $(this).clone().appendTo(_this.selector)
                 })
             }
         });
+    });
+    </script>
+    <div class="demo_3">
+        <input type="button" class="clone" value="clone">
+    </div>
+
+    <h2>UI 設計</h2>
+    <script>
+    $(function (){
+        $(".demo_4").vmodel(function (){
+
+            var _this = this;
+
+            //按鈕的背景顏色
+            this.bgcolor = {
+                "default" : "#F52121",
+                "hover"   : "#F75252",
+                "click"   : "#2EC16A"
+            }
+
+            // 可紀錄原本按鈕的文字
+            this.def_button_str;
+
+            this.autoload = ['create_button', 'event'];
+
+            //建立的總程序
+            this.create_button = function (){
+                this.add_ele()
+                    .set_style();
+
+                //先把文字記錄起來，供還原使用
+                this.def_button_str = this.root.find(".newbutton").val();
+            }
+
+
+            //事件
+            this.event = function (){
+
+                //想要綁定的事件
+                this.root.on({
+
+                    mouseover: function (){
+                        $(this).css({
+                            background: _this.bgcolor.hover,
+                        });
+                    },
+
+                    mouseleave: function (){
+                        $(this).css({
+                            background: _this.bgcolor.default,
+                        });
+
+                        //還原文字
+                        _this.reset_button_str();
+                    },
+                    click: function (){
+                        $(this).css({
+                            background: _this.bgcolor.click,
+                        });
+                        $(this).val("O");
+                    }
+
+                }, ".newbutton");
+            }
+
+            // 還原按鈕文字
+            this.reset_button_str = function (){
+                var string = this.def_button_str;
+                this.root.find(".newbutton").val(string);
+            }
+
+            //添加樣式
+            this.set_style = function (){
+                this.root.find(".newbutton").css({
+                    position: "relative",
+                    border: "none",
+                    background: this.bgcolor.default,
+                    color: "white",
+                    padding: "7px 0",
+                    width: "100px",
+                    borderRadius: "5px",
+                    fontSize: "20px",
+                    transition: "0.3s all",
+                    cursor: "pointer"
+                })
+            }
+
+            //添加按鈕元素
+            this.add_ele = function (){
+                this.root.append('<input class="newbutton" type="button" value="Button">');
+
+                //可以串接使用
+                return this;
+            }
+        });
+    });
+    </script>
+    <div class="demo_4">
+    </div>
+
+    <h2>模組間的交互運用</h2>
+    <script>
+    $(function (){
+
+        // 控制模組
+        $(".demo_5 .ctrl").vmodel("d5/ctrl", function (){
+            var _this = this;
+            
+            this.autoload = ['first_add', 'first_delete'];
+
+            // 增加
+            this.first_add = function (){
+                this.root.on("click", ".add", function (){
+
+                    //動作
+                    $.vmodel.get("d5/action").add();
+
+                    // 更新資訊
+                    $.vmodel.get("d5/info").update();
+                })
+            }
+
+            // 刪除
+            this.first_delete = function (){
+                this.root.on("click", ".delete", function (){
+
+                    //動作...
+                    var act = $.vmodel.get("d5/action");
+                    var who = act.child_last();
+                    act.delete(who);
+
+                    // 更新資訊
+                    $.vmodel.get("d5/info").update();
+                })
+            }
+        })
+
+        // 動作模組
+        $(".demo_5 .action").vmodel("d5/action", function (){
+            
+            this.add = function (){ //添加
+                this.root.append('<li>item</li>');
+            }
+
+            this.delete = function (selector){ // 刪除
+                this.root.find(selector).remove();
+            }
+
+            this.child_last = function (){ //取得最後元素
+                return this.root.find("li").last();
+            }
+        })
+
+        //資訊模組
+        $(".demo_5 .info").vmodel("d5/info", function (){
+
+            this.autoload = ['init'];
+
+            // 初始化
+            this.init = function (){
+                this.update();
+            }
+
+            // 更新
+            this.update = function (){
+                var total = this.total();
+                this.root.find(".num").html(total);
+            }
+
+            //取得目前總數量
+            this.total = function (){
+                var act_obj = $.vmodel.get("d5/action");
+                return act_obj.root.find("li").length;
+            }
+        });
+
 
     })
     </script>
-</head>
-<body>
-
-    <div class="debug"></div>
-    <ul class="box"></ul>
     
+    <div class="demo_5">
+        <div class="ctrl">
+            <button class="add">添加</button>
+            <button class="delete">刪除</button>
+        </div>
+        <p class="info">目前 <span class="num"></span> 個</p>
+        <ul class="action"></ul>
+    </div>
+
+
 </body>
 </html>
-
 
