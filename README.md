@@ -312,7 +312,7 @@ $(".tool").vmodel("tool", function (){
 ```
 
 ## $.model.get([storage])
-可以返回你的倉儲名稱。當不指定 storage 可以返回所有的倉儲。
+可以返回你命名過的倉儲。回傳是物件。當不指定 storage 可以返回所有的倉儲物件。
 
 
 ## this.autoload = ['方法名稱']
