@@ -25,7 +25,7 @@ $(".demo_1").vmodel(function (){
     this.autoload = ['get'];
 
     this.get = function (){
-        // 使用 this.root 可以取得 $(".box_wrap")
+        // 使用 this.root 可以取得 $(".demo_1")
         this.root.on("click", ".say", function (){
             alert("Demo. Hello World")
         })
