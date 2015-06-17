@@ -315,7 +315,8 @@ $(".tool").vmodel("tool", function (){
 可以返回你的倉儲名稱。當不指定 storage 可以返回所有的倉儲。
 
 
-## this.autoload = ['方法名稱'] 或 this.autoload = function (){ return ['方法名稱'] }
+## this.autoload = ['方法名稱']
+## this.autoload = function (){ return ['方法名稱'] }
 這是選用的。當我們有命名這項屬性或方法時，可以讓 jQuery 優先觸發。通常用在綁定事件這類的情況，當頁面一載入後，jQuery 就會跟著觸發。
 ```javascript
 $(".box").vmodel(function (){
