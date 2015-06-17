@@ -6,7 +6,7 @@
 $("form").on("click", ".register", function (){});
 $("form").on("click", ".login", function (){});
 ```
-因為這是實作的方法。這樣會非常不好維護，IDE 也很難搜尋(如 sublimetext 快捷鍵 ctrl + R)。
+這是實作的方法，一旦結構大了會非常不好維護，IDE 也很難搜尋(如 sublimetext 快捷鍵 ctrl + R)。
 1. 我們需要在外層添加抽象的邏輯行為。
 2. 模組化，就需要有個根節點作為綁定和識別。綁定不同的根節點，可以降低瀏覽器的負擔。
  
