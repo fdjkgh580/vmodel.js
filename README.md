@@ -311,7 +311,7 @@ $(".tool").vmodel("tool", function (){
 })
 ```
 
-## $.model.get([storage])
+## $.vmodel.get([storage])
 可以返回你命名過的倉儲。回傳是物件。當不指定 storage 可以返回所有的倉儲物件。
 
 
