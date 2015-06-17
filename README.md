@@ -284,18 +284,20 @@ $(function (){
 ```
 自訂倉儲名稱，可以讓你由 vmodel() 外部程式去呼叫想要公開的方法。例如
 ```javascript
-$(".tool").vmodel("tool", function (){
+$(".tool").vmodel("model_tool", function (){
+    //private
     function name() {
         return "製圖筆";
     }
+    //public
     this.call = function (){
-        return this.name();
+        return name();
     }
 })
 ```
 那麼，我們在外部可以使用這個方法來呼叫 call()
 ```javascript
-$.vmodel.get("tool").call();
+$.vmodel.get("model_tool").call();
 ```
 
 ## .vmodel() 內部寫法與概念
@@ -304,7 +306,7 @@ $.vmodel.get("tool").call();
 ```javascript
 $(".tool").vmodel("tool", function (){
     this.open = function (){
-        $this.root.on("click", ".book", function (){
+        this.root.on("click", ".book", function (){
             //....
         })
     }
