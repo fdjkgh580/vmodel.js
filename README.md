@@ -10,7 +10,14 @@ $("form").on("click", ".login", function (){});
 
 1. 我們需要在外層添加抽象的邏輯行為。日後查找問題，應該是思考抽象的邏輯行為。
 2. 模組化，我們需要有個根節點作為綁定和識別。讓各種模組綁定在不同的根節點，可以降低瀏覽器的負擔。而且容易維護。
- 
+
+-----------------
+
+# 資源
+- [範例](https://github.com/fdjkgh580/vmodel.js/blob/master/README.md#範例)
+- [說明書](https://github.com/fdjkgh580/vmodel.js/blob/master/README.md#說明書)
+
+----
 
 # 範例
 ## 基本用法 
