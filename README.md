@@ -17,8 +17,6 @@ $("form").on("click", ".login", function (){});
 - [範例](https://github.com/fdjkgh580/vmodel.js/blob/master/README.md#範例)
 - [說明書](https://github.com/fdjkgh580/vmodel.js/blob/master/README.md#說明書)
 
-----
-
 # 範例
 ## 基本用法 
 [線上看](http://jsfiddle.net/qs4v3cc4/)
