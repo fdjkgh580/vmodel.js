@@ -1,5 +1,5 @@
 /**
- * v 1.1
+ * v 1.2
  * 在 function 中可使用擴增的屬性
  *
  * this.root    會得到 $(selector);
@@ -24,7 +24,7 @@
          * @param   autoload_method_ary     需要觸發的 function 名稱
          * @param   object                  也就是外部的實體化後的 $(selector).vmodel("匿名方法")
          */
-        this.EEEEE = function (autoload_method_ary, obj){
+        this.each_autoload = function (autoload_method_ary, obj){
             $.each(autoload_method_ary, function(key, name) {
 
                 if ($.type(obj[name]) != "function") {
@@ -54,7 +54,7 @@
                     $.vmodel.local.msg_error("autoload", "格式錯誤，型態只能是 function 或 array。")
                 }
 
-                $.vmodel.api.EEEEE(ary, obj);
+                $.vmodel.api.each_autoload(ary, obj);
             }
         }
 
