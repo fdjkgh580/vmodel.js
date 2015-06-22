@@ -370,17 +370,13 @@ $.vmodel.get("model_tool").call();
 例如
 ```javascript
 $(".tool").vmodel("model_tool", false, function (){
-    //private
-    function name() {
-        return "製圖筆";
-    }
-    //public
-    this.call = function (){
-        return name();
+    this.autoload = ['callme'];
+    this.callme = function (){
+        //.....
     }
 })
 ```
-若要由外部執行模型，也就是會觸發 autoload 那我們要這麼寫。
+這樣會發現，vmodel並不會去觸發 callme()。所以，我們若要由外部初始化模型，也就是會觸發 autoload ，那麼我們要這麼寫。
 ```javascript
 $.vmodel.get("model_tool", true);
 ```
