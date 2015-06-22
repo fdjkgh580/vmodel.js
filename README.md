@@ -341,6 +341,14 @@ $(function (){
     })
 })
 ```
+或
+```javascript
+$(function (){
+    $("根選擇器").vmodel("自訂倉儲名稱", "true/false 是否只定義但不執行", function (){
+    })
+})
+```
+
 自訂倉儲名稱，可以讓你由 vmodel() 外部程式去呼叫想要公開的方法。例如
 ```javascript
 $(".tool").vmodel("model_tool", function (){
@@ -358,6 +366,22 @@ $(".tool").vmodel("model_tool", function (){
 ```javascript
 $.vmodel.get("model_tool").call();
 ```
+若指定第二個參數為布林值，使用 false 代表我們只定義，但是不執行。也就是不會觸發自訂倉儲模型的 autoload 。
+例如
+```javascript
+$(".tool").vmodel("model_tool", false, function (){
+    this.autoload = ['callme'];
+    this.callme = function (){
+        //.....
+    }
+})
+```
+這樣會發現，vmodel並不會去觸發 callme()。所以，我們若要由外部初始化模型，也就是會觸發 autoload ，那麼我們要這麼寫。
+```javascript
+$.vmodel.get("model_tool", true);
+```
+透過第二個參數 true 來使用。
+
 
 ## .vmodel() 內部寫法與概念
 在 function 命名上，我們盡量取一個邏輯上的名稱。至於是如何實做，我們寫在裡面。這方便讓邏輯與實作分離，也有利於 IDE 搜尋你的程式結構，有助於維護上的方便。例如這裡的 this.open 這個打開動作，是一個行為上的概念。但是誰要打開以及如何打開，這種實作的方式我們就寫在內部 this.root.on("click", ".book", function(){ })
@@ -372,8 +396,12 @@ $(".tool").vmodel("tool", function (){
 })
 ```
 
-## $.vmodel.get([storage])
-可以返回你命名過的倉儲。回傳是物件。當不指定 storage 可以返回所有的倉儲物件。
+## $.vmodel.get([storage], [isinit])
+第一個參數，可以返回你命名過的倉儲。回傳是物件。當不指定 storage 可以返回所有的倉儲物件。
+
+第二個參數，若為 true 就會初始化模型，也就是會呼叫若使用者有定義的 autoload。
+
+注意，若第二個參數使用 true ，那就務必與 $(selector).vmodel() 的第二個參數指定為 false 一併使用。因為這才能確保 vmodel 執行一次 autoload 。除非你非常清楚你的 autoload 的設計是有特殊的作用可以被重複呼叫。 
 
 
 ## this.autoload = ['方法名稱']
