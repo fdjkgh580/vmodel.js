@@ -17,7 +17,11 @@
 
     $.vmodel.api = {
 
-        // 批次觸發需要 autoload 的方法
+        /**
+         * 批次呼叫可自動掛載的 function
+         * @param   autoload_method_ary     需要觸發的 function 名稱
+         * @param   object                  也就是外部的實體化後的 $(selector).vmodel("匿名方法")
+         */
         EEEEE : function (autoload_method_ary, obj){
             $.each(autoload_method_ary, function(key, name) {
 
