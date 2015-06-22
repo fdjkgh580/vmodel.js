@@ -19,7 +19,7 @@ $("form").on("click", ".login", function (){});
 
 # 範例
 ## 基本用法 
-[線上看](http://jsfiddle.net/qs4v3cc4/)
+[線上看](http://jsfiddle.net/qs4v3cc4/1/)
 ```javascript
 $(".demo_1").vmodel(function (){
     this.autoload = ['get'];
@@ -39,7 +39,7 @@ $(".demo_1").vmodel(function (){
 ```
 
 ## 取得內部元素
-[線上看](http://jsfiddle.net/qhp3awsg/)
+[線上看](http://jsfiddle.net/qhp3awsg/1/)
 ```javascript
 $(".demo_2").vmodel(function (){
     
@@ -63,7 +63,7 @@ $(".demo_2").vmodel(function (){
 ```
 
 ## 複製自己
-[線上看](http://jsfiddle.net/rzedtspr/1/)
+[線上看](http://jsfiddle.net/rzedtspr/2/)
 ```javascript
 $(function (){
     $(".demo_3").vmodel(function (){
@@ -84,7 +84,7 @@ $(function (){
 ```
 
 ## UI 設計
-[線上看](http://jsfiddle.net/79382rvb/)
+[線上看](http://jsfiddle.net/79382rvb/1/)
 ```javascript
 $(".demo_4").vmodel(function (){
 
@@ -178,7 +178,7 @@ $(".demo_4").vmodel(function (){
 ```
 
 ## 模組間的交互運用
-[線上看](http://jsfiddle.net/gyxoe4ec/1/)
+[線上看](http://jsfiddle.net/gyxoe4ec/2/)
 ```javascript
 // 控制鈕模組
 $(".demo_5 .ctrl").vmodel("d5/ctrl", function (){
@@ -263,6 +263,67 @@ $(".demo_5 .info").vmodel("d5/info", function (){
     <ul class="action"></ul>
 </div>
 ```
+
+## 先定義，再延遲觸發模型
+[線上看](http://jsfiddle.net/uu43y9g6/1/)
+```javascript
+$(function (){
+
+    //第二個參數使用 false, 告訴 vmodel 我們只是定義，還不執行
+    $(".demo_6_1").vmodel("demo_6_2", false, function (){
+        
+        this.autoload = function (){
+
+            //CSS動畫
+            this.root.css({
+                transition: "all 1s"
+            });
+
+            //觸發顏色與尺寸
+            return ['color', 'size'];
+        }
+
+        this.color = function (){
+            this.root.css({
+                color : "#F24F01"
+            })
+        }
+
+        this.size = function (){
+            this.root.css({
+                fontSize : "40px"
+            })
+        }
+    })
+    
+
+    $(".demo_6_2").vmodel(function (){
+
+        this.autoload = ['init'];
+
+        this.init = function (){
+            this.root.on("click", ".create", function (){
+
+                // 第二個參數使用 true ，代表我們要去觸發已經定義好的模型，
+                // 也救世會去觸發模型的 autoload
+                $.vmodel.get("demo_6_2", true);
+            })
+        }
+    })
+
+})
+```
+```html
+<div class="demo_6_1">
+    這段文字被 .demo_6_1 包圍。我們替他取名為 "demo_6_1" 模型。<br>
+    現在已經定義好了，但還沒經過 autoload()
+</div>
+
+<div class="demo_6_2">
+    <button class="create">點我，去觸發 demo_6_2 模型，若有指定 autoload() 那會一併觸發</button>
+</div>
+```
+
 
 # 說明書
 
