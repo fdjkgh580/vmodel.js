@@ -398,7 +398,11 @@ $(".tool").vmodel("tool", function (){
 
 ## $.vmodel.get([storage], [isinit])
 第一個參數，可以返回你命名過的倉儲。回傳是物件。當不指定 storage 可以返回所有的倉儲物件。
+
 第二個參數，若為 true 就會初始化模型，也就是會呼叫若使用者有定義的 autoload。
+
+注意，若第二個參數使用 true ，那就務必與 $(selector).vmodel() 的第二個參數指定為 false 一併使用。因為這才能確保 vmodel 執行一次 autoload 。除非你非常清楚你的 autoload 的設計是有特殊的作用可以被重複呼叫。 
+
 
 ## this.autoload = ['方法名稱']
 ## this.autoload = function (){ return ['方法名稱'] }
