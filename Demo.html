@@ -5,7 +5,7 @@
     <title>Vmodel</title>
     <style></style>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="src/jquery.vmodel.min.js"></script>
+    <script src="src/jquery.vmodel.js"></script>
 </head>
 <body>
 
@@ -266,6 +266,62 @@
             <p class="info">目前 <span class="num"></span> 個</p>
             <ul class="action"></ul>
         </div>
+    </section>
+
+
+
+    <section>
+        <h2>延遲</h2>
+        <p>
+            <script>
+            $(function (){
+                
+                $(".demo_6_1").vmodel(function (){
+                    this.autoload = ['init'];
+                    this.init = function (){
+                        this.root.on("click", ".create", function (){
+                            $.vmodel.get("demo_6_2", true);
+                        })
+                    }
+                })
+
+                $(".demo_6_2").vmodel("demo_6_2", false, function (){
+                    
+                    this.autoload = function (){
+
+                        //CSS動畫
+                        this.root.css({
+                            transition: "all 1s"
+                        });
+
+                        return ['color', 'size'];
+                    }
+
+                    this.color = function (){
+                        this.root.css({
+                            color : "#F24F01"
+                        })
+                    }
+
+                    this.size = function (){
+                        this.root.css({
+                            fontSize : "40px"
+                        })
+                    }
+                })
+
+            })
+            </script>
+            
+            <div class="demo_6_1">
+                <button class="create">點我，去觸發 demo_6_2 模型</button>
+            </div>
+
+            <div class="demo_6_2">
+                我是 demo_6_2 的文字
+            </div>
+        </p>
+
     </section>
     
 </article>

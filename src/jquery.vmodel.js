@@ -12,12 +12,29 @@
     // 實體化的存放倉儲，提供內部呼叫。
     $.vmodel.storage = {}; 
 
+    $.vmodel.api = {
+
+        EEEEE : function (ary, obj, _local){
+            $.each(ary, function(key, name) {
+
+                if ($.type(obj[name]) != "function") {
+                    _local.msg_error(name, "不存在。");
+                }
+
+                obj[name]();
+            });
+        }
+
+    }
+
+
     /**
      * 取得倉儲
-     * @param   string name (選) 倉儲的存放名稱。當為空時，返回所有倉儲
+     * @param   string name    (選) 倉儲的存放名稱。當為空時，返回所有倉儲
+     * @param   bool   isinit  (選) 預設 false
      * @return  object
      */
-    $.vmodel.get = function (name){
+    $.vmodel.get = function (name, isinit){
 
         if (!name) {
             return $.vmodel.storage;
@@ -30,6 +47,11 @@
             return false;
         }
 
+        if (isinit == true) {
+            console.log(target)
+            $.vmodel.api.EEEEE()
+        }
+
         return $.vmodel.storage[name];
     }
 
@@ -39,7 +61,7 @@
      * @param  function  p_2 (選用) 若 p_1 為 string，就必須使用 p_2
      * @return this      
      */
-    $.fn.vmodel = function(p_1, p_2) {
+    $.fn.vmodel = function(p_1, p_2, p_3) {
 
         // 內部
         var _local   = this;
@@ -49,7 +71,15 @@
 
         // 若第一個參數為倉儲命名
         if ($.type(p_1) == "string") {
-            var obj      = new p_2();
+
+            // 若第二個參數為布林值
+            if ($.type(p_2) == "boolean") {
+                var obj      = new p_3();
+            }
+            else {
+                var obj      = new p_2();
+            }
+
         }
         else {
             // 這是使用者定義的function, 我們將他實體化
@@ -77,17 +107,17 @@
          * 批次呼叫可自動掛載的 function
          * @param   ary    需要觸發的 function 名稱
          */
-        this.each_autoload_fun = function (ary){
+        // this.each_autoload_fun = function (ary){
 
-            $.each(ary, function(key, name) {
+        //     $.each(ary, function(key, name) {
 
-                if ($.type(obj[name]) != "function") {
-                    _local.msg_error(name, "不存在。");
-                }
+        //         if ($.type(obj[name]) != "function") {
+        //             _local.msg_error(name, "不存在。");
+        //         }
 
-                obj[name]();
-            });
-        }
+        //         obj[name]();
+        //     });
+        // }
 
         // 若有設定 autocall() 就會自動呼叫
         this.autocall = function (){
@@ -107,7 +137,8 @@
                     _local.msg_error("autoload", "格式錯誤，型態只能是 function 或 array。")
                 }
 
-                _local.each_autoload_fun(ary);
+                // _local.each_autoload_fun(ary);
+                $.vmodel.api.EEEEE(ary, obj, _local)
             }
             
 
@@ -115,8 +146,14 @@
 
         this.main = function (){
 
-            // 觸發自動讀取
-            _local.autocall(obj)
+            if ($.type(p_2) == "boolean" && p_2 === false) {
+
+            }
+            else {
+                // 觸發自動讀取
+                _local.autocall(obj)
+            }
+            
 
             return obj;
         }
