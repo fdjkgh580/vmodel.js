@@ -27,6 +27,25 @@
 
                 obj[name]();
             });
+        },
+
+        AUAUAUAUAU: function (obj){
+            if (obj.autoload) {
+
+                var type = $.type(obj.autoload);
+
+                if (type == "function") {
+                    var ary = obj.autoload();
+                }
+                else if (type == "array") {
+                    var ary = obj.autoload;
+                }
+                else {
+                    $.vmodel.local.msg_error("autoload", "格式錯誤，型態只能是 function 或 array。")
+                }
+
+                $.vmodel.api.EEEEE(ary, obj);
+            }
         }
 
     }
@@ -53,7 +72,7 @@
 
         if (isinit == true) {
             console.log(target)
-            
+
         }
 
         return $.vmodel.storage[name];
@@ -155,7 +174,8 @@
             }
             else {
                 // 觸發自動讀取
-                $.vmodel.local.autocall(obj)
+                // $.vmodel.local.autocall(obj);
+                $.vmodel.api.AUAUAUAUAU(obj);
             }
             
 
