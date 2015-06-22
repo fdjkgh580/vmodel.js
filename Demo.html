@@ -271,21 +271,12 @@
 
 
     <section>
-        <h2>延遲</h2>
+        <h2>先定義，再延遲觸發模型</h2>
         <p>
             <script>
             $(function (){
-                
-                $(".demo_6_1").vmodel(function (){
-                    this.autoload = ['init'];
-                    this.init = function (){
-                        this.root.on("click", ".create", function (){
-                            $.vmodel.get("demo_6_2", true);
-                        })
-                    }
-                })
 
-                $(".demo_6_2").vmodel("demo_6_2", false, function (){
+                $(".demo_6_1").vmodel("demo_6_2", false, function (){
                     
                     this.autoload = function (){
 
@@ -309,16 +300,27 @@
                         })
                     }
                 })
+                
+                $(".demo_6_2").vmodel(function (){
+                    this.autoload = ['init'];
+                    this.init = function (){
+                        this.root.on("click", ".create", function (){
+                            $.vmodel.get("demo_6_2", true);
+                        })
+                    }
+                })
+
+                
 
             })
             </script>
             
             <div class="demo_6_1">
-                <button class="create">點我，去觸發 demo_6_2 模型</button>
+                這段文字被 .demo_6_1 包圍。我們替他取名為 "demo_6_1" 模型。現在已經定義好了，但還沒經過 autoload()
             </div>
 
             <div class="demo_6_2">
-                我是 demo_6_2 的文字
+                <button class="create">點我，去觸發 demo_6_2 模型</button>
             </div>
         </p>
 

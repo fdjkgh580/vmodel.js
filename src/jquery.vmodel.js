@@ -7,6 +7,7 @@
  */
 (function ($) {
 
+    //整體使用
     $.vmodel = {};
 
     //內部全域的物件。也就是控制外部的  $(selector).vmodel(的匿名含式/物件)
@@ -15,14 +16,15 @@
     // 實體化的存放倉儲，提供內部呼叫。
     $.vmodel.storage = {}; 
 
-    $.vmodel.api = {
+    // 內部全域的輔助方法
+    $.vmodel.api = new function (){
 
         /**
          * 批次呼叫可自動掛載的 function
          * @param   autoload_method_ary     需要觸發的 function 名稱
          * @param   object                  也就是外部的實體化後的 $(selector).vmodel("匿名方法")
          */
-        EEEEE : function (autoload_method_ary, obj){
+        this.EEEEE = function (autoload_method_ary, obj){
             $.each(autoload_method_ary, function(key, name) {
 
                 if ($.type(obj[name]) != "function") {
@@ -34,10 +36,10 @@
         },
 
         /**
-         * 若有設定 autocall() 就會自動呼叫
+         * 若使用者有設定 autoload() 就會自動呼叫
          * @param object 也就是外部的實體化後的 $(selector).vmodel("匿名方法")
          */
-        AUAUAUAUAU: function (obj){
+        this.is_trigger_autocall = function (obj){
             if (obj.autoload) {
 
                 var type = $.type(obj.autoload);
@@ -67,25 +69,25 @@
      */
     $.vmodel.get = function (name, isinit){
 
+        // 返回所有倉儲
         if (!name) {
             return $.vmodel.storage;
         }
 
         var target_obj = $.vmodel.storage[name];
         
+        // 呼叫的倉儲並不存在
         if (!target_obj) {
             console.log("呼叫的倉儲名稱 "+ name +" 不存在。");
             return false;
         }
 
-
-
-        // 當使用 true 的時候，會去觸發取得模型的 autoload()
+        // 當使用 true 的時候，會前往判斷，是否要觸發剛取得模型的 autoload()，若有就會優先觸發
         if (isinit == true) {
-            var obj = target_obj;
-            $.vmodel.api.AUAUAUAUAU(obj);
+            $.vmodel.api.is_trigger_autocall(target_obj);
         }
 
+        // 無論是否觸發使用者的 autoload(), 會後都會返回該實體化的物件
         return $.vmodel.storage[name];
     }
 
@@ -108,16 +110,24 @@
 
             // 若第二個參數為布林值
             if ($.type(p_2) == "boolean") {
+
                 var obj      = new p_3();
+            
             }
+
+            // 若不是布林值，代表就是應該是要匿名方法, 我們將他實體化
             else {
+            
                 var obj      = new p_2();
+            
             }
 
         }
         else {
+
             // 這是使用者定義的function, 我們將他實體化
             var obj      = new p_1();
+        
         }
 
         // 擴充，外部不可使用這些關鍵字
@@ -145,7 +155,7 @@
             }
             else {
                 // 觸發自動讀取
-                $.vmodel.api.AUAUAUAUAU(obj);
+                $.vmodel.api.is_trigger_autocall(obj);
             }
 
             return obj;
@@ -162,7 +172,5 @@
         return this;
     }
 
-
-    
 
 }( jQuery ));
