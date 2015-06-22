@@ -102,8 +102,25 @@
 
         });
 
-        
+        //先定義號，但不去觸發, 由自動程序觸發
+        $(".stack").vmodel("model_stack", false, function (){
+            this.autoload = ['stack'];
 
+            // 取得10進位數字
+            this.get = function (){
+                val = this.root.html();
+                return parseInt(val, 10);
+            }
+
+            this.set = function (val){
+                this.root.html(val);
+            }
+
+            this.stack = function (){
+                var val = this.get() + 1;
+                this.set(val);
+            }
+        });
 
 
         //取得所有倉儲
@@ -121,5 +138,6 @@
     <ul class="result"></ul>
 
     <!-- 2 -->
+    <div class="stack">0</div>
 </body>
 </html>

@@ -2,6 +2,9 @@
 $(function (){
 
     /* 自動化流程測試 */
+
+
+    //1.
      
     var sec = 20;
 
@@ -66,10 +69,46 @@ $(function (){
             $(".item").eq(0).click();
             setTimeout(run, sec);
         }, function (){
-            console.log("end");
+            console.log("run() OK");
         }]);
 
         run();
 
     }, 200);
+
+
+
+    //2.
+    setTimeout(function (){
+        function run_stack(){
+            $("body").dequeue("run_stack");
+        }
+        function getset(N, Y){
+            if ($(".stack").html() != N) {
+                console.log("run_stack 中斷, .stack html() 不可以是 " + N);
+                return false;
+            }
+            $.vmodel.get("model_stack", true);
+            if ($(".stack").html() != Y) {
+                console.log(".stack html() 應該要 " + Y);
+            }
+        }
+        $("body").queue("run_stack", [
+            function (){
+                var N = "0";
+                var Y = "1";
+                getset(N, Y);
+                run_stack();
+            },
+            function (){
+                var N = "1";
+                var Y = "2";
+                getset(N, Y);
+                console.log("run_stack() OK!!");
+                
+            }
+        ]);
+        run_stack();
+    }, 200);
+    
 })
