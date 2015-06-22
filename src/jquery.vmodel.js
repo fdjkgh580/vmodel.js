@@ -9,16 +9,20 @@
 
     $.vmodel = {};
 
+    //內部全域的物件。也就是控制外部的  $(selector).vmodel(的匿名含式/物件)
+    $.vmodel.local = null;
+
     // 實體化的存放倉儲，提供內部呼叫。
     $.vmodel.storage = {}; 
 
     $.vmodel.api = {
 
-        EEEEE : function (ary, obj, _local){
-            $.each(ary, function(key, name) {
+        // 批次觸發需要 autoload 的方法
+        EEEEE : function (autoload_method_ary, obj){
+            $.each(autoload_method_ary, function(key, name) {
 
                 if ($.type(obj[name]) != "function") {
-                    _local.msg_error(name, "不存在。");
+                    $.vmodel.local.msg_error(name, "不存在。");
                 }
 
                 obj[name]();
@@ -49,7 +53,7 @@
 
         if (isinit == true) {
             console.log(target)
-            $.vmodel.api.EEEEE()
+            
         }
 
         return $.vmodel.storage[name];
@@ -64,10 +68,10 @@
     $.fn.vmodel = function(p_1, p_2, p_3) {
 
         // 內部
-        var _local   = this;
+        $.vmodel.local   = this;
         
         // 選擇器
-        var selector = _local.selector;
+        var selector = $.vmodel.local.selector;
 
         // 若第一個參數為倉儲命名
         if ($.type(p_1) == "string") {
@@ -112,7 +116,7 @@
         //     $.each(ary, function(key, name) {
 
         //         if ($.type(obj[name]) != "function") {
-        //             _local.msg_error(name, "不存在。");
+        //             $.vmodel.local.msg_error(name, "不存在。");
         //         }
 
         //         obj[name]();
@@ -134,11 +138,11 @@
                     var ary = obj.autoload;
                 }
                 else {
-                    _local.msg_error("autoload", "格式錯誤，型態只能是 function 或 array。")
+                    $.vmodel.local.msg_error("autoload", "格式錯誤，型態只能是 function 或 array。")
                 }
 
-                // _local.each_autoload_fun(ary);
-                $.vmodel.api.EEEEE(ary, obj, _local)
+                // $.vmodel.local.each_autoload_fun(ary);
+                $.vmodel.api.EEEEE(ary, obj, $.vmodel.local)
             }
             
 
@@ -151,7 +155,7 @@
             }
             else {
                 // 觸發自動讀取
-                _local.autocall(obj)
+                $.vmodel.local.autocall(obj)
             }
             
 
