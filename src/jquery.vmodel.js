@@ -137,46 +137,6 @@
 
         }
 
-        /**
-         * 批次呼叫可自動掛載的 function
-         * @param   ary    需要觸發的 function 名稱
-         */
-        // this.each_autoload_fun = function (ary){
-
-        //     $.each(ary, function(key, name) {
-
-        //         if ($.type(obj[name]) != "function") {
-        //             $.vmodel.local.msg_error(name, "不存在。");
-        //         }
-
-        //         obj[name]();
-        //     });
-        // }
-
-        // 若有設定 autocall() 就會自動呼叫
-        // this.autocall = function (){
-            
-
-        //     if (obj.autoload) {
-
-        //         var type = $.type(obj.autoload);
-
-        //         if (type == "function") {
-        //             var ary = obj.autoload();
-        //         }
-        //         else if (type == "array") {
-        //             var ary = obj.autoload;
-        //         }
-        //         else {
-        //             $.vmodel.local.msg_error("autoload", "格式錯誤，型態只能是 function 或 array。")
-        //         }
-
-        //         // $.vmodel.local.each_autoload_fun(ary);
-        //         $.vmodel.api.EEEEE(ary, obj, $.vmodel.local)
-        //     }
-            
-
-        // }
 
         this.main = function (){
 
@@ -185,10 +145,8 @@
             }
             else {
                 // 觸發自動讀取
-                // $.vmodel.local.autocall(obj);
                 $.vmodel.api.AUAUAUAUAU(obj);
             }
-            
 
             return obj;
         }
