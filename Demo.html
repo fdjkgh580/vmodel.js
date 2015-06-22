@@ -276,6 +276,7 @@
             <script>
             $(function (){
 
+                //第二個參數使用 false, 告訴 vmodel 我們只是定義，還不執行
                 $(".demo_6_1").vmodel("demo_6_2", false, function (){
                     
                     this.autoload = function (){
@@ -285,6 +286,7 @@
                             transition: "all 1s"
                         });
 
+                        //觸發顏色與尺寸
                         return ['color', 'size'];
                     }
 
@@ -301,10 +303,16 @@
                     }
                 })
                 
+
                 $(".demo_6_2").vmodel(function (){
+
                     this.autoload = ['init'];
+
                     this.init = function (){
                         this.root.on("click", ".create", function (){
+
+                            // 第二個參數使用 true ，代表我們要去觸發已經定義好的模型，
+                            // 也救世會去觸發模型的 autoload
                             $.vmodel.get("demo_6_2", true);
                         })
                     }
