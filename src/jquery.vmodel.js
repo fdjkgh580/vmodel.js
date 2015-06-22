@@ -29,6 +29,10 @@
             });
         },
 
+        /**
+         * 若有設定 autocall() 就會自動呼叫
+         * @param object 也就是外部的實體化後的 $(selector).vmodel("匿名方法")
+         */
         AUAUAUAUAU: function (obj){
             if (obj.autoload) {
 
@@ -63,16 +67,19 @@
             return $.vmodel.storage;
         }
 
-        var target = $.vmodel.storage[name];
+        var target_obj = $.vmodel.storage[name];
         
-        if (!target) {
+        if (!target_obj) {
             console.log("呼叫的倉儲名稱 "+ name +" 不存在。");
             return false;
         }
 
-        if (isinit == true) {
-            console.log(target)
 
+
+        // 當使用 true 的時候，會去觸發取得模型的 autoload()
+        if (isinit == true) {
+            var obj = target_obj;
+            $.vmodel.api.AUAUAUAUAU(obj);
         }
 
         return $.vmodel.storage[name];
@@ -143,29 +150,29 @@
         // }
 
         // 若有設定 autocall() 就會自動呼叫
-        this.autocall = function (){
+        // this.autocall = function (){
             
 
-            if (obj.autoload) {
+        //     if (obj.autoload) {
 
-                var type = $.type(obj.autoload);
+        //         var type = $.type(obj.autoload);
 
-                if (type == "function") {
-                    var ary = obj.autoload();
-                }
-                else if (type == "array") {
-                    var ary = obj.autoload;
-                }
-                else {
-                    $.vmodel.local.msg_error("autoload", "格式錯誤，型態只能是 function 或 array。")
-                }
+        //         if (type == "function") {
+        //             var ary = obj.autoload();
+        //         }
+        //         else if (type == "array") {
+        //             var ary = obj.autoload;
+        //         }
+        //         else {
+        //             $.vmodel.local.msg_error("autoload", "格式錯誤，型態只能是 function 或 array。")
+        //         }
 
-                // $.vmodel.local.each_autoload_fun(ary);
-                $.vmodel.api.EEEEE(ary, obj, $.vmodel.local)
-            }
+        //         // $.vmodel.local.each_autoload_fun(ary);
+        //         $.vmodel.api.EEEEE(ary, obj, $.vmodel.local)
+        //     }
             
 
-        }
+        // }
 
         this.main = function (){
 
