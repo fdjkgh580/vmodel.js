@@ -1,0 +1,16 @@
+<snippet>
+    <content>
+<![CDATA[\$(${1:selector}).vmodel(${2:${3:model_name}, ${4:true}, function (){
+    var vs = this;
+    this.autoload = [];
+    this.${5:yourfun} = function ()\{
+        ${6}
+    \}
+}});
+${0}
+]]>
+    </content>
+    <tabTrigger>vmodel</tabTrigger>
+    <scope>source.js, text.html</scope>
+    <description>vmodel()</description>
+</snippet>

@@ -1,0 +1,77 @@
+* {
+    box-sizing: border-box;
+    font-family: "微軟正黑體";
+}
+.box {
+    display: inline-block;
+    width: 500px;
+    background: #3DA9C0;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.list {
+    display: inline-block;
+    width: 100%;
+    margin-top: 30px;
+    padding: 10 0px;
+}
+
+.comment {
+    color: white;
+    border-bottom: 1px #FFFFFF;
+    padding: 5px 10px;
+    border-bottom-style: dashed;
+}
+.comment:last-child {
+    border: none;
+}
+
+.message {
+    position: fixed;
+    top: 10px;
+    left: 570px;
+    width: 350px;
+    height: 450px;
+    background: #D14747;
+    color: #FFF1F1;
+    border-radius: 5px;
+    padding: 20px;
+    overflow-y: auto;
+}
+.message .title {
+    font-size: 36px;
+}
+
+.text {
+    border: 1px solid #CECECE;
+    border-radius: 5px;
+    padding: 0 10px;
+    font-size: 16px;
+    height: 40px;
+    width: 354px;
+    float: left;
+}
+
+.submit {
+    border: none;
+    background: #f6882c;
+    color: white;
+    width: 100px;
+    height: 40px;
+    border-radius: 5px;
+    font-size: 22px;
+    line-height: 40px;
+    float: left;
+    margin-left: 5px;
+}
+
+.name {
+    font-weight: 600;
+    font-size: 26px;
+}
+.say {
+    color: white;
+    font-size: 20px;
+    margin-left: 10px;
+}
