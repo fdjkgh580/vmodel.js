@@ -71,7 +71,6 @@ $(function (){
                 var who = $(this).parents(".comment");
                 $.vmodel.get("md/form_reply").show(who);
             });
-            
         }
 
         //當送出回覆表單。要綁定在這裡，而不是綁定在 md/comment ，是因為 .list 是不會變動的。
@@ -80,7 +79,6 @@ $(function (){
                 $.vmodel.get("md/form_reply").send(this);
                 return false;
             });
-            
         }
 
     });
@@ -219,36 +217,35 @@ $(function (){
     $.vmodel.get("md/message", true);
 
     /*******/
+
     // 回覆框模組
     $(".box_reply").vmodel("md/box_reply", false, function (){
         var vs = this;
         this.autoload = ['init'];
+        //初始化
         this.init = function (){
+            //將回覆列表與表單，放到 .box_reply 裡面
             vs.create_list()
                 .create_form();
         }
         //建立表單
         this.create_form = function (){
+            //讓 "md/form_reply" 初始化
             $.vmodel.get("md/form_reply", true);
             return this;
         }
         //建立列表
         this.create_list = function (){
+            //讓 "md/list_reply" 初始化
             $.vmodel.get("md/list_reply", true);
             return this;
         }
-
         // 複製模版，並放到指定的地方
         this.post_to = function (selector){
-            
             var newobj = vs.root.clone();
-
-            // console.log(newobj.html());
-
-            //這時候先不要移除 .form_reply 的 hidden，要等到使用者需要回覆時。
+            //這時候先不要移除 .form_reply 的 hidden，因為我們要等到使用者需要回覆時，才會顯示。
             newobj.removeAttr("hidden").appendTo(selector);
         }
-
     });
 
     //回覆表單模組
@@ -277,7 +274,7 @@ $(function (){
 
                 //重新讀取該則回覆列表
                 $.vmodel.get("md/list_reply").reload(who, function (){
-
+                    //也許可以做一些事情....
                 });
 
                 // 清空表單
@@ -329,7 +326,7 @@ $(function (){
     
     
     
-    // 先拼裝
+    // 支解後HTML，透過 vmodel 先拼裝起來。
     $.vmodel.get("md/box_reply", true);
 
     // 送出留言後，添加回覆框。所以在 "md/form" this.submit() 添加送出後的動作

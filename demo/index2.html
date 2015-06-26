@@ -13,15 +13,24 @@
     <!-- 
     預期的結構長這樣
 
-    .box
-        .form 
+    .box 
+        .form
         .list
             .comment
                 .name
                 .say
                 .current
+                .box_reply // 從這裡開始，是新添加的回覆模組
+                    .list_reply // 放置多筆回覆討論的列表
+                        .comment //這裡是每一則回覆的留言，結構與原本的 .comment 一樣
+                            .name
+                            .say
+                            .current
+                        ~
+                    .form_reply //回覆表單
+                        .text // 使用者輸入的文字
+                        .submit_reply //送出按鈕
             ~
-    .message
     -->
 
 
@@ -52,7 +61,7 @@
         <div class="liwrap"></div>
     </div>
 
-    <!-- 以下是新增支解的 4 個模組-->
+    <!-- 以下是新增支解的 3 個模組, 其中 .comment 我們會使用上面已經有的模組做後續的程式擴充 -->
 
     <!-- reply -->
     <div class="box_reply" hidden>
@@ -61,8 +70,6 @@
     <!-- list -->
     <div class="list_reply">
     </div>
-
-    
 
     <!-- form -->
     <form class="form_reply" data-user-name="Lee" hidden>
