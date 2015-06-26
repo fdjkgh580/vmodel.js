@@ -79,33 +79,22 @@
 /*******/
 .box_reply {
     width: auto;
-    min-height: 50px;
+    /*min-height: 50px;*/
     /*background: #9CABFD;*/
     margin-left: 50px;  
     padding: 10px 0;
 }
 
-.comment_reply {
-    margin-bottom: 10px;
-}
-
-.comment_reply:last-child {
-    margin-bottom: 0px;
-}
-
-.comment_reply .name {
+.list_reply .comment .name {
     display: block;
-    width: 100%;
+    color: yellow;
     font-size: 20px;
 }
-
-.comment_reply .say {
+.list_reply .comment .say {
     font-size: 16px;
-    border: none;
     margin-left: 0px;
 }
-.comment_reply .current {
-}
+
 .form_reply {
     margin-top: 10px;
 }
