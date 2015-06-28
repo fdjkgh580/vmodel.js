@@ -84,6 +84,7 @@ $(function (){
         // 刪除comment
         this.delete = function (){
             vs.root.on("click", ".del", function (){
+                // 呼叫模組 md/comment 刪除元素
                 $.vmodel.get("md/comment").remove_element(this);
             });
         }
@@ -173,12 +174,14 @@ $(function (){
 
         //刪除該筆討論
         this.remove_element = function (selector){
+            //透過CSS動畫模擬刪除動作
             var $this = $(selector);
             $this.parents(".comment").css({
                 transition: "all 0.4s",
                 transform: "translateX(180px)",
                 opacity: 0
             });
+            //簡易的當CSS動畫結束時，刪除元素
             setTimeout(function (){
                 $this.parents(".comment").remove();
             }, 400);
@@ -232,9 +235,11 @@ $(function (){
                         .set(ele.name, ele.say, ele.current)
                         .post_to(vs.selector + " .liwrap");
 
-                    //添加刪除討論的刪除元素
+                    // 添加刪除討論的刪除元素, 因為不需要出現。
                     var button = vs.root.find(".del");
                     if (button.length == 0) return true;
+
+                    // 呼叫模組的刪除按鈕指令
                     $.vmodel.get("md/comment").remove_delete_button(vs.selector);
                 });
 
@@ -351,20 +356,12 @@ $(function (){
     });
 
 
-
-
-    
-    
-    
-    
     // 支解後HTML，透過 vmodel 先拼裝起來。
     $.vmodel.get("md/box_reply", true);
 
-    // 送出留言後，添加回覆框。所以在 "md/form" this.submit() 添加送出後的動作
-
-    //使用者想要回覆留言，所以添加了事件，在 "md/list" this.when_reply()
     
+    // "md/list" 添加函式 delete(), 綁定點擊刪除鈕的動作
 
-
-
+    // 因為 .message 底下的 .comment 使用同一個模組，但是不應該出現刪除按鈕。
+    // 所以修改 "md/message" 的 update(); 
 })
