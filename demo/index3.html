@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vmodel</title>
+    <style></style>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script><!-- jQuery 核心 -->
+    <script src="../src/jquery.vmodel.min.js"></script><!-- vmodel 核心 -->
+    <script src="index3.js"></script><!-- 範例編碼 -->
+    <link rel="stylesheet" href="index3.css"><!-- 範例樣式 -->
+</head>
+<body>
+    
+
+    <!-- box -->
+    <div class="box"></div>
+
+    <!-- form -->
+    <div class="form">
+        <form class="userdata" action="" data-user-name="小明">
+            <input type="text" class="text" autofocus>
+            <button class="submit">送出</button>
+        </form>
+    </div>
+
+    <!-- list -->
+    <div class="list"></div>
+
+    <!-- comment 預先隱藏起來 -->
+    <div class="comment" hidden>
+        <span class="name"></span> <span class="say"></span> - <span class="current"></span><span class="del">X</span>
+    </div>
+
+    <!-- 提示訊息顯示 -->
+    <div class="message">
+        <div class="title">Message</div>
+        <div class="liwrap"></div>
+    </div>
+
+    <!-- reply -->
+    <div class="box_reply" hidden>
+    </div>
+
+    <!-- list -->
+    <div class="list_reply">
+    </div>
+
+    <!-- form -->
+    <form class="form_reply" data-user-name="Lee" hidden>
+        <textarea class="text" placeholder="回覆訊息..."></textarea>
+        <button class="submit_reply">送出</button>
+    </form>
+
+</body>
+</html>

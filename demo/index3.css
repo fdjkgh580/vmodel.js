@@ -31,7 +31,7 @@
 .comment .del {
     width: 25px;
     height: 25px;
-    background: #5468DF;
+    background: #5A6088;
     display: inline-block;
     text-align: center;
     padding: 2px;
@@ -41,6 +41,11 @@
     top: 13px;
     right: 8px;
     cursor: pointer;
+    display: none;
+}
+
+.comment:hover .del{
+    display: inline-block;
 }
 
 .message {
