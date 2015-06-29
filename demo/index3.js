@@ -176,14 +176,14 @@ $(function (){
         this.remove_element = function (selector){
             //透過CSS動畫模擬刪除動作
             var $this = $(selector);
-            $this.parents(".comment").css({
+            $this.parent(".comment").css({
                 transition: "all 0.4s",
                 transform: "translateX(180px)",
                 opacity: 0
             });
             //簡易的當CSS動畫結束時，刪除元素
             setTimeout(function (){
-                $this.parents(".comment").remove();
+                $this.parent(".comment").remove();
             }, 400);
         }
 
