@@ -1,5 +1,5 @@
 /**
- * v 1.2.2
+ * v 1.3
  * 在 function 中可使用擴增的屬性
  *
  * this.root    會得到 $(selector);
@@ -90,6 +90,17 @@
 
         // 無論是否觸發使用者的 autoload(), 會後都會返回該實體化的物件
         return storage[name];
+    }
+
+    /**
+     * 刪除指定的倉儲
+     * @param   name 倉儲名稱
+     */
+    $.vmodel.delete = function (name){
+        if (storage[name]) {
+            delete storage[name];
+        }
+        return this;
     }
 
     /**
