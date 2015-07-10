@@ -1,5 +1,5 @@
 /**
- * v 1.2
+ * v 1.2.1
  * 在 function 中可使用擴增的屬性
  *
  * this.root    會得到 $(selector);
@@ -127,12 +127,14 @@
 
             // 這是使用者定義的function, 我們將他實體化
             var obj      = new p_1();
-        
+
         }
 
         // 擴充，外部不可使用這些關鍵字
         obj.selector = selector;
-        obj.root     = $(selector);
+        obj.root     = $(this);
+
+        
 
 
 
@@ -165,7 +167,14 @@
 
         // 放入倉儲
         if ($.type(p_1) == "string") {
-            $.vmodel.storage[p_1] = result;
+
+            if (!$.vmodel.storage[p_1]) {
+                $.vmodel.storage[p_1] = result;
+            }
+            else {
+                console.log("倉儲名稱『" + p_1 + "』重複。");
+                return false;
+            }
         }
 
         // 返回實體化的，可供外部調用
