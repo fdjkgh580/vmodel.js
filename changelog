@@ -1,7 +1,9 @@
-v1.2.1
+v1.2.2
 2015/07/10
 - 修正當選擇器指定 $(window) 與 $(document) 可使用 this.root 取得
 - 修正倉儲命名重複時的覆蓋問題，目前改為不可重複命名。
+- 修正原 $.vmodel.storage 倉儲為私有, 改為 var storage 。外部呼叫倉儲僅可透過 $.vmodel.get() 取得。
+- 修正原 $.vmodel.local 為私有，改為 var local。
 
 V 1.2 
 2015/06/22

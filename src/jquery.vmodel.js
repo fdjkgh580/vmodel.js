@@ -1,5 +1,5 @@
 /**
- * v 1.2.1
+ * v 1.2.2
  * 在 function 中可使用擴增的屬性
  *
  * this.root    會得到 $(selector);
@@ -11,11 +11,12 @@
     $.vmodel = {};
 
     //內部全域的物件。也就是控制外部的  $(selector).vmodel(的匿名含式/物件)
-    $.vmodel.local = null;
+    var local = null;
 
     // 實體化的存放倉儲，提供內部呼叫。
-    $.vmodel.storage = {}; 
+    var storage = {}; 
 
+    
     // 內部全域的輔助方法
     $.vmodel.api = new function (){
 
@@ -28,7 +29,7 @@
             $.each(autoload_method_ary, function(key, name) {
 
                 if ($.type(obj[name]) != "function") {
-                    $.vmodel.local.msg_error(name, "不存在。");
+                    local.msg_error(name, "不存在。");
                 }
 
                 obj[name]();
@@ -51,7 +52,7 @@
                     var ary = obj.autoload;
                 }
                 else {
-                    $.vmodel.local.msg_error("autoload", "格式錯誤，型態只能是 function 或 array。")
+                    local.msg_error("autoload", "格式錯誤，型態只能是 function 或 array。")
                 }
 
                 $.vmodel.api.each_autoload(ary, obj);
@@ -71,10 +72,10 @@
 
         // 返回所有倉儲
         if (!name) {
-            return $.vmodel.storage;
+            return storage;
         }
 
-        var target_obj = $.vmodel.storage[name];
+        var target_obj = storage[name];
         
         // 呼叫的倉儲並不存在
         if (!target_obj) {
@@ -88,7 +89,7 @@
         }
 
         // 無論是否觸發使用者的 autoload(), 會後都會返回該實體化的物件
-        return $.vmodel.storage[name];
+        return storage[name];
     }
 
     /**
@@ -100,10 +101,10 @@
     $.fn.vmodel = function(p_1, p_2, p_3) {
 
         // 內部
-        $.vmodel.local   = this;
+        local   = this;
         
         // 選擇器
-        var selector = $.vmodel.local.selector;
+        var selector = local.selector;
 
         // 若第一個參數為倉儲命名
         if ($.type(p_1) == "string") {
@@ -168,8 +169,9 @@
         // 放入倉儲
         if ($.type(p_1) == "string") {
 
-            if (!$.vmodel.storage[p_1]) {
-                $.vmodel.storage[p_1] = result;
+            // 檢查是否已存在
+            if (!storage[p_1]) {
+                storage[p_1] = result;
             }
             else {
                 console.log("倉儲名稱『" + p_1 + "』重複。");
