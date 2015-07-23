@@ -6,335 +6,43 @@
     <style></style>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="src/jquery.vmodel.min.js"></script>
+    <script src="jquery.transit.min.js"></script>
+    <script src="Demo.js"></script>
+    <link rel="stylesheet" href="Demo.css">
 </head>
 <body>
 
-<article>
+    <div class="container">
+        <button class="open">OPEN</button>
 
-    <section>
-        <h2>基本用法</h2>
-        <script>
-        $(function (){
-            $(".demo_1").vmodel(function (){
-                this.autoload = ['get'];
-
-                this.get = function (){
-                    // 使用 this.root 可以取得 $(".demo_1")
-                    this.root.on("click", ".say", function (){
-                        alert("Demo. Hello World")
-                    })
-                }
-            })
-        });
-        </script>
-        <div class="demo_1">
-            <input type="button" class="say" value="click me">
-        </div>
-    </section>
-        
-    <section>
-        <h2>取得內部元素</h2>
-        <script>
-        $(function (){
-            $(".demo_2").vmodel(function (){
+        <div class="dialog">
+            <div class="tit">Dialog</div>
+            <a class="close cssani" href="">X</a>
+            <div class="list">
                 
-                var _this = this;
-
-                this.autoload = ['get_title'];
-
-                this.get_title = function (){
-                    this.root.on("click", ".say", function (){
-                        // 改用 _this
-                        alert( _this.root.find(".title").val() );
-                    })
-                }
-            })
-        });
-        </script>
-        <div class="demo_2">
-            <input type="text" class="title" value="Demo2. Hello World">
-            <input type="button" class="say" value="click me">
-        </div>
-    </section>
-    
-
-    <section>
-        <h2>複製自己</h2>
-        <script>
-        $(function (){
-            $(".demo_3").vmodel(function (){
-                var _this = this;
-                this.autoload = ['clone'];
-                this.clone = function (){
-                    this.root.on("click", ".clone", function (){
-                        $(this).clone().appendTo(_this.selector)
-                    })
-                }
-            });
-        });
-        </script>
-        <div class="demo_3">
-            <input type="button" class="clone" value="clone">
-        </div>
-    </section>
-    
-
-    <section>
-        <h2>UI 設計</h2>
-        <script>
-        $(function (){
-            $(".demo_4").vmodel(function (){
-
-                var _this = this;
-
-                //按鈕的背景顏色
-                this.bgcolor = {
-                    "default" : "#F52121",
-                    "hover"   : "#F75252",
-                    "click"   : "#2EC16A"
-                }
-
-                // 可紀錄原本按鈕的文字
-                this.def_button_str;
-
-                this.autoload = ['create_button', 'event'];
-
-                //建立的總程序
-                this.create_button = function (){
-                    this.add_ele()
-                        .set_style();
-
-                    //先把文字記錄起來，供還原使用
-                    this.def_button_str = this.root.find(".newbutton").val();
-                }
-
-
-                //事件
-                this.event = function (){
-
-                    //想要綁定的事件
-                    this.root.on({
-
-                        mouseover: function (){
-                            $(this).css({
-                                background: _this.bgcolor.hover,
-                            });
-                        },
-
-                        mouseleave: function (){
-                            $(this).css({
-                                background: _this.bgcolor.default,
-                            });
-
-                            //還原文字
-                            _this.reset_button_str();
-                        },
-                        click: function (){
-                            $(this).css({
-                                background: _this.bgcolor.click,
-                            });
-                            $(this).val("O");
-                        }
-
-                    }, ".newbutton");
-                }
-
-                // 還原按鈕文字
-                this.reset_button_str = function (){
-                    var string = this.def_button_str;
-                    this.root.find(".newbutton").val(string);
-                }
-
-                //添加樣式
-                this.set_style = function (){
-                    this.root.find(".newbutton").css({
-                        position: "relative",
-                        border: "none",
-                        background: this.bgcolor.default,
-                        color: "white",
-                        padding: "7px 0",
-                        width: "100px",
-                        borderRadius: "5px",
-                        fontSize: "20px",
-                        transition: "0.3s all",
-                        cursor: "pointer"
-                    })
-                }
-
-                //添加按鈕元素
-                this.add_ele = function (){
-                    this.root.append('<input class="newbutton" type="button" value="Button">');
-
-                    //可以串接使用
-                    return this;
-                }
-            });
-        });
-        </script>
-        <div class="demo_4">
-        </div>
-    </section>
-    
-    <section>
-        <h2>模組間的交互運用</h2>
-        <p>2 個參數的用法是，vmodel("你想要自訂的倉儲名稱", function (){})</p>
-        <script>
-        $(function (){
-
-            // 控制鈕模組
-            $(".demo_5 .ctrl").vmodel("d5/ctrl", function (){
-
-                var _this = this;
-                
-                this.autoload = ['add', 'delete'];
-
-                // 增加
-                this.add = function (){
-                    this.root.on("click", ".add", function (){
-
-                        //動作
-                        $.vmodel.get("d5/action").add();
-
-                        // 更新資訊
-                        $.vmodel.get("d5/info").update();
-                    })
-                }
-
-                // 刪除
-                this.delete = function (){
-                    this.root.on("click", ".delete", function (){
-
-                        //動作...
-                        var act = $.vmodel.get("d5/action");
-                        var who = act.child_last();
-                        act.delete(who);
-
-                        // 更新資訊
-                        $.vmodel.get("d5/info").update();
-                    })
-                }
-            })
-
-            // 動作模組
-            $(".demo_5 .action").vmodel("d5/action", function (){
-                
-                this.add = function (){ //添加
-                    this.root.append('<li>item</li>');
-                }
-
-                this.delete = function (selector){ // 刪除
-                    this.root.find(selector).remove();
-                }
-
-                this.child_last = function (){ //取得最後元素
-                    return this.root.find("li").last();
-                }
-            })
-
-            //資訊模組
-            $(".demo_5 .info").vmodel("d5/info", function (){
-
-                this.autoload = ['init'];
-
-                // 初始化
-                this.init = function (){
-                    this.update();
-                }
-
-                // 更新
-                this.update = function (){
-                    var total = this.total();
-                    this.root.find(".num").html(total);
-                }
-
-                //取得目前總數量
-                this.total = function (){
-                    var act_obj = $.vmodel.get("d5/action");
-                    return act_obj.root.find("li").length;
-                }
-            });
-
-
-        })
-        </script>
-        
-        <div class="demo_5">
-            <div class="ctrl">
-                <button class="add">添加</button>
-                <button class="delete">刪除</button>
             </div>
-            <p class="info">目前 <span class="num"></span> 個</p>
-            <ul class="action"></ul>
         </div>
-    </section>
+
+        <a class="item" href="" hidden></a>
+
+    </div>
 
 
 
-    <section>
-        <h2>先定義，再延遲觸發模型</h2>
-        <p>
-            <script>
-            $(function (){
 
-                //第二個參數使用 false, 告訴 vmodel 我們只是定義，還不執行
-                $(".demo_6_1").vmodel("demo_6_2", false, function (){
-                    
-                    this.autoload = function (){
+    <!-- <div class="container">
+        <button class="open">OPEN</button>
 
-                        //CSS動畫
-                        this.root.css({
-                            transition: "all 1s"
-                        });
-
-                        //觸發顏色與尺寸
-                        return ['color', 'size'];
-                    }
-
-                    this.color = function (){
-                        this.root.css({
-                            color : "#F24F01"
-                        })
-                    }
-
-                    this.size = function (){
-                        this.root.css({
-                            fontSize : "40px"
-                        })
-                    }
-                })
-                
-
-                $(".demo_6_2").vmodel(function (){
-
-                    this.autoload = ['init'];
-
-                    this.init = function (){
-                        this.root.on("click", ".create", function (){
-
-                            // 第二個參數使用 true ，代表我們要去觸發已經定義好的模型，
-                            // 也救世會去觸發模型的 autoload
-                            $.vmodel.get("demo_6_2", true);
-                        })
-                    }
-                })
-
-            })
-            </script>
-            
-            <div class="demo_6_1">
-                這段文字被 .demo_6_1 包圍。我們替他取名為 "demo_6_1" 模型。<br>
-                現在已經定義好了，但還沒經過 autoload()
+        <div class="dialog">
+            <div class="tit">Dialog</div>
+            <a class="close" href="">X</a>
+            <div class="list">
+                <a class="item" href="">Favorite</a>
+                <a class="item" href="">Download</a>
+                <a class="item" href="">Share</a>
             </div>
-
-            <div class="demo_6_2">
-                <button class="create">點我，去觸發 demo_6_2 模型，若有指定 autoload() 那會一併觸發</button>
-            </div>
-        </p>
-
-    </section>
-    
-</article>
-    
+        </div>
+    </div> -->
 
 </body>
 </html>
