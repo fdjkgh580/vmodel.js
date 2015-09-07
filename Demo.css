@@ -7,7 +7,7 @@
     transition: all .15s;
 }
 .container {
-    width: 500px;
+    width: 460px;
     margin: 0 auto;
     text-align: center;
 }
@@ -52,7 +52,6 @@
 }
 .list {
     background: #F3E0F1;
-    overflow: hidden; 
 }
 .item {
     display: inline-block;
