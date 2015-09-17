@@ -116,12 +116,18 @@
 
     /**
      * 刪除指定的倉儲
-     * @param   name 倉儲名稱
+     * @param   name (選)倉儲名稱, 不指定會清空所有倉儲
      */
     $.vmodel.delete = function (name){
-        if (storage[name]) {
-            delete storage[name];
+        
+        if (!name && name != '') {
+            storage = {};
+        } else {
+            if (storage[name]) {
+                delete storage[name];
+            }
         }
+        
         return this;
     }
 
