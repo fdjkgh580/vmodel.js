@@ -1,6 +1,13 @@
+v1.4
+- 增加倉儲命可使用 -- 作為開頭，用來當作定位點概念。
+- $.vmodel.get() 排序顯示所有倉儲內容
+- autoload 若使用 function ，可以不必回傳陣列
+
 v1.3
 2015/07/10
 - 添加 $.vmodel.delete 方法
+- this.root    會得到 $(selector);
+- this.select  會得到 $(selector) 中的 selector
 
 v1.2.2
 2015/07/10

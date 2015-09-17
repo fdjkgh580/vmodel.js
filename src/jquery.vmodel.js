@@ -1,10 +1,4 @@
-/**
- * v 1.3
- * 在 function 中可使用擴增的屬性
- *
- * this.root    會得到 $(selector);
- * this.select  會得到 $(selector) 中的 selector
- */
+// v1.4
 (function ($) {
 
     //整體使用
@@ -19,6 +13,25 @@
     
     // 內部全域的輔助方法
     $.vmodel.api = new function (){
+
+        // 物件排序
+        this.obj_sort = function (obj){
+            var temp = [];
+            var i = 0;
+            
+            $.each(obj, function(key, val) {
+                temp[i++] = key;
+            });
+            
+            temp.sort();
+
+            var data = {};
+            $.each(temp, function (key, val){
+                data[val] = obj[val]
+            });
+
+            return data;
+        }
 
         /**
          * 批次呼叫可自動掛載的 function
@@ -46,7 +59,16 @@
                 var type = $.type(obj.autoload);
 
                 if (type == "function") {
-                    var ary = obj.autoload();
+                    var result = obj.autoload();
+
+                    // 如果 function 沒有回傳陣列，就不繼續
+                    // 這情形會發生在已經由 autoload() 寫好要觸發的程序，所以不需要回傳陣列
+                    if ($.type(result) == "array") {
+                        ary = result;
+                    }
+                    else {
+                        return false;
+                    }
                 }
                 else if (type == "array") {
                     var ary = obj.autoload;
@@ -72,7 +94,7 @@
 
         // 返回所有倉儲
         if (!name) {
-            return storage;
+            return $.vmodel.api.obj_sort(storage);
         }
 
         var target_obj = storage[name];
@@ -117,8 +139,41 @@
         // 選擇器
         var selector = local.selector;
 
+        // 若前兩個字元是定位符號，就自動去除
+        this.remove_sign = function (str){
+            return (str.substring(0, 2) == "--") ? str.substring(2) : str;
+        }
+
+        /**
+         * 錯誤訊息
+         * @param   method_name 提示錯誤的 function 名稱
+         * @param   msg         錯誤訊息    
+         */
+        this.msg_error = function (method_name, msg){
+
+            console.log("發生錯誤。『" + selector + "』呼叫的 function 『" + method_name + "』：" + msg);
+
+        }
+
+
+        this.main = function (){
+
+            if ($.type(p_2) == "boolean" && p_2 === false) {
+
+            }
+            else {
+                // 觸發自動讀取
+                $.vmodel.api.is_trigger_autocall(obj);
+            }
+
+            return obj;
+        }
+
         // 若第一個參數為倉儲命名
         if ($.type(p_1) == "string") {
+
+            // 去除定位符號
+            p_1 = local.remove_sign(p_1);
 
             // 若第二個參數為布林值
             if ($.type(p_2) == "boolean") {
@@ -147,33 +202,11 @@
         obj.root     = $(this);
 
         
+        
 
 
 
-        /**
-         * 錯誤訊息
-         * @param   method_name 提示錯誤的 function 名稱
-         * @param   msg         錯誤訊息    
-         */
-        this.msg_error = function (method_name, msg){
-
-            console.log("發生錯誤。『" + selector + "』呼叫的 function 『" + method_name + "』：" + msg);
-
-        }
-
-
-        this.main = function (){
-
-            if ($.type(p_2) == "boolean" && p_2 === false) {
-
-            }
-            else {
-                // 觸發自動讀取
-                $.vmodel.api.is_trigger_autocall(obj);
-            }
-
-            return obj;
-        }
+        
 
         var result = this.main();
 
