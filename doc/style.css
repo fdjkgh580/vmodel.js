@@ -1,0 +1,78 @@
+.logo {
+   text-align: center;
+   color: #F8F8F8;
+   background: #15B7BF;
+   font-size: 60px;
+   font-weight: 600;
+}
+.logobar {
+    background: #1BBDC5;
+    color: white;
+}
+.logobar pre {
+    margin: 0px;
+    padding: 1em 0;
+    font-family: "consolas";
+    line-height: 1.5em;
+    width: 564px;
+    margin: 0 auto;
+}
+.container pre {
+    background: #383432;
+    padding: 2em 42px;
+    color: #F1F1F1;
+    margin-left: 0em;
+    margin-right: 0em;
+    font-family: "consolas";
+    border-radius: 4px;
+    line-height: 1.5em;
+    overflow-y: hidden;
+    overflow-x: auto;
+    font-size: 15px;
+}
+
+h1{
+    color: #BE2CA0;
+    font-size: 3em;
+}
+h2 {
+    font-size: 1.5em;
+}
+h2, h3 {
+    color: #D756BC;
+}
+
+h1, h2, h3 {
+    margin: 0;
+}
+
+* {
+    line-height: 2em;
+    font-family: "微軟正黑體";
+}
+li {
+    margin-bottom: 1em;
+}
+body {
+    font-size: 20px;
+    color: #505050;
+    margin: 0px;
+    padding: 0px;
+}
+a {
+    /*color: #FF4700;*/
+    color: inherit;
+    text-decoration: none;
+    transition: all .25s;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+p {
+    margin: 2em 2em;
+}
+
+.container {
+    padding: 10px;
+}

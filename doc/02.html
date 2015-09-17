@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="../src/jquery.vmodel.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        
+        <ol>
+            <li>vmodel() 第二個參數設定 false，那麼頁面載入完成後，並不會啟用 autoload 要觸發的方法。</li>
+            <li>等到使用 $.vmodel.get(你的自訂倉儲名稱) ，並指定第二個參數為 true 的時候，才會啟用 autoload 。</li>
+            <li>如果 autoload 不指定任何方法，保持 [] 或 function 不回傳陣列，將不會有任何作用。</li>
+        </ol>
+        <pre>
+$("body").vmodel("my", false, function (){
+    var vs = this;
+    this.autoload = ['say']; 
+    this.say = function (){
+        $(".content").html("Hello World")
+    }
+});
+
+$.vmodel.get("my", true);
+        </pre>
+        <pre>
+&lt;div class="content"&gt;&lt;/div&gt;
+        </pre>
+
+
+        <hr>
+        <h1>示範</h1>
+        <script>
+        $(function (){
+
+            $("body").vmodel("my", false, function (){
+                var vs = this;
+                this.autoload = ['say']; 
+                this.say = function (){
+                    $(".content").html("Hello World")
+                }
+            });
+
+            $.vmodel.get("my", true);
+
+        })
+        </script>
+        <div class="content"></div>
+
+    </div>
+
+
+
+
+
+</body>
+</html>

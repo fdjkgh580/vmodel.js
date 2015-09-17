@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="../src/jquery.vmodel.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    
+    <p>每次寫 jQuery 的時候，我建議都使用這樣的固定結構。</p>
+
+    <pre>
+$(綁定根節點的選擇器).vmodel(自訂一個倉儲名稱, true, function (){
+    var vs = this;
+    this.autoload = [];
+    this.yourfun = function (){
+        
+    }
+});
+    </pre>
+
+    <ol>
+        <li>我們將要做的事情寫在一個自訂的 function 叫做 say()。</li>
+        <li>接著我們希望 say() 在頁面載入之後，會被呼叫，所以添加 say 到 this.autoload 的陣列裡。等候 vmodel() 依序呼叫。</li>
+        <li>最後指定 vmodel() 的第二個參數為 true, 告訴 vmodel() ，讀取完這個模組以後，可以批次呼叫 autoload 指定的方法。 </li>
+    </ol>
+
+    <pre>
+$("body").vmodel("my", true, function (){
+    var vs = this;
+    this.autoload = ['say']; //初始化後自動讀取 say()
+    this.say = function (){
+        $(".content").html("Hello World")
+    }
+});
+    </pre>
+    <pre>
+&lt;div class="content"&gt;&lt;/div&gt;
+    </pre>
+
+    <hr>
+    <h1>示範</h1>
+    <script>
+    $(function (){
+
+        $("body").vmodel("my", true, function (){
+            var vs = this;
+            this.autoload = ['say']; //初始化後自動讀取 say()
+            this.say = function (){
+                $(".content").html("Hello World")
+            }
+        });
+
+    })
+    </script>
+    <div class="content"></div>
+
+</div>
+
+</body>
+</html>
