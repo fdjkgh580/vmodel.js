@@ -84,13 +84,16 @@
     }
 
 
+
+
     /**
      * 取得倉儲
      * @param   string name    (選) 倉儲的存放名稱。當為空時，返回所有倉儲
-     * @param   bool   isinit  (選) 預設 false
+     * @param   bool   p_2     (選) 預設 false
+     * @param   bool   p_3     (選) 
      * @return  object
      */
-    $.vmodel.get = function (name, isinit){
+    $.vmodel.get = function (name, p_2, p_3){
 
         // 返回所有倉儲
         if (!name) {
@@ -105,13 +108,38 @@
             return false;
         }
 
-        // 當使用 true 的時候，會前往判斷，是否要觸發剛取得模型的 autoload()，若有就會優先觸發
-        if (isinit == true) {
-            $.vmodel.api.is_trigger_autocall(target_obj);
-        }
+        // 若參數2指定 bool
+        if ($.type(p_2) == "boolean") {
 
-        // 無論是否觸發使用者的 autoload(), 會後都會返回該實體化的物件
-        return storage[name];
+            // 當使用 true 的時候，會前往判斷，是否要觸發剛取得模型的 autoload()，若有就會優先觸發
+            if (p_2 == true) {
+
+                $.vmodel.api.is_trigger_autocall(target_obj);
+
+                // 若有回調，夾帶實體化物件，返回 true
+                if ($.type(p_3) == "function") {
+
+
+                    //監聽建構完成後, 才會觸發回調
+                    var iid = setInterval(function (){
+
+                        if (target_obj.struct_state === true) {
+                            clearInterval(iid);
+                            p_3(target_obj);
+                        }
+
+                    }, 20);
+
+                    
+                    return true
+                }
+            }
+
+
+
+            // 無論是否觸發使用者的 autoload(), 會後都會返回該實體化的物件
+            return storage[name];
+        }
     }
 
     /**
@@ -161,6 +189,11 @@
 
         }
 
+        // 這樣似乎不行...
+        this.struct = function (bool){
+            obj.struct_state = bool;
+        }
+
 
         this.main = function (){
 
@@ -204,9 +237,9 @@
         }
 
         // 擴充，外部不可使用這些關鍵字
-        obj.selector = selector;
-        obj.root     = $(this);
-
+        obj.selector     = selector; // 根選擇器
+        obj.root         = $(this);  // 根選擇器物件
+        obj.struct_state = false;    // 模組化狀態
         
         
 

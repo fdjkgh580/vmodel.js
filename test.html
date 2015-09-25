@@ -1,0 +1,77 @@
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="src/jquery.vmodel.js"></script>
+<script>
+$(function (){
+
+    // 1
+    $(".content").vmodel("--content", true, function (){
+        var vs = this;
+        this.autoload = ['say'];
+        this.say = function (){
+            vs.root.html("1");
+        }
+    });
+
+    if ($(".content").html() == "1") {
+        console.log('1: OK');
+        $.vmodel.delete();
+    }
+
+
+    // 2
+    $(".content").vmodel("--content", false, function (){
+        var vs = this;
+        this.autoload = ['say'];
+        this.say = function (){
+            vs.root.html("2");
+        }
+    });
+
+    $.vmodel.get("content", true);
+    if ($(".content").html() == "2") {
+        console.log('2: OK');
+        $.vmodel.delete();
+    }    
+
+    // 3
+    $(".content").vmodel("--content", false, function (){
+        var vs = this;
+        this.autoload = ['say'];
+        this.say = function (){
+            vs.root.html("3");
+        }
+    });
+    var result = $.vmodel.get("content", true);
+    if (result.selector == ".content" && $(".content").html() == 3) {
+        console.log('3: OK');
+        $.vmodel.delete();
+    }
+
+    // 4
+    $(".content").vmodel("--content", false, function (){
+        var vs = this;
+        this.autoload = ['say'];
+        this.say = function (){
+            setTimeout(function (){
+                vs.root.html("5");
+                vs.struct(true);
+
+            }, 1000);
+        }
+    });
+    var result = $.vmodel.get("content", true, function (storage){
+        if (storage.selector == ".content" && $(".content").html() == 5) {
+            console.log('5: OK');
+        }
+    });
+    if (result === true) {
+        console.log('4: OK');
+    }
+
+    
+})
+</script>
+
+<div class="content">
+    
+</div>
