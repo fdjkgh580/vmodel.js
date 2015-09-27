@@ -52,32 +52,33 @@ $(function (){
         var vs = this;
         this.autoload = ['say', 'hello'];
         this.say = function (){
-            setTimeout(function (){
-                vs.root.html(null);
-                vs.struct('say', true);
-            }, 500);
+            vs.root.html(null);
+            vs.struct('say', true);
         }
 
         this.hello = function (){
-            setTimeout(function (){
-                vs.root.html("5");
-                vs.struct('hello', true);
-            }, 700);
+            vs.root.html("5");
+            vs.struct('hello', true);
         }
     });
 
     var result = $.vmodel.get("content", true, function (storage){
         if (storage.selector == ".content" && $(".content").html() == 5) {
-            // console.log($.vmodel.get("content", true));
             console.log("5: callback OK")
         }
     });
     if (result === true) {
         console.log('4: OK');
+        // $.vmodel.delete();
     }
 
+
     
-    
+
+
+
+
+
 })
 </script>
 

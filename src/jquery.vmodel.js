@@ -219,11 +219,8 @@
             //先初始化建構狀態
             local.def_fun_struct();
 
-            if ($.type(p_2) == "boolean" && p_2 === false) {
-
-            }
-            else {
-                // 觸發自動讀取
+            // 觸發自動讀取
+            if (p_2 === true) {
                 $.vmodel.api.is_trigger_autocall(obj);
             }
 
@@ -306,6 +303,7 @@
                 if (isallsuccess == false) return false;
 
                 // 呼叫擴充的回調方法。該方法是透過 $.vmodel.get() 的時候所擴充的。
+                console.log(obj.vmodel_get_callback);
                 if ($.type(obj.vmodel_get_callback) == "function") {
 
                     obj.vmodel_get_callback();
