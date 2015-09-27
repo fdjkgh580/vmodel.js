@@ -145,12 +145,18 @@
                 // 若有設定回調函數
                 if ($.type(p_3) == "function") {
 
+                    // 必須先擴充到該模組底下
+                    target_obj.vmodel_get_callback = function (){
+                        p_3(target_obj);
+                    }
+
+
                     //監聽
                     var iid = setInterval(function (){
 
                         if (local.chk_trigger_callback(target_obj) == true) {
                             clearInterval(iid);
-                            p_3(target_obj);  
+                            target_obj.vmodel_get_callback();
                         }
 
                     }, 20);
