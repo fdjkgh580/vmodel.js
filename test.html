@@ -62,9 +62,10 @@ $(function (){
             setTimeout(function (){
                 vs.root.html("5");
                 vs.struct('hello', true);
-            }, 2000);
+            }, 700);
         }
     });
+    
     var result = $.vmodel.get("content", true, function (storage){
         if (storage.selector == ".content" && $(".content").html() == 5) {
             console.log('5: OK');

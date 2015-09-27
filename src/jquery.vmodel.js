@@ -120,8 +120,17 @@
 
                 $.vmodel.api.is_trigger_autocall(target_obj);
 
-                // 若有回調，夾帶實體化物件，返回 true
+                // 若有回調
                 if ($.type(p_3) == "function") {
+
+                    // 擴增回調
+                    $.extend(storage[name], {
+                        vmodel_get_callback : function (){
+                            p_3(target_obj);    
+                        }
+                    });
+
+                    // console.log(storage[name]);
 
                     // 應該改為被動檢查，而不是主動監聽
 
@@ -299,8 +308,10 @@
                 // 並檢查是否全部都建構完成，若 autoload 全部都建構完成，就觸發回調
                 var result = local.chk_trigger_callback();
                 if (result == false) return false;
-                
-                
+
+                // $.vmodel.get(p_1)
+                // console.log(obj);
+                obj.vmodel_get_callback();
             }
         });
 
