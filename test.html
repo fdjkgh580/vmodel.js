@@ -65,10 +65,11 @@ $(function (){
             }, 700);
         }
     });
-    
+
     var result = $.vmodel.get("content", true, function (storage){
         if (storage.selector == ".content" && $(".content").html() == 5) {
-            console.log('5: OK');
+            console.log($.vmodel.get("content", true));
+            
         }
     });
     if (result === true) {

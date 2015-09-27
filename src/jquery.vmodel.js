@@ -124,27 +124,13 @@
                 if ($.type(p_3) == "function") {
 
                     // 擴增回調
-                    $.extend(storage[name], {
+                    $.extend(target_obj, {
                         vmodel_get_callback : function (){
                             p_3(target_obj);    
                         }
                     });
 
                     // console.log(storage[name]);
-
-                    // 應該改為被動檢查，而不是主動監聽
-
-                    // //監聽建構完成後, 才會觸發回調
-                    // var iid = setInterval(function (){
-
-                    //     if (target_obj.struct_state === true) {
-                    //         clearInterval(iid);
-                    //         p_3(target_obj);
-                    //     }
-
-                    // }, 20);
-
-                    
                     return true
                 }
             }
@@ -309,9 +295,15 @@
                 var result = local.chk_trigger_callback();
                 if (result == false) return false;
 
-                // $.vmodel.get(p_1)
-                // console.log(obj);
-                obj.vmodel_get_callback();
+                // 呼叫擴充的方法。該方法是透過 $.vmodel.get() 的時候所擴充的
+                if ($.type(obj.vmodel_get_callback) == "function") {
+
+                    obj.vmodel_get_callback();
+
+                    //最後再註銷
+                    delete obj.vmodel_get_callback;
+                }
+
             }
         });
 
