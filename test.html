@@ -69,10 +69,28 @@ $(function (){
     });
     if (result === true) {
         console.log('4: OK');
-        // $.vmodel.delete();
+        $.vmodel.delete();
     }
 
 
+    // 6
+    $(".content").vmodel("--content2", false, function (){
+        var vs = this;
+        this.autoload = ['say'];
+        this.say = function (){
+            vs.root.html(null);
+            vs.struct('say', true);
+        }
+
+        this.hello = function (){
+            vs.root.html("5");
+            vs.struct('hello', true);
+        }
+    });
+
+    var result = $.vmodel.get("content2", true, function (storage){
+        console.log("7: callback OK")
+    });
     
 
 

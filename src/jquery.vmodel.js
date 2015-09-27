@@ -99,6 +99,28 @@
      */
     $.vmodel.get = function (name, p_2, p_3){
 
+        var local = this;
+
+        // 判斷是否可以觸發回調 callback
+        this.chk_trigger_callback = function (obj){
+
+            var allow = true;
+
+            $.each(obj.fun_struct, function(index, bool) {
+
+                // 如果遇到沒有初始化的，就終止檢查
+                if (bool == false) {
+                    allow = false;
+                    return false;
+                }
+
+            });
+
+            // 如果不允許就離開
+            // 若 autoload 中的方法都已經建構完成，那就可以呼叫回調 
+            return (allow == false) ? false : true;
+        }
+
         // 返回所有倉儲
         if (!name) {
             return $.vmodel.api.obj_sort(storage);
@@ -120,14 +142,18 @@
 
                 $.vmodel.api.is_trigger_autocall(target_obj);
 
-                // 若有設定回調函數，那我們僅做擴增回調函數，並不做任何的監控或檢查
+                // 若有設定回調函數
                 if ($.type(p_3) == "function") {
 
-                    $.extend(target_obj, {
-                        vmodel_get_callback : function (){
-                            p_3(target_obj);    
+                    //監聽
+                    var iid = setInterval(function (){
+
+                        if (local.chk_trigger_callback(target_obj) == true) {
+                            clearInterval(iid);
+                            p_3(target_obj);  
                         }
-                    });
+
+                    }, 20);
 
                     // console.log(storage[name]);
                     return true
@@ -227,27 +253,7 @@
             return obj;
         }
 
-        // 判斷是否可以觸發回調 callback
-        this.chk_trigger_callback = function (){
-
-            var allow = true;
-
-            $.each(obj.fun_struct, function(index, bool) {
-
-                // 如果遇到沒有初始化的，就終止檢查
-                if (bool == false) {
-                    allow = false;
-                    return false;
-                }
-
-            });
-
-            // 如果不允許就離開
-            if (allow == false) return false;
-
-            // 若 autoload 中的方法都已經建構完成，那就可以呼叫回調 
-            if (allow == true) return true;
-        }
+        
 
         // 若第一個參數為倉儲命名
         if ($.type(p_1) == "string") {
@@ -298,20 +304,7 @@
                 // 設定指定狀態
                 obj.fun_struct[name] = bool
 
-                // 並檢查是否全部都建構完成，若 autoload 全部都建構完成，就觸發回調
-                var isallsuccess = local.chk_trigger_callback();
-                if (isallsuccess == false) return false;
-
-                // 呼叫擴充的回調方法。該方法是透過 $.vmodel.get() 的時候所擴充的。
-                console.log(obj.vmodel_get_callback);
-                if ($.type(obj.vmodel_get_callback) == "function") {
-
-                    obj.vmodel_get_callback();
-
-                    //最後再註銷
-                    delete obj.vmodel_get_callback;
-                }
-
+                return true;
             }
         });
 
