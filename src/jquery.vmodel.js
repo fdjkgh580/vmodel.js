@@ -39,14 +39,18 @@
          * @param   object                  也就是外部的實體化後的 $(selector).vmodel("匿名方法")
          */
         this.each_autoload = function (autoload_method_ary, obj){
+
+
             $.each(autoload_method_ary, function(key, name) {
 
                 if ($.type(obj[name]) != "function") {
                     local.msg_error(name, "不存在。");
                 }
 
+                // 觸發方法
                 obj[name]();
             });
+
         },
 
         /**
@@ -119,16 +123,17 @@
                 // 若有回調，夾帶實體化物件，返回 true
                 if ($.type(p_3) == "function") {
 
+                    // 應該改為被動檢查，而不是主動監聽
 
-                    //監聽建構完成後, 才會觸發回調
-                    var iid = setInterval(function (){
+                    // //監聽建構完成後, 才會觸發回調
+                    // var iid = setInterval(function (){
 
-                        if (target_obj.struct_state === true) {
-                            clearInterval(iid);
-                            p_3(target_obj);
-                        }
+                    //     if (target_obj.struct_state === true) {
+                    //         clearInterval(iid);
+                    //         p_3(target_obj);
+                    //     }
 
-                    }, 20);
+                    // }, 20);
 
                     
                     return true
@@ -189,8 +194,25 @@
 
         }
 
+        // 初始化模組建構狀態
+        this.def_fun_struct = function (){
+            var ary ;
+            if ($.type(obj.autoload) == "array") {
+                ary = obj.autoload;
+            } else if ($.typeof(obj.autoload) == "function") {
+                ary = obj.autoload();
+            }
+
+            $.each(ary, function(index, fun_name) {
+                obj.fun_struct[fun_name] = false;
+            });
+        }
+
 
         this.main = function (){
+
+            //初始化建構狀態
+            local.def_fun_struct();
 
             if ($.type(p_2) == "boolean" && p_2 === false) {
 
@@ -201,6 +223,28 @@
             }
 
             return obj;
+        }
+
+        // 判斷是否可以觸發回調 callback
+        this.chk_trigger_callback = function (){
+
+            var allow = true;
+
+            $.each(obj.fun_struct, function(index, bool) {
+
+                // 如果遇到沒有初始化的，就終止檢查
+                if (bool == false) {
+                    allow = false;
+                    return false;
+                }
+
+            });
+
+            // 如果不允許就離開
+            if (allow == false) return false;
+
+            // 若 autoload 中的方法都已經建構完成，那就可以呼叫回調 
+            if (allow == true) return true;
         }
 
         // 若第一個參數為倉儲命名
@@ -240,12 +284,23 @@
             // 根選擇器物件    
             root : $(this),
 
-            // 模組化狀態  
-            struct_state : false,
+            // 在倉儲中建立一個 fun_struct 物件
+            // 用來存放每個 autoload 的方法名稱，
+            // 並預設建構狀態為 false, 等到使用者手動為 true，
+            // 才代表這個方法完成建構。
+            fun_struct : {},
 
             // 外部控制模組化狀態           
-            struct : function (bool) {
-                obj.struct_state = bool
+            struct : function (name, bool) {
+
+                // 設定指定狀態
+                obj.fun_struct[name] = bool
+
+                // 並檢查是否全部都建構完成，若 autoload 全部都建構完成，就觸發回調
+                var result = local.chk_trigger_callback();
+                if (result == false) return false;
+                
+                
             }
         });
 
