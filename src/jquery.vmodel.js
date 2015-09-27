@@ -115,7 +115,7 @@
         // 若參數2指定 bool
         if ($.type(p_2) == "boolean") {
 
-            // 當使用 true 的時候，會前往判斷，是否要觸發剛取得模型的 autoload()，若有就會優先觸發
+            // 當使用 true 的時候，會前往判斷，是否要觸發剛取得模組的 autoload()，若有就會優先觸發
             if (p_2 == true) {
 
                 $.vmodel.api.is_trigger_autocall(target_obj);
@@ -189,15 +189,18 @@
 
         }
 
-        // 初始化模組建構狀態
+        // 初始化使用者指定的 autoload 每個方法的建構狀態
         this.def_fun_struct = function (){
+
             var ary ;
+
             if ($.type(obj.autoload) == "array") {
                 ary = obj.autoload;
             } else if ($.typeof(obj.autoload) == "function") {
                 ary = obj.autoload();
             }
 
+            // 為每一個方法，都設定為 false，代表該方法還沒有建構完成
             $.each(ary, function(index, fun_name) {
                 obj.fun_struct[fun_name] = false;
             });
@@ -206,7 +209,7 @@
 
         this.main = function (){
 
-            //初始化建構狀態
+            //先初始化建構狀態
             local.def_fun_struct();
 
             if ($.type(p_2) == "boolean" && p_2 === false) {
@@ -285,17 +288,17 @@
             // 才代表這個方法完成建構。
             fun_struct : {},
 
-            // 外部控制模組化狀態           
+            // 提供外部指定模組化狀態。
             struct : function (name, bool) {
 
                 // 設定指定狀態
                 obj.fun_struct[name] = bool
 
                 // 並檢查是否全部都建構完成，若 autoload 全部都建構完成，就觸發回調
-                var result = local.chk_trigger_callback();
-                if (result == false) return false;
+                var allsuccess = local.chk_trigger_callback();
+                if (allsuccess == false) return false;
 
-                // 呼叫擴充的方法。該方法是透過 $.vmodel.get() 的時候所擴充的
+                // 呼叫擴充的回調方法。該方法是透過 $.vmodel.get() 的時候所擴充的。
                 if ($.type(obj.vmodel_get_callback) == "function") {
 
                     obj.vmodel_get_callback();
