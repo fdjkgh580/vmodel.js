@@ -189,11 +189,6 @@
 
         }
 
-        // 這樣似乎不行...
-        this.struct = function (bool){
-            obj.struct_state = bool;
-        }
-
 
         this.main = function (){
 
@@ -237,15 +232,29 @@
         }
 
         // 擴充，外部不可使用這些關鍵字
-        obj.selector     = selector; // 根選擇器
-        obj.root         = $(this);  // 根選擇器物件
-        obj.struct_state = false;    // 模組化狀態
-        
-        
+        // obj.selector     = selector; 
+        // obj.root         = $(this);  
+        // obj.struct_state = false;          
+        // obj.struct = function (bool){
+        //     obj.struct_state = bool;
+        // }
 
+        $.extend(obj, {
 
+            // 根選擇器
+            selector : selector,        
 
-        
+            // 根選擇器物件    
+            root : $(this),
+
+            // 模組化狀態  
+            struct_state : false,
+
+            // 外部控制模組化狀態           
+            struct : function (bool){
+                obj.struct_state = bool;
+            }
+        });
 
         var result = this.main();
 
