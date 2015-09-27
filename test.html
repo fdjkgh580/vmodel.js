@@ -50,14 +50,16 @@ $(function (){
     // 4
     $(".content").vmodel("--content", false, function (){
         var vs = this;
-        this.autoload = ['say'];
+        this.autoload = ['say', 'hello'];
         this.say = function (){
+            vs.root.html(null);
+        }
+
+        this.hello = function (){
             setTimeout(function (){
                 vs.root.html("5");
-                // vs.struct_status = false;
                 vs.struct(true);
-
-            }, 1000);
+            }, 300);
         }
     });
     var result = $.vmodel.get("content", true, function (storage){

@@ -232,13 +232,6 @@
         }
 
         // 擴充，外部不可使用這些關鍵字
-        // obj.selector     = selector; 
-        // obj.root         = $(this);  
-        // obj.struct_state = false;          
-        // obj.struct = function (bool){
-        //     obj.struct_state = bool;
-        // }
-
         $.extend(obj, {
 
             // 根選擇器
@@ -251,8 +244,8 @@
             struct_state : false,
 
             // 外部控制模組化狀態           
-            struct : function (bool){
-                obj.struct_state = bool;
+            struct : function (bool) {
+                obj.struct_state = bool
             }
         });
 
