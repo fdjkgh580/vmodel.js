@@ -120,10 +120,9 @@
 
                 $.vmodel.api.is_trigger_autocall(target_obj);
 
-                // 若有回調
+                // 若有設定回調函數，那我們僅做擴增回調函數，並不做任何的監控或檢查
                 if ($.type(p_3) == "function") {
 
-                    // 擴增回調
                     $.extend(target_obj, {
                         vmodel_get_callback : function (){
                             p_3(target_obj);    
@@ -192,12 +191,20 @@
         // 初始化使用者指定的 autoload 每個方法的建構狀態
         this.def_fun_struct = function (){
 
-            var ary ;
+            var ary   = [];
+            var atype = $.type(obj.autoload);
 
-            if ($.type(obj.autoload) == "array") {
+            // 取得 autoload 的陣列
+            if (atype == "array") {
+
                 ary = obj.autoload;
-            } else if ($.typeof(obj.autoload) == "function") {
-                ary = obj.autoload();
+            
+            } else if (atype == "function") {
+            
+                // 若有回傳陣列才替換
+                res = obj.autoload();
+                if ($.type(res) == "array") ary = res;
+            
             }
 
             // 為每一個方法，都設定為 false，代表該方法還沒有建構完成
@@ -295,8 +302,8 @@
                 obj.fun_struct[name] = bool
 
                 // 並檢查是否全部都建構完成，若 autoload 全部都建構完成，就觸發回調
-                var allsuccess = local.chk_trigger_callback();
-                if (allsuccess == false) return false;
+                var isallsuccess = local.chk_trigger_callback();
+                if (isallsuccess == false) return false;
 
                 // 呼叫擴充的回調方法。該方法是透過 $.vmodel.get() 的時候所擴充的。
                 if ($.type(obj.vmodel_get_callback) == "function") {
