@@ -1,120 +1,145 @@
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src="src/jquery.vmodel.js"></script>
-<script>
-$(function (){
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="src/jquery.vmodel.js"></script>
+    <script>
+    $(function (){
 
-    // // 1
-    // $(".content").vmodel("--content", true, function (){
-    //     var vs = this;
-    //     this.autoload = ['say'];
-    //     this.say = function (){
-    //         vs.root.html("1");
-    //     }
-    // });
+        // // 1
+        // $(".content").vmodel("--content", true, function (){
+        //     var vs = this;
+        //     this.autoload = ['say'];
+        //     this.say = function (){
+        //         vs.root.html("1");
+        //     }
+        // });
 
-    // if ($(".content").html() == "1") {
-    //     console.log('1: OK');
-    //     $.vmodel.delete();
-    // }
-
-
-    // // 2
-    // $(".content").vmodel("--content", false, function (){
-    //     var vs = this;
-    //     this.autoload = ['say'];
-    //     this.say = function (){
-    //         vs.root.html("2");
-    //     }
-    // });
-
-    // $.vmodel.get("content", true);
-    // if ($(".content").html() == "2") {
-    //     console.log('2: OK');
-    //     $.vmodel.delete();
-    // }    
-
-    // // 3
-    // $(".content").vmodel("--content", false, function (){
-    //     var vs = this;
-    //     this.autoload = ['say'];
-    //     this.say = function (){
-    //         vs.root.html("3");
-    //     }
-    // });
-    // var result = $.vmodel.get("content", true);
-    // if (result.selector == ".content" && $(".content").html() == 3) {
-    //     console.log('3: OK');
-    //     $.vmodel.delete();
-    // }
-
-    // // 4
-    // $(".content").vmodel("--content", false, function (){
-    //     var vs = this;
-    //     this.autoload = ['say', 'hello'];
-    //     this.say = function (){
-    //         vs.root.html(null);
-    //         vs.struct('say', true);
-    //     }
-
-    //     this.hello = function (){
-    //         vs.root.html("5");
-    //         vs.struct('hello', true);
-    //     }
-    // });
-
-    // var result = $.vmodel.get("content", true, function (storage){
-    //     if (storage.selector == ".content" && $(".content").html() == 5) {
-    //         console.log("5: callback OK");
-    //         // console.log($.vmodel.get());
-    //     }
-    // });
-    // if (result === true) {
-    //     console.log('4: OK');
-    // }
+        // if ($(".content").html() == "1") {
+        //     console.log('1: OK');
+        //     $.vmodel.delete();
+        // }
 
 
-    // // 6
-    // $(".content").vmodel("--content2", false, function (){
-    //     var vs = this;
-    //     this.autoload = ['say', 'hello'];
-    //     this.say = function (){
-    //         vs.root.html(null);
-    //         vs.struct('say', true);
-    //     }
+        // // 2
+        // $(".content").vmodel("--content", false, function (){
+        //     var vs = this;
+        //     this.autoload = ['say'];
+        //     this.say = function (){
+        //         vs.root.html("2");
+        //     }
+        // });
 
-    //     this.hello = function (){
-    //         vs.root.html("5");
-    //         vs.struct('hello', true);
-    //     }
-    // });
+        // $.vmodel.get("content", true);
+        // if ($(".content").html() == "2") {
+        //     console.log('2: OK');
+        //     $.vmodel.delete();
+        // }    
 
-    // var result = $.vmodel.get("content2", true, function (storage){
-    //     if (storage.selector == ".content" && $(".content").html() == 5) {
-    //         console.log("7: callback OK");
-    //         // console.log($.vmodel.get());
-    //     }
-    // });
-    // if (result === true) {
-    //     console.log('6: OK');
-    // }
+        // // 3
+        // $(".content").vmodel("--content", false, function (){
+        //     var vs = this;
+        //     this.autoload = ['say'];
+        //     this.say = function (){
+        //         vs.root.html("3");
+        //     }
+        // });
+        // var result = $.vmodel.get("content", true);
+        // if (result.selector == ".content" && $(".content").html() == 3) {
+        //     console.log('3: OK');
+        //     $.vmodel.delete();
+        // }
 
-    //
-    $(".content").vmodel("--content", false, function (){
-        var vs = this;
-        this.autoload = ['say'];
-        this.say = function (){
-            vs.struct('say');
-        }
-    });
-    
-    $result = $.vmodel.get("content", true, function (){
-        console.log('OK');
-    });
+        // // 4
+        // $(".content").vmodel("--content", false, function (){
+        //     var vs = this;
+        //     this.autoload = ['say', 'hello'];
+        //     this.say = function (){
+        //         vs.root.html(null);
+        //         vs.struct('say', true);
+        //     }
+
+        //     this.hello = function (){
+        //         vs.root.html("5");
+        //         vs.struct('hello', true);
+        //     }
+        // });
+
+        // var result = $.vmodel.get("content", true, function (storage){
+        //     if (storage.selector == ".content" && $(".content").html() == 5) {
+        //         console.log("5: callback OK");
+        //         // console.log($.vmodel.get());
+        //     }
+        // });
+        // if (result === true) {
+        //     console.log('4: OK');
+        // }
 
 
-})
-</script>
+        // // 6
+        // $(".content").vmodel("--content2", false, function (){
+        //     var vs = this;
+        //     this.autoload = ['say', 'hello'];
+        //     this.say = function (){
+        //         vs.root.html(null);
+        //         vs.struct('say', true);
+        //     }
 
-<div class="content">
-    
-</div>
+        //     this.hello = function (){
+        //         vs.root.html("5");
+        //         vs.struct('hello', true);
+        //     }
+        // });
+
+        // var result = $.vmodel.get("content2", true, function (storage){
+        //     if (storage.selector == ".content" && $(".content").html() == 5) {
+        //         console.log("7: callback OK");
+        //         // console.log($.vmodel.get());
+        //     }
+        // });
+        // if (result === true) {
+        //     console.log('6: OK');
+        // }
+
+        // 8
+        $(".content").vmodel("--contentelse", false, function (){
+            var vs = this;
+            this.autoload = ['say'];
+            this.say = function (){
+                vs.struct('say');
+            }
+        })
+        $result = $.vmodel.get("contentelse", true, function (){
+            //...
+        });
+
+        $(".content").vmodel("--content", false, function (){
+            var vs = this;
+            this.autoload = ['say', 'hello'];
+            this.say = function (){
+            }
+            this.hello = function (){
+                vs.root.html("8");
+                vs.struct(['say', 'hello']);
+            }
+        });
+        
+        $result = $.vmodel.get("content", true, function (){
+            console.log('8: OK');
+        });
+
+
+
+
+    })
+    </script>
+
+    <div class="content">
+        
+    </div>
+</body>
+</html>

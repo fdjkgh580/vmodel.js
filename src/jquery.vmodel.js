@@ -1,4 +1,4 @@
-// v1.4
+// v1.5
 (function ($) {
 
     //整體使用
@@ -94,14 +94,15 @@
      * 取得倉儲
      * @param   string name    (選) 倉儲的存放名稱。當為空時，返回所有倉儲
      * @param   bool   p_2     (選) 預設 false
-     * @param   bool   p_3     (選) 
+     * @param   bool   p_3     (選) callback 回調方法，並夾帶了該倉儲
      * @return  object
      */
     $.vmodel.get = function (name, p_2, p_3){
 
         var local = this;
 
-        // 判斷是否可以觸發回調 callback
+        // 判斷是否可以觸發回調 callback，
+        // 條件式當所有狀態都是 true
         this.chk_trigger_callback = function (obj){
 
             var allow = true;
@@ -119,6 +120,33 @@
             // 如果不允許就離開
             // 若 autoload 中的方法都已經建構完成，那就可以呼叫回調 
             return (allow == false) ? false : true;
+        }
+
+
+        // 視覺化屬性
+        this.display_attr = function (name, target_obj){
+            if (target_obj.selector == window || target_obj.selector == document) return true;
+
+            // 建立一個物件
+            var data = {
+                storage: name, // 倉儲名稱
+                status: true, // 完成
+                timestamp : Date.parse(new Date()), //時間戳記
+            };
+
+
+            // 視覺狀態是否存在, 若存在代表已經有倉儲也是綁定在這個元素，而且已完成
+            var attr = target_obj.root.attr("data-vmodel-history");
+            if (attr) {
+                var dej = $.parseJSON(attr);
+                console.log(dej);
+            }
+
+            
+
+            //視覺狀態
+            var encode = JSON.stringify(data);
+            target_obj.root.attr("data-vmodel-history", encode); 
         }
 
         // 返回所有倉儲
@@ -145,7 +173,7 @@
                 // 若有設定回調函數
                 if ($.type(p_3) == "function") {
 
-                    // 必須先擴充到該模組底下
+                    // 必須先擴充到該模組底下，並勉多個倉儲會互相干擾
                     target_obj.vmodel_get_callback = function (){
                         p_3(target_obj);
                     }
@@ -154,8 +182,14 @@
                     //監聽
                     var iid = setInterval(function (){
 
+                        // 若全部狀態都完成
                         if (local.chk_trigger_callback(target_obj) == true) {
                             clearInterval(iid);
+
+                            // 視覺化添加屬性
+                            local.display_attr(name, target_obj);
+
+                            // 觸發
                             target_obj.vmodel_get_callback();
                         }
 
@@ -304,7 +338,8 @@
 
             /**
              * 提供外部指定模組化狀態。
-             * @param   name   autoload 指定的陣列模組名稱
+             * @param   name   (選) autoload 指定的陣列模組名稱。可以是單一名稱會陣列。
+             *                      如 "say" 或 ['say', 'hello']
              * @param   bool   (選) true:(預設)完成 | false : 未完成
              */
             struct : function (name, bool) {
@@ -313,8 +348,28 @@
                     bool = true;
                 }
 
-                // 設定指定狀態
-                obj.fun_struct[name] = bool;
+
+                // 若使用字串
+                if ($.type(name) == "string") {
+                    if ($.type(obj.fun_struct[name]) != "boolean") {
+                        console.log('找不到名稱為 ' + name + '的建構狀態');
+                        return false;
+                    }
+
+                    // 設定指定狀態
+                    obj.fun_struct[name] = bool;
+                }
+
+                // 若是陣列如 ['say', 'hello']
+                else if ($.type(name) == "array"){
+                    $.each(name, function (key, val){
+                        obj.fun_struct[val] = bool;
+                    })
+                }
+                else {
+                    console.log('建構名稱須要指定');
+                    return false;
+                }
 
                 return true;
             }
