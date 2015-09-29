@@ -302,11 +302,19 @@
             // 才代表這個方法完成建構。
             fun_struct : {},
 
-            // 提供外部指定模組化狀態。
+            /**
+             * 提供外部指定模組化狀態。
+             * @param   name   autoload 指定的陣列模組名稱
+             * @param   bool   (選) true:(預設)完成 | false : 未完成
+             */
             struct : function (name, bool) {
 
+                if ($.type(bool) != "boolean" && !bool) {
+                    bool = true;
+                }
+
                 // 設定指定狀態
-                obj.fun_struct[name] = bool
+                obj.fun_struct[name] = bool;
 
                 return true;
             }
