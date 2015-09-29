@@ -128,21 +128,22 @@
             if (target_obj.selector == window || target_obj.selector == document) return true;
 
             // 建立一個物件
-            var data = {
+            var data = [{
                 storage: name, // 倉儲名稱
                 status: true, // 完成
                 timestamp : Date.parse(new Date()), //時間戳記
-            };
+            }];
 
 
-            // 視覺狀態是否存在, 若存在代表已經有倉儲也是綁定在這個元素，而且已完成
+            // 視覺狀態是否存在, 若存在代表已經有倉儲也是綁定在這個元素，而且已完成。
+            // 這時候就合併已存在的，與新的。
             var attr = target_obj.root.attr("data-vmodel-history");
             if (attr) {
                 var dej = $.parseJSON(attr);
-                console.log(dej);
+                dej.push(data);
+                data = dej;
             }
 
-            
 
             //視覺狀態
             var encode = JSON.stringify(data);
