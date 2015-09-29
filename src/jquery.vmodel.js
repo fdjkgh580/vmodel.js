@@ -165,12 +165,10 @@
                     return true
                 }
             }
-
-
-
-            // 無論是否觸發使用者的 autoload(), 會後都會返回該實體化的物件
-            return storage[name];
         }
+
+        // 無論是否觸發使用者的 autoload(), 最後都會返回該實體化的物件
+        return storage[name];
     }
 
     /**
