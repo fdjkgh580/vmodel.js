@@ -127,11 +127,13 @@
         this.display_attr = function (name, target_obj){
             if (target_obj.selector == window || target_obj.selector == document) return true;
 
+            var d = new Date();
+
             // 建立一個物件
             var data = [{
                 storage: name, // 倉儲名稱
                 status: true, // 完成
-                timestamp : Date.parse(new Date()), //時間戳記
+                timestamp : Date.parse(d) + "." + d.getMilliseconds(), //時間戳記
             }];
 
 
