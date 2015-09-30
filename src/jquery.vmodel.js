@@ -87,6 +87,24 @@
 
     }
 
+    /**
+     * 倉儲紀錄
+     */
+    $.vmodel.history = function (name) {
+
+        var storage = $.vmodel.get(name);
+
+        var json = storage.root.attr("data-vmodel-history");
+        var obj = $.parseJSON(json);
+        var returnval = false;
+
+        $.each(obj, function (key, info){
+            if (info.vname != name) return true;
+            returnval = info;
+            return false;
+        })
+        return returnval;
+    }
 
 
 
@@ -125,13 +143,15 @@
 
         // 視覺化屬性
         this.display_attr = function (name, target_obj){
+
+            //這些不須要
             if (target_obj.selector == window || target_obj.selector == document) return true;
 
             var d = new Date();
 
             // 建立一個物件
             var data = [{
-                storage: name, // 倉儲名稱
+                vname: name, // 倉儲名稱
                 status: true, // 完成
                 timestamp : Date.parse(d) + "." + d.getMilliseconds(), //時間戳記
             }];
@@ -142,7 +162,7 @@
             var attr = target_obj.root.attr("data-vmodel-history");
             if (attr) {
                 var dej = $.parseJSON(attr);
-                dej.push(data);
+                dej.push(data[0]); // 務必使用 data[0] 剝除外面的陣列。
                 data = dej;
             }
 
@@ -297,7 +317,8 @@
         
 
         // 若第一個參數為倉儲命名
-        if ($.type(p_1) == "string") {
+        var vp_1 = $.type(p_1);
+        if (vp_1 == "string") {
 
             // 去除定位符號
             p_1 = local.remove_sign(p_1);
@@ -324,8 +345,12 @@
 
         }
 
+
         // 擴充，外部不可使用這些關鍵字
+        var vname = (vp_1 == "string") ? p_1 : null;
         $.extend(obj, {
+
+            vname : vname,
 
             // 根選擇器
             selector : selector,        
