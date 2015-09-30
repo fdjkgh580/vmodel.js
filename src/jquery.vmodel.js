@@ -87,27 +87,54 @@
 
     }
 
+    
+    // 當所有倉儲都模組化完成後
+    $.vmodel.end = function (callback){
+
+        var issuccess = true;
+        var id = setInterval(function (){
+
+            var list = $.vmodel.get();
+            $.each(list, function (storage_name, obj){
+
+                // 如果未完成就持續監控
+                var history = $.vmodel.history(obj.vname);
+                // console.log(history);
+                if (history == false) return false;
+
+                clearInterval(id);
+                callback();
+
+            });
+
+        }, 20);
+        
+    }
+
+
+
     /**
      * 取得視覺化屬性紀錄
-     * 
-     */
-    /**
-     * [history description]
      * @param   name         倉儲命名
-     * @return {[type]}      [description]
+     * @return               有找到會返回視覺化的屬性物件；反之為 false
      */
     $.vmodel.history = function (name) {
 
-        var storage = $.vmodel.get(name);
-        var json = storage.root.attr("data-vmodel-history");
-        var obj = $.parseJSON(json);
         var returnval = false;
 
+        // 找到綁在跟目錄的視覺化屬性
+        var storage   = $.vmodel.get(name);
+        var json      = storage.root.attr("data-vmodel-history");
+        if (!json) return false;
+        var obj       = $.parseJSON(json);
+
+        // 搜尋
         $.each(obj, function (key, info){
             if (info.vname != name) return true;
             returnval = info;
             return false;
-        })
+        });
+
         return returnval;
     }
 
@@ -115,9 +142,10 @@
 
     /**
      * 取得倉儲
-     * @param   string name    (選) 倉儲的存放名稱。當為空時，返回所有倉儲
-     * @param   bool   p_2     (選) 預設 false
-     * @param   bool   p_3     (選) callback 回調方法，並夾帶了該倉儲
+     * @param   string            name    (選) 倉儲的存放名稱。當為空時，返回所有倉儲
+     * @param   bool              p_2     (選) 預設 false
+     * @param   function | bool   p_3     (選) 啟用監聽的 callback 回調方法，並夾帶了該倉儲。
+     *                                         也可使用 true 啟用監聽。要注意，這是非同步。
      * @return  object
      */
     $.vmodel.get = function (name, p_2, p_3){
@@ -195,12 +223,16 @@
 
                 $.vmodel.api.is_trigger_autocall(target_obj);
 
-                // 若有設定回調函數
-                if ($.type(p_3) == "function") {
+                // 若有啟用監聽或回調函數
+                var pp3 = $.type(p_3);
+                if (pp3 == "function" || (pp3 == "boolean" && p_3 == true)) {
 
-                    // 必須先擴充到該模組底下，並勉多個倉儲會互相干擾
-                    target_obj.vmodel_get_callback = function (){
-                        p_3(target_obj);
+                    // 若是回調
+                    if (pp3 == "function") {
+                        // 必須先擴充到該模組底下，並勉多個倉儲會互相干擾
+                        target_obj.vmodel_get_callback = function (){
+                            p_3(target_obj);
+                        }
                     }
 
 
@@ -214,7 +246,8 @@
                             // 視覺化添加屬性
                             local.display_attr(name, target_obj);
 
-                            // 觸發
+                            // 觸發回調
+                            if (pp3 == "boolean") return true;
                             target_obj.vmodel_get_callback();
                         }
 
