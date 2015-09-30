@@ -1,26 +1,40 @@
 $(function (){
-    // 6
-    $(".content").vmodel("--content2", false, function (){
+    // 6 vs.struct() 使用陣列指定名稱
+    $(".content").vmodel("--content_6_1", false, function (){
+        var vs = this;
+        this.autoload = ['say'];
+        this.say = function (){
+            vs.struct('say');
+        }
+    })
+    $result = $.vmodel.get("content_6_1", true, function (){
+        console.log('6-1: OK');
+    });
+
+    $(".content").vmodel("--content_6_2", false, function (){
         var vs = this;
         this.autoload = ['say', 'hello'];
         this.say = function (){
-            vs.root.html(null);
-            vs.struct('say', true);
         }
-
         this.hello = function (){
-            vs.root.html("5");
-            vs.struct('hello', true);
+            vs.struct(['say', 'hello']);
         }
+    });
+    
+    $result = $.vmodel.get("content_6_2", true, function (){
+        console.log('6-2: OK');
     });
 
-    var result = $.vmodel.get("content2", true, function (storage){
-        if (storage.selector == ".content" && $(".content").html() == 5) {
-            console.log("7: callback OK");
-            // console.log($.vmodel.get());
+    // 不使用 vs.struct() 就不會觸發
+    $(".content").vmodel("--content_6_3", false, function (){
+        var vs = this;
+        this.autoload = ['say', 'hello'];
+        this.say = function (){
+        }
+        this.hello = function (){
         }
     });
-    if (result === true) {
-        console.log('6: OK');
-    }
+    $result = $.vmodel.get("content_6_3", true, function (){
+        console.log('6: error');
+    });
 })

@@ -1,5 +1,5 @@
 $(function (){
-    // 1
+    // 1 基本
     $(".content").vmodel("--content", true, function (){
         var vs = this;
         this.autoload = ['say'];

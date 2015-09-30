@@ -1,5 +1,5 @@
 $(function (){
-    // 4
+    // 4 $.vmodel.get() 第三個參數 callback 
     $(".content").vmodel("--content", false, function (){
         var vs = this;
         this.autoload = ['say', 'hello'];
@@ -15,12 +15,9 @@ $(function (){
     });
 
     var result = $.vmodel.get("content", true, function (storage){
-        if (storage.selector == ".content" && $(".content").html() == 5) {
-            console.log("5: callback OK");
-            // console.log($.vmodel.get());
-        }
+        console.log("4-2 callback: OK");
     });
     if (result === true) {
-        console.log('4: OK');
+        console.log('4-1: OK');
     }
 })

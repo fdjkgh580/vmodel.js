@@ -1,5 +1,5 @@
 $(function (){
-    // 2
+    // 2 利用 $.vmodel.get 觸發
     $(".content").vmodel("--content", false, function (){
         var vs = this;
         this.autoload = ['say'];

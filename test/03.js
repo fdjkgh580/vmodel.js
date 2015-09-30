@@ -1,5 +1,5 @@
 $(function (){
-    // 3
+    // 3 $.vmodel.get() 返回的值
     $(".content").vmodel("--content", false, function (){
         var vs = this;
         this.autoload = ['say'];

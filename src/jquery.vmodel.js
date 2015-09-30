@@ -88,12 +88,17 @@
     }
 
     /**
-     * 倉儲紀錄
+     * 取得視覺化屬性紀錄
+     * 
+     */
+    /**
+     * [history description]
+     * @param   name         倉儲命名
+     * @return {[type]}      [description]
      */
     $.vmodel.history = function (name) {
 
         var storage = $.vmodel.get(name);
-
         var json = storage.root.attr("data-vmodel-history");
         var obj = $.parseJSON(json);
         var returnval = false;
@@ -143,9 +148,6 @@
 
         // 視覺化屬性
         this.display_attr = function (name, target_obj){
-
-            //這些不須要
-            if (target_obj.selector == window || target_obj.selector == document) return true;
 
             var d = new Date();
 
@@ -365,8 +367,8 @@
             fun_struct : {},
 
             /**
-             * 提供外部指定模組化狀態。
-             * @param   name   (選) autoload 指定的陣列模組名稱。可以是單一名稱會陣列。
+             * 提供外部指定倉儲的模組化狀態。
+             * @param   name   (選) autoload 指定的陣列倉儲名稱。可以是單一名稱會陣列。
              *                      如 "say" 或 ['say', 'hello']
              * @param   bool   (選) true:(預設)完成 | false : 未完成
              */
