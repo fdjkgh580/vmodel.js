@@ -1,6 +1,6 @@
 $(function (){
     // 5 同 04.js 測試當2個模組綁定在同一個元素，是否有問題
-    $(".content").vmodel("--content2", false, function (){
+    $(".content").vmodel("--content_5", false, function (){
         var vs = this;
         this.autoload = ['say', 'hello'];
         this.say = function (){
@@ -13,12 +13,8 @@ $(function (){
         }
     });
 
-    var result = $.vmodel.get("content2", true, function (storage){
+    var result = $.vmodel.get("content_5", true, function (storage){
         console.log("5-2 callback: OK");
-
-        //註銷
-        $.vmodel.delete('content');
-        $.vmodel.delete('content2');
     });
     if (result === true) {
         console.log('5-1: OK');

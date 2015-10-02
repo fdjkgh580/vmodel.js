@@ -57,7 +57,7 @@
          * 若使用者有設定 autoload() 就會自動呼叫
          * @param object 也就是外部的實體化後的 $(selector).vmodel("匿名方法")
          */
-        this.is_trigger_autocall = function (obj){
+        this.is_trigger_autoload = function (obj){
             if (obj.autoload) {
 
                 var type = $.type(obj.autoload);
@@ -88,26 +88,48 @@
     }
 
     
-    // 當所有倉儲都模組化完成後
+    /**
+     * 當所有倉儲都模組化完成後
+     *
+     * 注意，這需要每個模組都使用監聽完成視覺化，也就是 $.vmodel.get() 第三個參數
+     * 
+     * @param   callback       回調方法
+     */
     $.vmodel.end = function (callback){
 
         var issuccess = true;
         var id = setInterval(function (){
 
-            var list = $.vmodel.get();
-            $.each(list, function (storage_name, obj){
+            // 所有倉儲
+            var allstorage = $.vmodel.get();
 
-                // 如果未完成就持續監控
+            var iscallback = true;
+
+            // 檢查每個倉儲的視覺化狀態
+            $.each(allstorage, function (storage_name, obj){
+
                 var history = $.vmodel.history(obj.vname);
-                // console.log(history);
-                if (history == false) return false;
 
-                clearInterval(id);
-                callback();
+
+                // false 代表還沒有完成，那就檢查下一個倉儲，且不觸發 callback
+                if (history == false) {
+                    iscallback = false;
+                    return true;
+                }
+
+                iscallback = true;
+                // console.log(history);
 
             });
 
-        }, 20);
+
+            if (iscallback) {
+                callback();
+                clearInterval(id);
+            }
+
+
+        }, 0);
         
     }
 
@@ -143,9 +165,12 @@
     /**
      * 取得倉儲
      * @param   string            name    (選) 倉儲的存放名稱。當為空時，返回所有倉儲
-     * @param   bool              p_2     (選) 預設 false
-     * @param   function | bool   p_3     (選) 啟用監聽的 callback 回調方法，並夾帶了該倉儲。
-     *                                         也可使用 true 啟用監聽。要注意，這是非同步。
+     * @param   bool              p_2     (選) 預設 false, 是否觸發倉儲 autoload
+     * @param   function | bool   p_3     (選) 是否啟用監聽並添加視覺化屬性。
+     *                                         注意，這是非同步。
+     *                                         function :   監聽直到完成模組後會觸發 callback，並夾帶了該倉儲。
+     *                                         true :       true 僅啟用監聽。
+     *                                         
      * @return  object
      */
     $.vmodel.get = function (name, p_2, p_3){
@@ -215,47 +240,44 @@
             return false;
         }
 
-        // 若參數2指定 bool
-        if ($.type(p_2) == "boolean") {
+        // 若參數2指定 bool 且為 true 的時候，會前往判斷，是否要觸發剛取得模組的 autoload()，若有就會優先觸發
+        if ($.type(p_2) == "boolean" && p_2 == true) {
 
-            // 當使用 true 的時候，會前往判斷，是否要觸發剛取得模組的 autoload()，若有就會優先觸發
-            if (p_2 == true) {
+            // 觸發 autoload()
+            $.vmodel.api.is_trigger_autoload(target_obj);
 
-                $.vmodel.api.is_trigger_autocall(target_obj);
+            // 若有啟用監聽或回調函數
+            var pp3 = $.type(p_3);
+            if (pp3 == "function" || (pp3 == "boolean" && p_3 == true)) {
 
-                // 若有啟用監聽或回調函數
-                var pp3 = $.type(p_3);
-                if (pp3 == "function" || (pp3 == "boolean" && p_3 == true)) {
+                // 若是回調
+                if (pp3 == "function") {
+                    // 必須先擴充到該模組底下，並勉多個倉儲會互相干擾
+                    target_obj.vmodel_get_callback = function (){
+                        p_3(target_obj);
+                    }
+                }
 
-                    // 若是回調
-                    if (pp3 == "function") {
-                        // 必須先擴充到該模組底下，並勉多個倉儲會互相干擾
-                        target_obj.vmodel_get_callback = function (){
-                            p_3(target_obj);
-                        }
+
+                //監聽
+                var iid = setInterval(function (){
+
+                    // 若全部狀態都完成
+                    if (local.chk_trigger_callback(target_obj) == true) {
+                        clearInterval(iid);
+
+                        // 視覺化添加屬性
+                        local.display_attr(name, target_obj);
+
+                        // 觸發回調
+                        if (pp3 == "boolean") return true;
+                        target_obj.vmodel_get_callback();
                     }
 
+                }, 20);
 
-                    //監聽
-                    var iid = setInterval(function (){
-
-                        // 若全部狀態都完成
-                        if (local.chk_trigger_callback(target_obj) == true) {
-                            clearInterval(iid);
-
-                            // 視覺化添加屬性
-                            local.display_attr(name, target_obj);
-
-                            // 觸發回調
-                            if (pp3 == "boolean") return true;
-                            target_obj.vmodel_get_callback();
-                        }
-
-                    }, 20);
-
-                    // console.log(storage[name]);
-                    return true
-                }
+                // console.log(storage[name]);
+                return true
             }
         }
 
@@ -343,7 +365,7 @@
 
             // 觸發自動讀取
             if (p_2 === true) {
-                $.vmodel.api.is_trigger_autocall(obj);
+                $.vmodel.api.is_trigger_autoload(obj);
             }
 
             return obj;

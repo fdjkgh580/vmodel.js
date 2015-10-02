@@ -1,6 +1,6 @@
 $(function (){
     // 4 $.vmodel.get() 第三個參數 callback 或 true
-    $(".content").vmodel("--content", false, function (){
+    $(".content").vmodel("--content_4_1", false, function (){
         var vs = this;
         this.autoload = ['say', 'hello'];
         this.say = function (){
@@ -14,15 +14,14 @@ $(function (){
         }
     });
 
-    var result = $.vmodel.get("content", true, function (storage){
+    var result = $.vmodel.get("content_4_1", true, function (storage){
         console.log("4-2 callback: OK");
 
         //刪除並清除視覺屬性
-        $.vmodel.delete();
         $(".content").removeAttr("data-vmodel-history");
 
         //建立測試第三個屬性為 true 僅僅啟用監聽
-        $(".content").vmodel("--content", false, function (){
+        $(".content").vmodel("--content_4_2", false, function (){
             var vs = this;
             this.autoload = ['say', 'hello'];
             this.say = function (){
@@ -35,11 +34,11 @@ $(function (){
                 vs.struct('hello', true);
             }
         });
-        $.vmodel.get("content", true, true);
+        $.vmodel.get("content_4_2", true, true);
 
         setTimeout(function (){
-            var his = $.vmodel.history('content');
-            if (his.vname == "content") {
+            var his = $.vmodel.history('content_4_2');
+            if (his.vname == "content_4_2") {
                 console.log("4-3: OK");
             }
         }, 500)
