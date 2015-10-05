@@ -106,7 +106,7 @@
          * @param   end_p2 
          * @return  [要監聽的倉儲物件, callback()]
          */
-        function param_style(end_p1, end_p2)
+        function param_match(end_p1, end_p2)
         {
             var returnary = [];
 
@@ -128,7 +128,7 @@
         }
 
         //命名方便使用
-        var pary     = param_style(end_p1, end_p2);
+        var pary     = param_match(end_p1, end_p2);
         var storage  = pary[0];
         var callback = pary[1];
 
@@ -257,6 +257,32 @@
             target_obj.root.attr("data-vmodel-history", encode); 
         }
 
+        // 對應參數輔助
+        function param_match(name, p_2, p_3)
+        {
+            var returnary = [];
+            var type_name = $.type(name);
+
+            // 返回所有倉儲
+            if (!name) {
+                var obj   = $.vmodel.api.obj_sort(storage);
+                returnary = [obj, null, null];
+            }
+            // 指定一個倉儲名稱
+            else if (type_name == "string") {
+                returnary = [name, p_2, p_3];
+            }
+
+            return returnary;
+        }
+
+        // 重新命名
+        var pary     = param_match(name, p_2, p_3);
+        var name     = pary[0];
+        var autoload = pary[1];
+        var listen   = pary[2];
+
+
         // 返回所有倉儲
         if (!name) {
             return $.vmodel.api.obj_sort(storage);
@@ -271,20 +297,20 @@
         }
 
         // 若參數2指定 bool 且為 true 的時候，會前往判斷，是否要觸發剛取得模組的 autoload()，若有就會優先觸發
-        if ($.type(p_2) == "boolean" && p_2 == true) {
+        if ($.type(autoload) == "boolean" && autoload == true) {
 
             // 觸發 autoload()
             $.vmodel.api.is_trigger_autoload(target_obj);
 
             // 若有啟用監聽或回調函數
-            var pp3 = $.type(p_3);
-            if (pp3 == "function" || (pp3 == "boolean" && p_3 == true)) {
+            var type_listen = $.type(listen);
+            if (type_listen == "function" || (type_listen == "boolean" && listen == true)) {
 
                 // 若是回調
-                if (pp3 == "function") {
+                if (type_listen == "function") {
                     // 必須先擴充到該模組底下，並勉多個倉儲會互相干擾
                     target_obj.vmodel_get_callback = function (){
-                        p_3(target_obj);
+                        listen(target_obj);
                     }
                 }
 
@@ -300,7 +326,7 @@
                         local.display_attr(name, target_obj);
 
                         // 觸發回調
-                        if (pp3 == "boolean") return true;
+                        if (type_listen == "boolean") return true;
                         target_obj.vmodel_get_callback();
                     }
 
