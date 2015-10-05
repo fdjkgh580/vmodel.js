@@ -1,7 +1,7 @@
 $(function (){
 
-
-    // 這支必須獨立測試，避免出錯
+    // 監聽所有倉儲的模組都完成
+    // ** 這支必須獨立測試，避免出錯 **
 
     $(".content").vmodel("--content_8_1", false, function (){
         var vs = this;
@@ -28,7 +28,6 @@ $(function (){
             }, 2000);
         }
     });
-
 
     $.vmodel.get("content_8_1", true, true);
     console.log('8: 監聽 content_8_1 但不回調');
