@@ -117,6 +117,7 @@
             }
             // 兩個參數，代表有指定要取得的倉儲
             else {
+
                 var obj = {};
                 $.each(end_p1, function(key, name) {
                     obj[name] = $.vmodel.get(name);
@@ -258,7 +259,7 @@
             target_obj.root.attr("data-vmodel-history", encode); 
         }
 
-        // 對應參數輔助
+        // 僅做對應參數的輔助
         function param_match(name, p_2, p_3)
         {
             var returnary = [];
@@ -266,8 +267,7 @@
 
             // 返回所有倉儲
             if (!name) {
-                var obj   = $.vmodel.api.obj_sort(storage);
-                returnary = [obj, null, null];
+                returnary = [name, null, null];
             }
             // 指定一個倉儲名稱
             else if (type_name == "string") {
