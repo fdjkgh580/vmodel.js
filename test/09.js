@@ -2,42 +2,72 @@ $(function (){
     // 監聽指定的倉儲的模組都完成
     // ** 這支必須獨立測試，避免出錯 **
 
-    $(".content").vmodel("--md_01", false, function (){
+    var sec = 650;
+
+    $(".content").vmodel("--md_09_1", false, function (){
         var vs = this;
         this.autoload = ['say'];
         this.say = function (){
             setTimeout(function (){
-                console.log('create md_01 success');
+                console.log('create md_09_1 success');
                 vs.struct('say');
-            }, 500);
+            }, sec * 0);
         }
     });
-    $(".content").vmodel("--md_02", false, function (){
+    $(".content").vmodel("--md_09_2", false, function (){
         var vs = this;
         this.autoload = ['say'];
         this.say = function (){
             setTimeout(function (){
-                console.log('create md_02 success');
+                console.log('create md_09_2 success');
                 vs.struct('say');
-            }, 1000);
+            }, sec * 1);
         }
     });
-    $(".content").vmodel("--md_03", false, function (){
+    $(".content").vmodel("--md_09_3", false, function (){
         var vs = this;
         this.autoload = ['say'];
         this.say = function (){
             setTimeout(function (){
-                console.log('create md_03 success');
+                console.log('create md_09_3 success');
                 vs.struct('say');
-            }, 3000);
+            }, sec * 2);
+        }
+    });
+    $(".content").vmodel("--md_09_4", false, function (){
+        var vs = this;
+        this.autoload = ['say'];
+        this.say = function (){
+            setTimeout(function (){
+                console.log('create md_09_4 success');
+                vs.struct('say');
+            }, sec * 3);
+        }
+    });
+    $(".content").vmodel("--md_09_5", false, function (){
+        var vs = this;
+        this.autoload = ['say'];
+        this.say = function (){
+            setTimeout(function (){
+                console.log('create md_09_5 success');
+                vs.struct('say');
+            }, sec * 4);
         }
     });
 
-    $.vmodel.get("md_01", true, true);
-    $.vmodel.get("md_02", true, true);
-    $.vmodel.get("md_03", true, true);
-    $.vmodel.end(['md_01', 'md_02'], function (){
-        
-    })
+    // 全部啟用
+    $.vmodel.get("md_09_1", true, true);
+    $.vmodel.get("md_09_2", true, true);
+    $.vmodel.get("md_09_3", true, true);
+    $.vmodel.get("md_09_4", true, true);
+    $.vmodel.get("md_09_5", true, true);
+
+
+    $.vmodel.end(['md_09_1', 'md_09_2'], function (){
+        console.log('監聽的 md_09_1 與 md_09_2 完成');
+    });
+    $.vmodel.end(function (){
+        console.log('監聽所有的完成');
+    });
     
 })
