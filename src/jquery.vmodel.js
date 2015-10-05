@@ -131,6 +131,7 @@
         var pary     = param_match(end_p1, end_p2);
         var storage  = pary[0];
         var callback = pary[1];
+        end_p1 = end_p2 = null;
 
         var id = setInterval(function (){
 
@@ -281,6 +282,7 @@
         var name     = pary[0];
         var autoload = pary[1];
         var listen   = pary[2];
+        p_2 = p_3 = null;
 
 
         // 返回所有倉儲
