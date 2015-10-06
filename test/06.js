@@ -8,7 +8,7 @@ $(function (){
         }
     })
     $result = $.vmodel.get("content_6_1", true, function (){
-        console.log('6-1: OK');
+        console.log('6-1');
     });
 
     $(".content").vmodel("--content_6_2", false, function (){
@@ -22,7 +22,8 @@ $(function (){
     });
     
     $result = $.vmodel.get("content_6_2", true, function (){
-        console.log('6-2: OK');
+        console.log('6-2');
+        console.log('6: OK');
     });
 
     // 不使用 vs.struct() 就不會觸發

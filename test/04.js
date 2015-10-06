@@ -15,7 +15,7 @@ $(function (){
     });
 
     var result = $.vmodel.get("content_4_1", true, function (storage){
-        console.log("4-2 callback: OK");
+        console.log("4-2 callback");
 
         //刪除並清除視覺屬性
         $(".content").removeAttr("data-vmodel-history");
@@ -39,7 +39,8 @@ $(function (){
         setTimeout(function (){
             var his = $.vmodel.history('content_4_2');
             if (his.vname == "content_4_2") {
-                console.log("4-3: OK");
+                console.log("4-3");
+                console.log("4: OK");
             }
         }, 500)
 
@@ -47,7 +48,7 @@ $(function (){
 
     });
     if (result === true) {
-        console.log('4-1: OK');
+        console.log('4-1');
     }
 
 

@@ -94,7 +94,7 @@
      * 注意，這需要每個模組都使用監聽完成視覺化，也就是 $.vmodel.get() 第三個參數
      * 
      * @param   array | function     end_p1       監聽指定要完成的倉儲名稱陣列 | 回調方法
-     * @param   function             end_p2       回調方法
+     * @param   function             end_p2       回調方法, 並夾帶已經完成的倉儲物件
      */
     $.vmodel.end = function (end_p1, end_p2){
 
@@ -156,7 +156,7 @@
 
 
             if (iscallback) {
-                callback();
+                callback(storage);
                 clearInterval(id);
             }
 

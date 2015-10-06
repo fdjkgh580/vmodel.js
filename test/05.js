@@ -14,9 +14,10 @@ $(function (){
     });
 
     var result = $.vmodel.get("content_5", true, function (storage){
-        console.log("5-2 callback: OK");
+        console.log("5-2 callback");
+        console.log("5: OK");
     });
     if (result === true) {
-        console.log('5-1: OK');
+        console.log('5-1');
     }
 })

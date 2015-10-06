@@ -9,7 +9,7 @@ $(function (){
         this.autoload = ['say'];
         this.say = function (){
             setTimeout(function (){
-                console.log('create md_09_1 success');
+                console.log('md_09_1 create.');
                 vs.struct('say');
             }, sec * 0);
         }
@@ -19,7 +19,7 @@ $(function (){
         this.autoload = ['say'];
         this.say = function (){
             setTimeout(function (){
-                console.log('create md_09_2 success');
+                console.log('md_09_2 create.');
                 vs.struct('say');
             }, sec * 1);
         }
@@ -29,7 +29,7 @@ $(function (){
         this.autoload = ['say'];
         this.say = function (){
             setTimeout(function (){
-                console.log('create md_09_3 success');
+                console.log('md_09_3 create.');
                 vs.struct('say');
             }, sec * 2);
         }
@@ -39,7 +39,7 @@ $(function (){
         this.autoload = ['say'];
         this.say = function (){
             setTimeout(function (){
-                console.log('create md_09_4 success');
+                console.log('md_09_4 create.');
                 vs.struct('say');
             }, sec * 3);
         }
@@ -49,25 +49,37 @@ $(function (){
         this.autoload = ['say'];
         this.say = function (){
             setTimeout(function (){
-                console.log('create md_09_5 success');
+                console.log('md_09_5 create.');
                 vs.struct('say');
             }, sec * 4);
         }
     });
 
     // 全部啟用
-    $.vmodel.get("md_09_1", true, true);
-    $.vmodel.get("md_09_2", true, true);
-    $.vmodel.get("md_09_3", true, true);
-    $.vmodel.get("md_09_4", true, true);
-    $.vmodel.get("md_09_5", true, true);
-
-
-    $.vmodel.end(['md_09_1', 'md_09_2'], function (){
-        console.log('監聽的 md_09_1 與 md_09_2 完成');
+    $.vmodel.get("md_09_1", true, function (data){
+        console.log(data.vname + " success.");
     });
-    $.vmodel.end(function (){
+    $.vmodel.get("md_09_2", true, function (data){
+        console.log(data.vname + " success.");
+    });
+    $.vmodel.get("md_09_3", true, function (data){
+        console.log(data.vname + " success.");
+    });
+    $.vmodel.get("md_09_4", true, function (data){
+        console.log(data.vname + " success.");
+    });
+    $.vmodel.get("md_09_5", true, function (data){
+        console.log(data.vname + " success.");
+    });
+
+
+    $.vmodel.end(['md_09_1', 'md_09_2'], function (storage){
+        console.log('監聽的 md_09_1 與 md_09_2 完成');
+        console.log(storage);
+    });
+    $.vmodel.end(function (storage){
         console.log('監聽所有的完成');
+        console.log(storage);
     });
     
 })

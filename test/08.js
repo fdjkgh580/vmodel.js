@@ -30,17 +30,18 @@ $(function (){
     });
 
     $.vmodel.get("content_8_1", true, true);
-    console.log('8: 監聽 content_8_1 但不回調');
+    console.log('8-1 監聽 content_8_1 但不回調');
 
     $.vmodel.get("content_8_2", true, function (){
-        console.log('8: 監聽 content_8_2: OK');
+        console.log('8-2 監聽 content_8_2');
     });
     $.vmodel.get("content_8_3", true, function (){
-        console.log('8: 監聽 content_8_3: OK');
+        console.log('8-3 監聽 content_8_3');
     });
 
     $.vmodel.end(function (){
-        console.log('所有模組都完成了');
+        console.log('8-4 所有模組都完成了');
+        console.log('8: OK');
     })
     
     
