@@ -169,7 +169,7 @@
 
     /**
      * 取得視覺化屬性紀錄
-     * @param   name         倉儲命名
+     * @param   name         倉儲名稱
      * @return               有找到會返回視覺化的屬性物件；反之為 false
      */
     $.vmodel.history = function (name) {
@@ -481,14 +481,14 @@
 
             /**
              * 提供外部指定倉儲的模組化狀態。
-             * @param   name   (選) autoload 指定的陣列倉儲名稱。可以是單一名稱會陣列。
-             *                      如 "say" 或 ['say', 'hello']
+             * @param   name   autoload 指定的陣列倉儲名稱。可以是單一名稱會陣列。
+             *                 如 "say" 或 ['say', 'hello']
              * @param   bool   (選) true:(預設)完成 | false : 未完成
              */
-            struct : function (name, bool) {
+            struct : function (name, status) {
 
-                if ($.type(bool) != "boolean" && !bool) {
-                    bool = true;
+                if ($.type(status) != "boolean" && !status) {
+                    status = true;
                 }
 
 
@@ -500,13 +500,13 @@
                     }
 
                     // 設定指定狀態
-                    obj.fun_struct[name] = bool;
+                    obj.fun_struct[name] = status;
                 }
 
                 // 若是陣列如 ['say', 'hello']
                 else if ($.type(name) == "array"){
                     $.each(name, function (key, val){
-                        obj.fun_struct[val] = bool;
+                        obj.fun_struct[val] = status;
                     })
                 }
                 else {

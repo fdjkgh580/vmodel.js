@@ -5,89 +5,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="../src/jquery.vmodel.js"></script>
-    <script>
-    $(function (){
-        $(window).vmodel("--scroll", true, function (){
-            var vs = this;
-            this.autoload = ['bind'];
-            this.bind = function (){
-                vs.root.scroll(function (){
-                    var mtop = vs.root.scrollTop();
-                    var header = $.vmodel.get("header")
-                    if (mtop > 150) {
-                        header.min();
-                    } 
-                    else {
-                        header.max();
-                    }
-                })
-            }
-        });
-
-
-        $("header").vmodel("--header", true, function (){
-            var vs = this;
-
-
-            this.autoload = []
-
-
-            this.min = function (){
-                vs.hide_bar();
-            }
-
-            this.max = function (){
-                vs.show_bar();
-            }
-
-            this.min_logo = function (){
-                vs.root.find(".logo").css({
-                    position: 'fixed',
-                    left: 0,
-                    right:0,
-                    top:0,
-                    fontSize: "20px",
-                    zIndex: 10
-                })
-            }
-            this.max_logo = function (){
-                vs.root.find(".logo").removeAttr('style');
-            }
-
-            this.lock_set = function (bool){
-                vs.root.find(".logobar").attr("data-lock", bool);
-            }
-
-            this.hide_bar = function (){
-                if (vs.root.find(".logobar").attr("data-lock") == "true") return false;
-                if (vs.root.hasClass('min')) return false;
-                vs.lock_set(true);
-
-                vs.root.find(".logobar").animate({
-                    'opacity': 0
-                }, 0, function (){
-                    vs.root.addClass("min");
-                    vs.min_logo();
-                    vs.lock_set(false);
-                })
-            }
-            this.show_bar = function (){
-                if (!vs.root.hasClass('min')) return false;
-                vs.max_logo();
-
-                var h = vs.default_height;
-                vs.root.find(".logobar").animate({
-                    'opacity': 1
-                }, function (){
-                    vs.root.removeClass("min");
-                })
-            }
-        });
-        
-        
-        
-    })
-    </script>
+    <script src="index.js"></script>
 </head>
 <body>
     <header>
@@ -104,7 +22,10 @@
 });</pre>  
     </header>
     
-    </div>
+    <ul class="dir">
+        
+    </ul>
+
     <div class="container">
             <h1>基本用法</h1>
             <ul>
@@ -133,9 +54,9 @@
             <h2>$(selector).vmodel([name], [isautoload], function)</h2>
             <ul>
                 <li>selector：根節點的選擇器。也就是你的模組最外層，可以是window、document、標籤、class、id......。 如果你的模組是一個工具類型，可以綁定為 window 。</li>
-                <li>name：(選) 自訂的模組名稱。若使用前綴字元 『--』 可以方便搜尋時定位，但實際的模組名稱仍然不包含 『--』。</li>
-                <li>isautoload：(選) 是否觸發自動讀取</li>
-                <li>function：執行的程序。如果以 『this.function』，那麼這個方法屬於公開，可以被 $.vmodel.get() 呼叫。 如果不使用 『this.』 那麼將會成為私有方法，必且不可以使用 『vs.』 </li>
+                <li>name: string 自訂的模組名稱。若使用前綴字元 『--』 可以方便搜尋時定位，但實際的模組名稱仍然不包含 『--』。</li>
+                <li>isautoload： bool 是否觸發自動讀取</li>
+                <li>function： function 執行的程序。如果以 『this.function』，那麼這個方法屬於公開，可以被 $.vmodel.get() 呼叫。 如果不使用 『this.』 那麼將會成為私有方法，而且不可以使用 『vs.』 </li>
             </ul>
             <pre>
 $(".content").vmodel(function (){
@@ -197,6 +118,11 @@ $(".content").vmodel("--my/output", true, function (){
             <p>
                 等同 this。範例中使用 var vs = this;
             </p>
+            <pre>
+$(".content").vmodel("--my", true, function (){
+    var vs = this;
+})
+            </pre>
 
             <h2>
                 vs.root
@@ -204,6 +130,15 @@ $(".content").vmodel("--my/output", true, function (){
             <p>
                 如果 $(".content").vmodel() 就等同 $(".content")
             </p>
+            <pre>
+$(".content").vmodel("--my", true, function (){
+    var vs = this;
+    this.autoload = ['say'];
+    this.say = function (){
+        console.log(vs.root); // $(".content")
+    }
+})
+            </pre>
 
             <h2>
                 vs.selector
@@ -211,12 +146,21 @@ $(".content").vmodel("--my/output", true, function (){
             <p>
                 如果 $(".content").vmodel() 就等同 .content
             </p>
+            <pre>
+$(".content").vmodel("--my", true, function (){
+    var vs = this;
+    this.autoload = ['say'];
+    this.say = function (){
+        console.log(vs.selector); // .content
+    }
+})
+            </pre>
 
             <h2>
                 autoload
             </h2>
             <ul>
-                <li>autoload：(選) array | function</li>
+                <li>autoload： array | function</li>
             </ul>
             <p>
                 自動批次讀取內部的方法。若要預先觸發程序，可以寫成 function。
@@ -244,29 +188,104 @@ $(".content").vmodel("--my", true, function (){
     }
 });
             </pre>
+
+            <h2>
+                struct(name, [status])
+            </h2>
+            <ul>
+                <li>name： string | array 指地內部的方法名稱。可以使用字串或陣列。</li>
+                <li>status： bool 預設 true，false 代表該方法未完成。</li>
+            </ul>
+            <p>
+                配合使用視覺化屬性的時候，需要透過該方法，告訴 vmodel 哪個方法的建構已經完成。通常使用在 function 的結尾。例如這裡我們先定義好模組：
+            </p>
+            <pre>
+$(".content").vmodel("--my", false, function (){
+    var vs = this;
+    this.autoload = ['say']
+    this.say = function (){
+        //...
+        vs.struct('say');
+    }
+});
+            </pre>
+            <p>
+                接著透過 $.vmodel.get() 啟用 autoload ，並設定第三個參數。
+            </p>
+            <pre>
+$.vmodel.get('my', true, function (){
+    console.log("compile");
+})
+            </pre>
             
+
+            <h2>
+                $.vmodel.history(name)
+            </h2>
+            <ul>
+                <li>name： string 倉儲名稱</li>
+            </ul>
+            <p>
+                取得視覺化的屬性物件。如果找不到，會返回 false。務必將取得的倉儲對象，設定 $.vmodel.get() 第三個參數。
+            </p>
+            <pre>
+$.vmodel.get('my', true, true);
+var obj = $.vmodel.history('my');
+            </pre>
 
 
             <h2>
-                $.vmodel.get([name], [bool])
+                $.vmodel.get([name], [autoload], [listen])
             </h2>
             <ul>
-                <li>name：(選)要讀取的模組名稱。若在定義時使用前綴字元『--』命名，在這裡記得不要寫；若為空，可返回整個倉儲。</li>
-                <li>bool：(選)是否觸發內部的 autoload。預設 false。</li>
+                <li>name： string 要讀取的模組名稱。若在定義時使用前綴字元『--』命名，在這裡記得不要寫；若為空，可返回整個倉儲。</li>
+                <li>autoload： bool 是否觸發內部的 autoload。預設 false。</li>
+                <li>listen： bool | function(storage) 監聽 autoload 中的每個方法，都被 vs.struct() 指定狀態為true 以後，所觸發的 callback。若指定為 true，仍然會啟用監聽完成後的視覺化屬性。</li>
             </ul>
             <p>
                 可在任何時候，啟用 vmodel 自動讀取(初始化)，或是呼叫 vmodel 模組內的某個方法。
             </p>
+            <pre>
+$.vmodel.get("my", true);
+$.vmodel.get("my", true, true);
+$.vmodel.get("my", true, function (storage){
+    //...
+});
+            </pre>
+
 
             <h2>
-                $.vmodel.delete(name)
+                $.vmodel.end([storage], [callback])
             </h2>
             <ul>
-                <li>name: 要刪除的模組名稱</li>
+                <li>storage： string | array 指定要完成的倉儲名稱。若不指定，則當所有倉儲完成後，觸發 callback </li>
+                <li>callback： function 等到倉儲完成後所觸發的回調函式。</li>
             </ul>
             <p>
-                
+                監控多組倉儲完成視覺化後，觸發函式。若要使用該方法，務必啟用 $.vmodel.get() 第三個參數為 true 或 function。 
             </p>
+            <pre>
+$.vmodel.end(function (){
+    //...
+})
+$.vmodel.end(['md_01', 'md_02'], function (){
+    //...
+})
+            </pre>
+
+            <h2>
+                $.vmodel.delete([name])
+            </h2>
+            <ul>
+                <li>name: string 要刪除的模組名稱。若不指定，會刪除所有倉儲。</li>
+            </ul>
+            <p>
+                刪除指定的倉儲。
+            </p>
+            <pre>
+$.vmodel.delete();
+$.vmodel.delete('my');
+            </pre>
             
     </div>
 
