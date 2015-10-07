@@ -1,13 +1,13 @@
 v1.5
 2015/09/27
-- 增加 $.vmodel.get() 第三個參數為回調函數 (callback) 或啟用監聽
+- 增加與修正 $.vmodel.get() 第三個參數為回調函數 (callback) 或啟用監聽
 - 增加 $.vmodel.history() 
 - 增加 $.vmodel.end() 
 - 增加擴充方法 vs.struct()
 - 增加視覺化屬性，綁定在實際跟元素的自訂屬性
 - 視覺化屬性，可以指定當根選擇器為 window 與 document 的時候
 - 擴增內部屬性 vname
-
+- 添加與修正多個 sublimetext 片段
 
 
 v1.4
