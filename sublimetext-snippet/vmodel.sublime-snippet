@@ -1,12 +1,12 @@
 <snippet>
     <content>
-<![CDATA[\$(${1:selector}).vmodel(${2:${3:model_name}, ${4:true}, function (){
+<![CDATA[\$(${1:selector}).vmodel(${2:"--${3:model_name}", ${4:true}, function (){
     var vs = this;
-    this.autoload = [];
+    this.autoload = [${6:${5:yourfun}}];
     this.${5:yourfun} = function ()\{
-        ${6}
+        ${7}
     \}
-}});
+\}});
 ${0}
 ]]>
     </content>

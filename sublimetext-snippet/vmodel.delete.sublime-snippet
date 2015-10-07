@@ -1,0 +1,10 @@
+<snippet>
+    <content>
+<![CDATA[\$.vmodel.delete(${1:name});
+$0
+]]>
+    </content>
+    <tabTrigger>vmodeldelete</tabTrigger>
+    <scope>source.js, text.html</scope>
+    <description>$.vmodel.delete()</description>
+</snippet>
