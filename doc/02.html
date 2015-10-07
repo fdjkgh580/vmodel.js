@@ -11,7 +11,7 @@
     <div class="container">
         
         <ol>
-            <li>vmodel() 第二個參數設定 false，那麼頁面載入完成後，並不會啟用 autoload 要觸發的方法。</li>
+            <li>vmodel() 第二個參數設定 false，那麼頁面載入完成後，並不會啟用 autoload 要觸發的方法。也就是我們只先定義而已。</li>
             <li>等到使用 $.vmodel.get(你的自訂倉儲名稱) ，並指定第二個參數為 true 的時候，才會啟用 autoload 。</li>
             <li>如果 autoload 不指定任何方法，保持 [] 或 function 不回傳陣列，將不會有任何作用。</li>
         </ol>

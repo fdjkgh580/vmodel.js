@@ -47,7 +47,7 @@ $(".user").vmodel("--user", true, function (){
 
     // 清空表單
     this.clean = function (){
-        $(".user").get(0).reset();
+        vs.root.get(0).reset();
     }
 
     this.say = function(){
@@ -101,6 +101,7 @@ $(".list").vmodel("--template", true, function (){
     }
 });
         </pre>
+        <h1>HTML</h1>
         <pre>
 &lt;form class="user"&gt;
     &lt;input type="text" class="say" placeholder="打一些你想說的話"&gt;
@@ -143,7 +144,7 @@ $(".list").vmodel("--template", true, function (){
 
                 // 清空表單
                 this.clean = function (){
-                    $(".user").get(0).reset();
+                    vs.root.get(0).reset();
                 }
 
                 this.say = function(){

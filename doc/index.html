@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Vmodel.js</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -13,7 +14,7 @@
             Vmodel.js
         </div>
         <div class="logobar">
-            <pre>$(".datalist").vmodel("--hello", true, function (){
+            <pre>$(".container").vmodel("--hello", true, function (){
     var vs = this;
     this.autoload = ['say'];
     this.say = function (){
@@ -54,31 +55,34 @@
             <h2>$(selector).vmodel([name], [isautoload], function)</h2>
             <ul>
                 <li>selector：根節點的選擇器。也就是你的模組最外層，可以是window、document、標籤、class、id......。 如果你的模組是一個工具類型，可以綁定為 window 。</li>
-                <li>name: string 自訂的模組名稱。若使用前綴字元 『--』 可以方便搜尋時定位，但實際的模組名稱仍然不包含 『--』。</li>
-                <li>isautoload： bool 是否觸發自動讀取</li>
-                <li>function： function 執行的程序。如果以 『this.function』，那麼這個方法屬於公開，可以被 $.vmodel.get() 呼叫。 如果不使用 『this.』 那麼將會成為私有方法，而且不可以使用 『vs.』 </li>
+                <li>name：{string} 自訂的模組名稱。若使用前綴字元 『--』 可以方便搜尋時定位，但實際的模組名稱仍然不包含 『--』。</li>
+                <li>isautoload： {bool} 是否觸發自動讀取</li>
+                <li>function： {function} 執行的程序。如果以 『this.function』，那麼這個方法屬於公開，可以被 $.vmodel.get() 呼叫。 如果不使用 『this.』 那麼將會成為私有方法，而且不可以使用 『vs.』 </li>
             </ul>
             <pre>
 $(".content").vmodel(function (){
     //...
 });
             </pre>
-            <p>或</p>
+            <p>或為倉儲命名</p>
             <pre>
 $(".content").vmodel("my", function (){
     //...
 });
             </pre>
-            <p>或</p>
+            <p>也可使用前綴字元</p>
             <pre>
 $(".content").vmodel("my", true, function (){
     //...
-}); 
+});          
+            </pre>
+            <p>或是否啟用觸發 autoload </p>
+            <pre>
 $(".content").vmodel("--my", false, function (){
-    //...
+    //僅定義
 }); 
 $(".content").vmodel("--my", true, function (){
-    //...
+    //會執行 autoload
 }); 
             </pre>
             
@@ -102,7 +106,7 @@ $(".content").vmodel("--my", true, function (){
 
 });    
             </pre>
-            <p>如果有多個模組，可以用『/』分類</p>
+            <p>如果有多個模組，可以用『/』分類，讓你能更好理解</p>
             <pre>
 $(".content").vmodel("--my/input", true, function (){
     //....
@@ -128,14 +132,14 @@ $(".content").vmodel("--my", true, function (){
                 vs.root
             </h2>
             <p>
-                如果 $(".content").vmodel() 就等同 $(".content")
+                讓你用簡短的寫法能自動取得根選擇器的物件。如果 $(".content").vmodel() 就等同 $(".content")
             </p>
             <pre>
 $(".content").vmodel("--my", true, function (){
     var vs = this;
     this.autoload = ['say'];
     this.say = function (){
-        console.log(vs.root); // $(".content")
+        console.log(vs.root); // 等於 $(".content")
     }
 })
             </pre>
@@ -144,14 +148,14 @@ $(".content").vmodel("--my", true, function (){
                 vs.selector
             </h2>
             <p>
-                如果 $(".content").vmodel() 就等同 .content
+                讓你用簡短的寫法能自動取得根選擇器。如果 $(".content").vmodel() 就等同 .content
             </p>
             <pre>
 $(".content").vmodel("--my", true, function (){
     var vs = this;
     this.autoload = ['say'];
     this.say = function (){
-        console.log(vs.selector); // .content
+        console.log(vs.selector); // 輸出 .content
     }
 })
             </pre>
@@ -160,11 +164,10 @@ $(".content").vmodel("--my", true, function (){
                 autoload
             </h2>
             <ul>
-                <li>autoload： array | function</li>
+                <li>autoload： {array | function}</li>
             </ul>
             <p>
-                自動批次讀取內部的方法。若要預先觸發程序，可以寫成 function。
-                若是 array 
+                自動批次讀取陣列中指定的方法
             </p>
             <pre>
 $(".content").vmodel("--my", true, function (){
@@ -193,37 +196,65 @@ $(".content").vmodel("--my", true, function (){
                 struct(name, [status])
             </h2>
             <ul>
-                <li>name： string | array 指地內部的方法名稱。可以使用字串或陣列。</li>
-                <li>status： bool 預設 true，false 代表該方法未完成。</li>
+                <li>name： {string | array} 指地內部的方法名稱。可以使用字串或陣列。</li>
+                <li>status： {bool} 預設 true，false 代表該方法未完成。</li>
             </ul>
             <p>
-                配合使用視覺化屬性的時候，需要透過該方法，告訴 vmodel 哪個方法的建構已經完成。通常使用在 function 的結尾。例如這裡我們先定義好模組：
+                告訴 vmodel 當前哪個方法的建構已經完成。配合 $.vmodel.get() 第三個參數指定使用視覺化屬性的時候，需要透過該方法來輔助。通常使用在 function 的結尾。例如這裡我們先定義好模組：
             </p>
             <pre>
 $(".content").vmodel("--my", false, function (){
     var vs = this;
     this.autoload = ['say']
     this.say = function (){
-        //...
-        vs.struct('say');
+        $.get("url/test", function (){
+            vs.struct('say'); // 代表 --my 中的 say() 已經完成
+        })
     }
 });
             </pre>
             <p>
-                接著透過 $.vmodel.get() 啟用 autoload ，並設定第三個參數。
+                接著透過 $.vmodel.get() 的第二個參數啟用 autoload ，並設定第三個參數。當 --say 依序讀取所有 autoload 指定的方法後，代表 --my 以完成了建構，這時就會觸發 $.vmodel.get() 第三個回調方法。
             </p>
             <pre>
 $.vmodel.get('my', true, function (){
     console.log("compile");
 })
             </pre>
-            
+
+            <h2>
+                $.vmodel.get([name], [autoload], [listen])
+            </h2>
+            <ul>
+                <li>name： {string} 要讀取的模組名稱。若在定義時使用前綴字元『--』命名，在這裡記得不要寫；若為空，可返回整個倉儲。</li>
+                <li>autoload： {bool} 是否觸發內部的 autoload。預設 false。</li>
+                <li>listen： {bool | function(storage)} 監聽 autoload 中的每個方法，都被 vs.struct() 指定狀態為true 以後，所觸發的 callback。若指定為 true，仍然會啟用監聽完成後的視覺化屬性。</li>
+            </ul>
+            <p>
+                可在任何時候，啟用 vmodel 自動讀取(初始化或是建構的概念)，或是呼叫 vmodel 模組內的某個方法。如果指定 listen ，那麼完成後會在根元素添加屬性 data-vmodel-history 作為紀錄。我們可以透過 $.vmodel.history() 取得。
+            </p>
+            <pre>
+$.vmodel.get("my", true);
+$.vmodel.get("my", true, true);
+$.vmodel.get("my", true, function (storage){
+    //...
+});
+            </pre>
+            <p>如果使用了 listen 參數，會在根元素看到 vmodel 建立的自訂屬性</p>
+            <pre>
+
+&lt;div data-vmodel-history="[{"vname":"content_8_1","status":true,"timestamp":"1444126007000.206"},{"vname":"content_8_2","status":true,"timestamp":"1444126007000.973"},{"vname":"content_8_3","status":true,"timestamp":"1444126008000.966"}]"&gt;
+            </pre>
+            <p>
+                自訂屬性包含了 vname (倉儲的名稱) 、status(倉儲的狀態)、timestamp(時間戳記)
+                如果多個模組，都綁定在同一個跟元素，那麼依序排列會是建構完成的先後順序。
+            </p>
 
             <h2>
                 $.vmodel.history(name)
             </h2>
             <ul>
-                <li>name： string 倉儲名稱</li>
+                <li>name： {string} 倉儲名稱</li>
             </ul>
             <p>
                 取得視覺化的屬性物件。如果找不到，會返回 false。務必將取得的倉儲對象，設定 $.vmodel.get() 第三個參數。
@@ -235,34 +266,14 @@ var obj = $.vmodel.history('my');
 
 
             <h2>
-                $.vmodel.get([name], [autoload], [listen])
-            </h2>
-            <ul>
-                <li>name： string 要讀取的模組名稱。若在定義時使用前綴字元『--』命名，在這裡記得不要寫；若為空，可返回整個倉儲。</li>
-                <li>autoload： bool 是否觸發內部的 autoload。預設 false。</li>
-                <li>listen： bool | function(storage) 監聽 autoload 中的每個方法，都被 vs.struct() 指定狀態為true 以後，所觸發的 callback。若指定為 true，仍然會啟用監聽完成後的視覺化屬性。</li>
-            </ul>
-            <p>
-                可在任何時候，啟用 vmodel 自動讀取(初始化)，或是呼叫 vmodel 模組內的某個方法。
-            </p>
-            <pre>
-$.vmodel.get("my", true);
-$.vmodel.get("my", true, true);
-$.vmodel.get("my", true, function (storage){
-    //...
-});
-            </pre>
-
-
-            <h2>
                 $.vmodel.end([storage], [callback])
             </h2>
             <ul>
-                <li>storage： string | array 指定要完成的倉儲名稱。若不指定，則當所有倉儲完成後，觸發 callback </li>
+                <li>storage： {string | array} 指定要完成的倉儲名稱。若不指定，則當所有倉儲完成後，觸發 callback </li>
                 <li>callback： function 等到倉儲完成後所觸發的回調函式。</li>
             </ul>
             <p>
-                監控多組倉儲完成視覺化後，觸發函式。若要使用該方法，務必啟用 $.vmodel.get() 第三個參數為 true 或 function。 
+                監控多組倉儲，直到完成視覺化後，即刻觸發函式。若要使用該方法，務必啟用 $.vmodel.get() 第三個參數為 true 或 function，以及配合 vs.struct()。
             </p>
             <pre>
 $.vmodel.end(function (){
@@ -273,11 +284,12 @@ $.vmodel.end(['md_01', 'md_02'], function (){
 })
             </pre>
 
+
             <h2>
                 $.vmodel.delete([name])
             </h2>
             <ul>
-                <li>name: string 要刪除的模組名稱。若不指定，會刪除所有倉儲。</li>
+                <li>name：{string} 要刪除的模組名稱。若不指定可全部刪除。</li>
             </ul>
             <p>
                 刪除指定的倉儲。

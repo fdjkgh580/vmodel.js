@@ -26,8 +26,8 @@ $(綁定根節點的選擇器).vmodel(自訂一個倉儲名稱, true, function (
 
     <ol>
         <li>我們將要做的事情寫在一個自訂的 function 叫做 say()。</li>
-        <li>接著我們希望 say() 在頁面載入之後，會被呼叫，所以添加 say 到 this.autoload 的陣列裡。等候 vmodel() 依序呼叫。</li>
-        <li>最後指定 vmodel() 的第二個參數為 true, 告訴 vmodel() ，讀取完這個模組以後，可以批次呼叫 autoload 指定的方法。 </li>
+        <li>接著我們希望 say() 在頁面載入之後可以被呼叫，所以添加 say 到 this.autoload 的陣列裡。等候 vmodel() 依序呼叫。</li>
+        <li>最後指定 vmodel() 的第二個參數為 true, 告訴 vmodel() 當讀取完這個模組以後，批次呼叫 autoload 指定的方法。 </li>
     </ol>
 
     <pre>
