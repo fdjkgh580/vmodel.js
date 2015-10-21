@@ -370,7 +370,7 @@
         }
 
         // 取得 autoload 的方法陣列
-        this.set_autoload_funame = function (){
+        this.set_autoload_funame = function (obj){
             var ary   = [];
             var atype = $.type(obj.autoload);
 
@@ -391,7 +391,7 @@
         }
 
         // 初始化使用者指定的 autoload 每個方法的建構狀態
-        this.define_autoload_struct = function (){
+        this.define_autoload_struct = function (obj){
 
             // 為每一個方法，都設定為 false，代表該方法還沒有建構完成
             $.each(local.autoload_func, function(index, fun_name) {
@@ -399,123 +399,139 @@
             });
         }
 
+        // 外部擴充方法
+        this.ext_expend = function (obj, name){
+            var vname = (name != null) ? name : null;
+            $.extend(obj, {
 
-        this.main = function (){
+                vname : vname,
+
+                // 根選擇器
+                selector : selector,        
+
+                // 根選擇器物件    
+                root : $(this),
+
+                // 在倉儲中建立一個 fun_struct 物件
+                // 用來存放每個 autoload 的方法名稱，
+                // 並預設建構狀態為 false, 等到使用者手動為 true，
+                // 才代表這個方法完成建構。
+                fun_struct : {},
+
+                /**
+                 * 提供外部指定倉儲的模組化狀態。
+                 * @param   name   autoload 指定的陣列倉儲名稱。可以是單一名稱會陣列。
+                 *                 如 "say" 或 ['say', 'hello']
+                 * @param   bool   (選) true:(預設)完成 | false : 未完成
+                 */
+                struct : function (name, status) {
+
+                    if ($.type(status) != "boolean" && !status) {
+                        status = true;
+                    }
+
+
+                    // 若使用字串
+                    if ($.type(name) == "string") {
+                        if ($.type(obj.fun_struct[name]) != "boolean") {
+                            console.log('找不到名稱為 ' + name + '的建構狀態');
+                            return false;
+                        }
+
+                        // 設定指定狀態
+                        obj.fun_struct[name] = status;
+                    }
+
+                    // 若是陣列如 ['say', 'hello']
+                    else if ($.type(name) == "array"){
+                        $.each(name, function (key, val){
+                            obj.fun_struct[val] = status;
+                        })
+                    }
+                    else {
+                        console.log('建構名稱須要指定');
+                        return false;
+                    }
+
+                    return true;
+                }
+            });
+            return obj;
+        }
+
+
+        this.main = function (obj, isautoload){
 
             // 紀錄 autoload 的方法陣列
-            local.set_autoload_funame();
+            local.set_autoload_funame(obj);
 
             //先定義建構狀態
-            local.define_autoload_struct();
+            local.define_autoload_struct(obj);
 
             // 觸發自動讀取
-            if (p_2 === true) {
+            if (isautoload === true) {
                 $.vmodel.api.is_trigger_autoload(obj);
             }
 
             return obj;
         }
 
-        
+        /**
+         * 組合成一個陣列回傳參數
+         * @return  [倉儲名稱, 是否啟用 autoload, 實體化物件]
+         */
+        function param_match(p_1, p_2, p_3){
+            var name       = null;
+            var isautoload = null;
+            var realobj    = null;
 
-        // 若第一個參數為倉儲命名
-        var vp_1 = $.type(p_1);
-        if (vp_1 == "string") {
+            // 若第一個參數為倉儲命名
+            if ($.type(p_1) == "string") {
 
-            // 去除定位符號
-            p_1 = local.remove_sign(p_1);
+                // 去除定位符號
+                name = local.remove_sign(p_1);
 
-            // 若第二個參數為布林值
-            if ($.type(p_2) == "boolean") {
+                // 若第二個參數為布林值
+                if ($.type(p_2) == "boolean") {
+                    isautoload = p_2;
+                    realobj    = new p_3();
+                }
 
-                var obj      = new p_3();
-            
+                // 若不是布林值，代表應該就是匿名方法, 我們將他實體化
+                else {
+                    realobj    = new p_2();
+                }
+
             }
-
-            // 若不是布林值，代表就是應該是要匿名方法, 我們將他實體化
+            // 這是使用者定義的 function, 我們將他實體化
             else {
-            
-                var obj      = new p_2();
-            
+                realobj      = new p_1();
             }
 
-        }
-        else {
-
-            // 這是使用者定義的function, 我們將他實體化
-            var obj      = new p_1();
-
+            return [name, isautoload, realobj];
         }
 
+        // 參數對應
+        var pary       = param_match(p_1, p_2, p_3);
+        var name       = pary[0]; 
+        var isautoload = pary[1]; 
+        var realobj    = pary[2]; 
+        p_1 = p_2 = p_3 = null;
 
         // 擴充，外部不可使用這些關鍵字
-        var vname = (vp_1 == "string") ? p_1 : null;
-        $.extend(obj, {
+        var realobj    = local.ext_expend(realobj, name);
 
-            vname : vname,
-
-            // 根選擇器
-            selector : selector,        
-
-            // 根選擇器物件    
-            root : $(this),
-
-            // 在倉儲中建立一個 fun_struct 物件
-            // 用來存放每個 autoload 的方法名稱，
-            // 並預設建構狀態為 false, 等到使用者手動為 true，
-            // 才代表這個方法完成建構。
-            fun_struct : {},
-
-            /**
-             * 提供外部指定倉儲的模組化狀態。
-             * @param   name   autoload 指定的陣列倉儲名稱。可以是單一名稱會陣列。
-             *                 如 "say" 或 ['say', 'hello']
-             * @param   bool   (選) true:(預設)完成 | false : 未完成
-             */
-            struct : function (name, status) {
-
-                if ($.type(status) != "boolean" && !status) {
-                    status = true;
-                }
-
-
-                // 若使用字串
-                if ($.type(name) == "string") {
-                    if ($.type(obj.fun_struct[name]) != "boolean") {
-                        console.log('找不到名稱為 ' + name + '的建構狀態');
-                        return false;
-                    }
-
-                    // 設定指定狀態
-                    obj.fun_struct[name] = status;
-                }
-
-                // 若是陣列如 ['say', 'hello']
-                else if ($.type(name) == "array"){
-                    $.each(name, function (key, val){
-                        obj.fun_struct[val] = status;
-                    })
-                }
-                else {
-                    console.log('建構名稱須要指定');
-                    return false;
-                }
-
-                return true;
-            }
-        });
-
-        var result = this.main();
+        var result = local.main(realobj, isautoload);
 
         // 放入倉儲
-        if ($.type(p_1) == "string") {
+        if (name != null) {
 
             // 檢查是否已存在
-            if (!storage[p_1]) {
-                storage[p_1] = result;
+            if (!storage[name]) {
+                storage[name] = result;
             }
             else {
-                console.log("倉儲名稱『" + p_1 + "』重複。");
+                console.log("倉儲名稱『" + name + "』重複。");
                 return false;
             }
         }
