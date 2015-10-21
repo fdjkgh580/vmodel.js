@@ -167,29 +167,86 @@ $(".content").vmodel("--my", true, function (){
                 <li>autoload： {array | function}</li>
             </ul>
             <p>
-                自動批次讀取陣列中指定的方法
+                自動批次讀取陣列中指定的方法。只有在 vmodel 第二個參數為 true 才會被呼叫。
             </p>
             <pre>
 $(".content").vmodel("--my", true, function (){
     var vs = this;
+
     this.autoload = ['say'];
+
     this.say = function (){
         //...
     }
 });
             </pre>
-            <p>若是 function, 可選擇是否在最後返回陣列</p>
+            <p>若是 function，那麼可以當作是 before 的概念。在 function 的最後可選擇，是否返回要讀取的方法陣列。</p>
             <pre>
 $(".content").vmodel("--my", true, function (){
     var vs = this;
+
+    // 無論 vmodel 的第二個參數是 true 或 false 都會執行
     this.autoload = function (){
-        //...
-        return ['say'];
+        return ['say']; // 選擇的，若回傳要讀取的方法，只有在 vmodel 第二個參數為 true 才會被呼叫
     };
+
     this.say = function (){
         //...
     }
 });
+            </pre>
+
+            <p>
+                要注意，如果使用 function 型態，那麼當 vmodel 第二個參數指定為 false 的時候，autoload 內部的程序依然會被執行；但是返回 array 所指定的方法不會被執行。
+            </p>
+            <pre>
+$(".content").vmodel("--my", false, function (){
+    var vs = this;
+
+    // 仍然會觸發
+    this.autoload = function (){
+        vs.before(); 
+        return ['say'];
+    };
+
+    // 因為指定了 false, 所以不會被執行
+    this.say = function (){
+    }
+
+    // 會執行
+    this.before = function (){
+    }
+});
+            </pre>
+
+            <p>
+                如果要傳遞參數到方法，建議這麼寫。利用一隻獨立的 function 來製作。
+            </p>
+            <pre>
+$(".content").vmodel("--my", true, function (){
+    var vs = this;
+    this.autoload = ['morning'];
+    this.morning = function (){
+        vs.say("Good Morning.");
+    }
+    this.say = function (string){
+        console.log(string)
+    }
+});  
+            </pre>
+            <p>
+                而不是這樣。因為當 vmodel 第二個參數改為 false 的時候，這種寫法，say() 仍然會被觸發。
+            </p>
+            <pre>
+$(".content").vmodel("--my", true, function (){
+    var vs = this;
+    this.autoload = function (){
+        vs.say("Good Morning.");
+    }
+    this.say = function (string){
+        console.log(string)
+    }
+});  
             </pre>
 
             <h2>

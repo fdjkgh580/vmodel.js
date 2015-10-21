@@ -54,35 +54,11 @@
         },
 
         /**
-         * 若使用者有設定 autoload() 就會自動呼叫
-         * @param object 也就是外部的實體化後的 $(selector).vmodel("匿名方法")
+         * 若使用者有設定 autoload() 就會自動呼叫陣列中指定的方法
+         * @param obj 也就是外部的實體化後的 $(selector).vmodel("匿名方法")
          */
         this.is_trigger_autoload = function (obj){
-            if (obj.autoload) {
-
-                var type = $.type(obj.autoload);
-
-                if (type == "function") {
-                    var result = obj.autoload();
-
-                    // 如果 function 沒有回傳陣列，就不繼續
-                    // 這情形會發生在已經由 autoload() 寫好要觸發的程序，所以不需要回傳陣列
-                    if ($.type(result) == "array") {
-                        ary = result;
-                    }
-                    else {
-                        return false;
-                    }
-                }
-                else if (type == "array") {
-                    var ary = obj.autoload;
-                }
-                else {
-                    local.msg_error("autoload", "格式錯誤，型態只能是 function 或 array。")
-                }
-
-                $.vmodel.api.each_autoload(ary, obj);
-            }
+            $.vmodel.api.each_autoload(local.autoload_func, obj);
         }
 
     }
@@ -374,6 +350,9 @@
         // 選擇器
         var selector = local.selector;
 
+        // 紀錄使用者要 autoload 的方法
+        var autoload_func = [];
+
         // 若前兩個字元是定位符號，就自動去除
         this.remove_sign = function (str){
             return (str.substring(0, 2) == "--") ? str.substring(2) : str;
@@ -390,9 +369,8 @@
 
         }
 
-        // 初始化使用者指定的 autoload 每個方法的建構狀態
-        this.def_fun_struct = function (){
-
+        // 取得 autoload 的方法陣列
+        this.set_autoload_funame = function (){
             var ary   = [];
             var atype = $.type(obj.autoload);
 
@@ -409,8 +387,14 @@
             
             }
 
+            local.autoload_func = ary;
+        }
+
+        // 初始化使用者指定的 autoload 每個方法的建構狀態
+        this.define_autoload_struct = function (){
+
             // 為每一個方法，都設定為 false，代表該方法還沒有建構完成
-            $.each(ary, function(index, fun_name) {
+            $.each(local.autoload_func, function(index, fun_name) {
                 obj.fun_struct[fun_name] = false;
             });
         }
@@ -418,8 +402,11 @@
 
         this.main = function (){
 
-            //先初始化建構狀態
-            local.def_fun_struct();
+            // 紀錄 autoload 的方法陣列
+            local.set_autoload_funame();
+
+            //先定義建構狀態
+            local.define_autoload_struct();
 
             // 觸發自動讀取
             if (p_2 === true) {
