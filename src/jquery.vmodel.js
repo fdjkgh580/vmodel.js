@@ -4,9 +4,6 @@
     //整體使用
     $.vmodel = {};
 
-    //內部全域的物件。也就是控制外部的  $(selector).vmodel(的匿名含式/物件)
-    var local = null;
-
     // 實體化的存放倉儲，提供內部呼叫。
     var storage = {}; 
 
