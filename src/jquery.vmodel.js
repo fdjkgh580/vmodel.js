@@ -74,6 +74,8 @@
      */
     $.vmodel.end = function (end_p1, end_p2){
 
+        var local = this;
+
         var issuccess = true;
 
         /**
@@ -82,8 +84,7 @@
          * @param   end_p2 
          * @return  [要監聽的倉儲物件, callback()]
          */
-        function param_match(end_p1, end_p2)
-        {
+        this.param_match = function(end_p1, end_p2) {
             var returnary = [];
 
             // 只有一個參數，就取得所有倉儲
@@ -105,7 +106,7 @@
         }
 
         //命名方便使用
-        var pary     = param_match(end_p1, end_p2);
+        var pary     = local.param_match(end_p1, end_p2);
         var storage  = pary[0];
         var callback = pary[1];
         end_p1 = end_p2 = null;
@@ -236,8 +237,7 @@
         }
 
         // 僅做對應參數的輔助
-        function param_match(name, p_2, p_3)
-        {
+        this.param_match = function (name, p_2, p_3) {
             var returnary = [];
             var type_name = $.type(name);
 
@@ -254,7 +254,7 @@
         }
 
         // 重新命名
-        var pary     = param_match(name, p_2, p_3);
+        var pary     = local.param_match(name, p_2, p_3);
         var name     = pary[0];
         var autoload = pary[1];
         var listen   = pary[2];
@@ -364,9 +364,7 @@
          * @param   msg         錯誤訊息    
          */
         this.msg_error = function (method_name, msg){
-
             console.log("發生錯誤。『" + selector + "』呼叫的 function 『" + method_name + "』：" + msg);
-
         }
 
         // 取得 autoload 的方法陣列
@@ -392,7 +390,6 @@
 
         // 初始化使用者指定的 autoload 每個方法的建構狀態
         this.define_autoload_struct = function (obj){
-
             // 為每一個方法，都設定為 false，代表該方法還沒有建構完成
             $.each(local.autoload_func, function(index, fun_name) {
                 obj.fun_struct[fun_name] = false;
@@ -410,7 +407,7 @@
                 selector : selector,        
 
                 // 根選擇器物件    
-                root : $(this),
+                root : $(local),
 
                 // 在倉儲中建立一個 fun_struct 物件
                 // 用來存放每個 autoload 的方法名稱，
@@ -459,28 +456,11 @@
             return obj;
         }
 
-
-        this.main = function (obj, isautoload){
-
-            // 紀錄 autoload 的方法陣列
-            local.set_autoload_funame(obj);
-
-            //先定義建構狀態
-            local.define_autoload_struct(obj);
-
-            // 觸發自動讀取
-            if (isautoload === true) {
-                $.vmodel.api.is_trigger_autoload(obj);
-            }
-
-            return obj;
-        }
-
         /**
          * 組合成一個陣列回傳參數
          * @return  [倉儲名稱, 是否啟用 autoload, 實體化物件]
          */
-        function param_match(p_1, p_2, p_3){
+        this.param_match = function (p_1, p_2, p_3){
             var name       = null;
             var isautoload = null;
             var realobj    = null;
@@ -511,33 +491,52 @@
             return [name, isautoload, realobj];
         }
 
-        // 參數對應
-        var pary       = param_match(p_1, p_2, p_3);
-        var name       = pary[0]; 
-        var isautoload = pary[1]; 
-        var realobj    = pary[2]; 
-        p_1 = p_2 = p_3 = null;
-
-        // 擴充，外部不可使用這些關鍵字
-        var realobj    = local.ext_expend(realobj, name);
-
-        var result = local.main(realobj, isautoload);
-
         // 放入倉儲
-        if (name != null) {
+        this.put_storage = function (name, realobj){
+            if (name != null) {
 
-            // 檢查是否已存在
-            if (!storage[name]) {
-                storage[name] = result;
-            }
-            else {
-                console.log("倉儲名稱『" + name + "』重複。");
-                return false;
+                // 檢查是否已存在
+                if (!storage[name]) {
+                    storage[name] = realobj;
+                }
+                else {
+                    console.log("倉儲名稱『" + name + "』重複。");
+                    return false;
+                }
             }
         }
 
+        this.main = function (p_1, p_2, p_3){
+
+            // 參數對應
+            var pary       = local.param_match(p_1, p_2, p_3);
+            var name       = pary[0]; 
+            var isautoload = pary[1]; 
+            var realobj    = pary[2]; 
+            p_1 = p_2 = p_3 = null;
+
+            // 擴充，外部不可使用這些關鍵字
+            var realobj    = local.ext_expend(realobj, name);
+            
+            // 紀錄 autoload 的方法陣列
+            local.set_autoload_funame(realobj);
+
+            //先定義建構狀態
+            local.define_autoload_struct(realobj);
+
+            // 觸發自動讀取
+            if (isautoload === true) {
+                $.vmodel.api.is_trigger_autoload(realobj);
+            }
+            
+            // 放入倉儲
+            local.put_storage(name, realobj);
+
+            return this;
+        }
+
         // 返回實體化的，可供外部調用
-        return this;
+        return local.main(p_1, p_2, p_3);
     }
 
 
