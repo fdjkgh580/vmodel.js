@@ -187,8 +187,9 @@ $(".content").vmodel("--my", true, function (){
 
     // 無論 vmodel 的第二個參數是 true 或 false 都會執行
     this.autoload = function (){
-        return ['say']; // 選擇的，若回傳要讀取的方法，只有在 vmodel 第二個參數為 true 才會被呼叫
-    };
+        var custom_name = 'say';
+        return [custom_name]; // 選擇的，若回傳要讀取的方法，只有在 vmodel 第二個參數為 true 才會被呼叫
+    }
 
     this.say = function (){
         //...
@@ -197,7 +198,7 @@ $(".content").vmodel("--my", true, function (){
             </pre>
 
             <p>
-                要注意，如果使用 function 型態，那麼當 vmodel 第二個參數指定為 false 的時候，autoload 內部的程序依然會被執行；但是返回 array 所指定的方法不會被執行。
+                要注意，當 vmodel 第二個參數指定為 false 的時候，雖然 autoload 內部的程序依然會被執行，但是返回 array 所指定的方法不會被執行。
             </p>
             <pre>
 $(".content").vmodel("--my", false, function (){

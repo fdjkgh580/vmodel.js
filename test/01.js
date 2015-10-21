@@ -1,53 +1,40 @@
 $(function (){
     // 1 基本
-    // $(".content").vmodel("--content_1_1", true, function (){
-    //     var vs = this;
-    //     this.autoload = ['say'];
-    //     this.say = function (){
-    //         vs.root.html("1");
-    //     }
-    // });
-
-    // $(".content").vmodel("--content_1_2", false, function (){
-    //     var vs = this;
-    //     this.autoload = ['say'];
-    //     this.say = function (){
-    //         vs.root.html("2");
-    //     }
-    // });
-
-    // $(".content").vmodel("--content_1_3", false, function (){
-    //     var vs = this;
-    //     this.autoload = function (){
-    //         vs.say();
-    //         return ['say2'];
-    //     };
-    //     this.say = function (){
-    //         vs.root.html("3_1");
-    //     }
-    //     this.say2 = function (){
-    //         vs.root.html("3_2");
-    //     }
-    // });
-
-    // if ($(".content").html() == "1") {
-    //     console.log('1: OK');
-    // }
-    $(".content").vmodel("--my", false, function (){
+    $(".content").vmodel("--content_1_1", true, function (){
         var vs = this;
-
-        this.autoload = function (){
-            console.log('before');
-            return ['say']
+        this.autoload = ['say'];
+        this.say = function (){
+            vs.root.html("1");
         }
+    });
 
-        this.say = function (string){
-            if (!string) string = '';
-            console.log("Hi, " + string)
+    $(".content").vmodel("--content_1_2", false, function (){
+        var vs = this;
+        this.autoload = ['say'];
+        this.say = function (){
+            vs.root.html("2");
         }
-    });  
+    });
 
-    $.vmodel.get("my", true);
+    if ($(".content").html() == "1") {
+        console.log('1_1');
+    }
     
+    
+    $(".content").vmodel("--content_1_3", true, function (){
+        var vs = this;
+        this.autoload = function (){
+            var custom_name = 'say';
+            return [custom_name]
+        }
+        this.say = function (){
+            vs.root.html("3");
+        }
+    });
+
+    if ($(".content").html() == "3") {
+        console.log('1_2');
+        console.log('1: OK');
+    }
     
 })
