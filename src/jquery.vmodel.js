@@ -561,7 +561,6 @@
             // 再觸發自動讀取
             if (isautoload === true) {
                 var result = $.vmodel.api.is_trigger_autoload(realobj, fnameary);
-                var result = false;
                 if (result === false) local.msg_error("is_trigger_autoload", "發生錯誤");
             }
 
