@@ -39,27 +39,78 @@
          */
         this.each_autoload = function (autoload_method_ary, obj){
 
+            if (!autoload_method_ary) return false;
 
             $.each(autoload_method_ary, function(key, name) {
 
                 if ($.type(obj[name]) != "function") {
                     local.msg_error(name, "不存在。");
+                    return false;
                 }
 
                 // 觸發方法
                 obj[name]();
             });
 
+            return true;
         },
 
         /**
          * 若使用者有設定 autoload() 就會自動呼叫陣列中指定的方法
-         * @param obj 也就是外部的實體化後的 $(selector).vmodel("匿名方法")
+         * @param obj      也就是外部的實體化後的 $(selector).vmodel("匿名方法")
+         * @param fnameary 須要自動讀取的方法陣列
          */
-        this.is_trigger_autoload = function (obj){
-            $.vmodel.api.each_autoload(local.autoload_func, obj);
+        this.is_trigger_autoload = function (obj, fnameary){
+
+            try {
+                if (!fnameary) {
+                    throw "須要指定方法名稱陣列";
+                }
+                if ($.type(fnameary) != "array") {
+                    throw 'is_trigger_autoload() 代入的方法名稱必須要是陣列';
+                }
+                var result = $.vmodel.api.each_autoload(fnameary, obj);
+                return true;
+            }
+            catch(e) {
+                console.log(e);
+                return false;
+            }
         }
 
+        // 從物件中取得 autoload 的方法陣列
+        this.get_autoload_funame = function (obj){
+            var ary   = [];
+            var atype = $.type(obj.autoload);
+
+            try{
+                // 取得 autoload 的陣列
+                if (atype == "array") {
+                    ary = obj.autoload;
+                } 
+                else if (atype == "function") {
+                
+                    // 若有回傳陣列才替換
+                    res = obj.autoload();
+                    if ($.type(res) == "array") {
+                        ary = res;
+                    }
+                    else {
+                        throw obj.vname + " 的 get_autoload_funame() 最終需要得到的型態應該是陣列。";
+                    }
+                }
+
+                else {
+                    throw obj.vname + " 的 autoload 須要是陣列或 function。";
+                }
+
+                return ary;
+            }
+            catch(e) {
+                console.log(e);
+                return false;
+            }
+        }
     }
 
     // 呼叫版本名稱
@@ -278,7 +329,9 @@
         if ($.type(autoload) == "boolean" && autoload == true) {
 
             // 觸發 autoload()
-            $.vmodel.api.is_trigger_autoload(target_obj);
+            var fnameary = $.vmodel.api.get_autoload_funame(target_obj);
+            var result   = $.vmodel.api.is_trigger_autoload(target_obj, fnameary);
+            // console.log(result); // for debugs
 
             // 若有啟用監聽或回調函數
             var type_listen = $.type(listen);
@@ -350,7 +403,7 @@
         var selector = local.selector;
 
         // 紀錄使用者要 autoload 的方法
-        var autoload_func = [];
+        // var autoload_func = [];
 
         // 若前兩個字元是定位符號，就自動去除
         this.remove_sign = function (str){
@@ -363,34 +416,15 @@
          * @param   msg         錯誤訊息    
          */
         this.msg_error = function (method_name, msg){
-            console.log("發生錯誤。『" + selector + "』呼叫的 function 『" + method_name + "』：" + msg);
+            console.log("錯誤：『" + selector + "』呼叫的 function 『" + method_name + "』：" + msg);
         }
 
-        // 取得 autoload 的方法陣列
-        this.set_autoload_funame = function (obj){
-            var ary   = [];
-            var atype = $.type(obj.autoload);
-
-            // 取得 autoload 的陣列
-            if (atype == "array") {
-
-                ary = obj.autoload;
-            
-            } else if (atype == "function") {
-            
-                // 若有回傳陣列才替換
-                res = obj.autoload();
-                if ($.type(res) == "array") ary = res;
-            
-            }
-
-            local.autoload_func = ary;
-        }
+        
 
         // 初始化使用者指定的 autoload 每個方法的建構狀態
-        this.define_autoload_struct = function (obj){
+        this.define_autoload_struct = function (obj, autoload_func){
             // 為每一個方法，都設定為 false，代表該方法還沒有建構完成
-            $.each(local.autoload_func, function(index, fun_name) {
+            $.each(autoload_func, function(index, fun_name) {
                 obj.fun_struct[fun_name] = false;
             });
         }
@@ -518,18 +552,20 @@
             // 擴充，外部不可使用這些關鍵字
             var realobj    = local.ext_expend(realobj, name);
             
-            // 紀錄 autoload 的方法陣列
-            local.set_autoload_funame(realobj);
+            // 取得 autoload 的方法陣列
+            var fnameary = $.vmodel.api.get_autoload_funame(realobj);
 
             //先定義建構狀態
-            local.define_autoload_struct(realobj);
+            local.define_autoload_struct(realobj, fnameary);
 
-            // 觸發自動讀取
+            // 再觸發自動讀取
             if (isautoload === true) {
-                $.vmodel.api.is_trigger_autoload(realobj);
+                var result = $.vmodel.api.is_trigger_autoload(realobj, fnameary);
+                var result = false;
+                if (result === false) local.msg_error("is_trigger_autoload", "發生錯誤");
             }
 
-            // 放入倉儲
+            // 最後沒問題了，放入倉儲
             local.put_storage(name, realobj);
             
             return this;
