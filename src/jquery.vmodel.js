@@ -1,11 +1,13 @@
-// v1.5.1
 (function ($) {
+
+    var version = "1.5.2";
+
+    // 實體化的存放倉儲，提供內部呼叫。
+    var storage = {}; 
 
     //整體使用
     $.vmodel = {};
 
-    // 實體化的存放倉儲，提供內部呼叫。
-    var storage = {}; 
 
     
     // 內部全域的輔助方法
@@ -32,7 +34,7 @@
 
         /**
          * 批次呼叫可自動掛載的 function
-         * @param   autoload_method_ary     需要觸發的 function 名稱
+         * @param   autoload_method_ary     需要觸發的 function 名稱陣列
          * @param   object                  也就是外部的實體化後的 $(selector).vmodel("匿名方法")
          */
         this.each_autoload = function (autoload_method_ary, obj){
@@ -58,6 +60,11 @@
             $.vmodel.api.each_autoload(local.autoload_func, obj);
         }
 
+    }
+
+    // 呼叫版本名稱
+    $.vmodel.version = function (){
+        return version;
     }
 
     
@@ -124,8 +131,6 @@
                 }
 
                 iscallback = true;
-                // console.log(history);
-
             });
 
 
@@ -138,7 +143,6 @@
         }, 0);
         
     }
-
 
 
     /**
@@ -165,7 +169,6 @@
 
         return returnval;
     }
-
 
 
     /**
@@ -255,7 +258,7 @@
         var name     = pary[0];
         var autoload = pary[1];
         var listen   = pary[2];
-        p_2 = p_3 = null;
+        pary = p_2 = p_3 = null;
 
 
         // 返回所有倉儲
@@ -307,7 +310,6 @@
 
                 }, 20);
 
-                // console.log(storage[name]);
                 return true
             }
         }
@@ -490,6 +492,7 @@
 
         // 放入倉儲
         this.put_storage = function (name, realobj){
+
             if (name != null) {
 
                 // 檢查是否已存在
@@ -525,10 +528,10 @@
             if (isautoload === true) {
                 $.vmodel.api.is_trigger_autoload(realobj);
             }
-            
+
             // 放入倉儲
             local.put_storage(name, realobj);
-
+            
             return this;
         }
 
