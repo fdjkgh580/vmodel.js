@@ -1,12 +1,14 @@
 {
   "name": "vmodel",
+  "version": "1.5.2",
   "homepage": "https://github.com/fdjkgh580/vmodel.js",
   "authors": [
     "jsn"
   ],
-  "description": "",
   "main": "src/jquery.vmodel.min.js",
-  "moduleType": [],
+  "devDependencies": {
+    "jquery": "1.11.3"
+  },
   "keywords": [
     "jquery",
     "vmodel",
