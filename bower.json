@@ -5,6 +5,9 @@
     "jsn"
   ],
   "main": "src/jquery.vmodel.min.js",
+  "dependencies": {
+    "jquery": "1.11.3"
+  },
   "devDependencies": {
     "jquery": "1.11.3"
   },
