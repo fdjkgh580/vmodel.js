@@ -541,6 +541,7 @@
         }
 
         this.main = function (p_1, p_2, p_3){
+            
 
             // 參數對應
             var pary       = local.param_match(p_1, p_2, p_3);
@@ -555,17 +556,19 @@
             // 取得 autoload 的方法陣列
             var fnameary = $.vmodel.api.get_autoload_funame(realobj);
 
-            //先定義建構狀態
+            // 先定義建構狀態
             local.define_autoload_struct(realobj, fnameary);
 
-            // 再觸發自動讀取
+            // 放入倉儲
+            local.put_storage(name, realobj);
+
+            // 最後才觸發 autoload 。
+            // 這是因為當前的物件，才能被任何倉儲裡的方法取得。
+            // 例如自己呼叫自己。
             if (isautoload === true) {
                 var result = $.vmodel.api.is_trigger_autoload(realobj, fnameary);
                 if (result === false) local.msg_error("is_trigger_autoload", "發生錯誤");
             }
-
-            // 最後沒問題了，放入倉儲
-            local.put_storage(name, realobj);
             
             return this;
         }
