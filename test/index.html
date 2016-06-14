@@ -16,8 +16,25 @@
     <!-- <script src="06.js"></script> -->
     <!-- <script src="07.js"></script> -->
     <!-- <script src="08.js"></script> -->
-    <script src="09.js"></script>
+    <!-- <script src="09.js"></script> -->
     
+    <script>
+    $(function (){
+
+        $(".content").vmodel(".content", "--model", true, function (){
+            var vs = this;
+            this.autoload = ['init'];
+            this.init = function (){
+                vs.root.html(123)
+            }
+        });
+        
+        
+
+
+
+    })
+    </script>
 
     <div class="content"></div>
 
