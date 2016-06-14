@@ -21,7 +21,6 @@ $(function (){
             this.autoload = ['say'];
             this.say = function (){
                 vs.root.html("3");
-                console.log(vs.root)
             }
         }
     })

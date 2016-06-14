@@ -4,56 +4,86 @@ $(function (){
 
     var sec = 650;
 
-    $(".content").vmodel("--md_09_1", false, function (){
-        var vs = this;
-        this.autoload = ['say'];
-        this.say = function (){
-            setTimeout(function (){
-                console.log('md_09_1 create.');
-                vs.struct('say');
-            }, sec * 0);
+    $.vmodel.create({
+        selector: '.content',
+        model: '--md_09_1',
+        isinit: false,
+        method: function (){
+            var vs = this;
+            this.autoload = ['say'];
+            this.say = function (){
+                setTimeout(function (){
+                    console.log('md_09_1 create.');
+                    vs.struct('say');
+                }, sec * 0);
+            }
         }
     });
-    $(".content").vmodel("--md_09_2", false, function (){
-        var vs = this;
-        this.autoload = ['say'];
-        this.say = function (){
-            setTimeout(function (){
-                console.log('md_09_2 create.');
-                vs.struct('say');
-            }, sec * 1);
+    
+    $.vmodel.create({
+        selector: '.content',
+        model: '--md_09_2',
+        isinit: false,
+        method: function (){
+            var vs = this;
+            this.autoload = ['say'];
+            this.say = function (){
+                setTimeout(function (){
+                    console.log('md_09_2 create.');
+                    vs.struct('say');
+                }, sec * 1);
+            }
         }
     });
-    $(".content").vmodel("--md_09_3", false, function (){
-        var vs = this;
-        this.autoload = ['say'];
-        this.say = function (){
-            setTimeout(function (){
-                console.log('md_09_3 create.');
-                vs.struct('say');
-            }, sec * 2);
+    
+    $.vmodel.create({
+        selector: '.content',
+        model: '--md_09_3',
+        isinit: false,
+        method: function (){
+            var vs = this;
+            this.autoload = ['say'];
+            this.say = function (){
+                setTimeout(function (){
+                    console.log('md_09_3 create.');
+                    vs.struct('say');
+                }, sec * 2);
+            }
         }
     });
-    $(".content").vmodel("--md_09_4", false, function (){
-        var vs = this;
-        this.autoload = ['say'];
-        this.say = function (){
-            setTimeout(function (){
-                console.log('md_09_4 create.');
-                vs.struct('say');
-            }, sec * 3);
+    
+    $.vmodel.create({
+        selector: '.content',
+        model: '--md_09_4',
+        isinit: false,
+        method: function (){
+            var vs = this;
+            this.autoload = ['say'];
+            this.say = function (){
+                setTimeout(function (){
+                    console.log('md_09_4 create.');
+                    vs.struct('say');
+                }, sec * 3);
+            }
         }
     });
-    $(".content").vmodel("--md_09_5", false, function (){
-        var vs = this;
-        this.autoload = ['say'];
-        this.say = function (){
-            setTimeout(function (){
-                console.log('md_09_5 create.');
-                vs.struct('say');
-            }, sec * 4);
+    
+    $.vmodel.create({
+        selector: '.content',
+        model: '--md_09_5',
+        isinit: false,
+        method: function (){
+            var vs = this;
+            this.autoload = ['say'];
+            this.say = function (){
+                setTimeout(function (){
+                    console.log('md_09_5 create.');
+                    vs.struct('say');
+                }, sec * 4);
+            }
         }
     });
+    
 
     // 全部啟用
     $.vmodel.get("md_09_1", true, function (data){

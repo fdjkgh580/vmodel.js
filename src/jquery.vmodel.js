@@ -398,7 +398,7 @@
 
             // 內部
             local   = this;
-            
+
             // 選擇器
             var selector = param.selector;
 
@@ -543,7 +543,6 @@
 
             this.main = function (p_1, p_2, p_3){
 
-
                 // 參數對應
                 var pary       = local.param_match(p_1, p_2, p_3);
                 var name       = pary[0]; 
@@ -585,16 +584,7 @@
         }
     }
 
-    /**
-     * 主要模式
-     * @param  mix       p_1 若是 string 倉儲命名；若是 function 代表準備在內部實體化的方法 
-     * @param  function  p_2 (選用) 若 p_1 為 string，就必須使用 p_2
-     * @return this      
-     */
-    $.fn.vmodel = function(p_1, p_2, p_3) {
-
-        
-    }
+    
 
 
 }( jQuery ));
