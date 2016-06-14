@@ -7,7 +7,7 @@ $(function (){
     $.vmodel.create({
         selector: '.content',
         model: '--md_09_1',
-        isinit: false,
+        isautoload: false,
         method: function (){
             var vs = this;
             this.autoload = ['say'];
@@ -23,7 +23,7 @@ $(function (){
     $.vmodel.create({
         selector: '.content',
         model: '--md_09_2',
-        isinit: false,
+        isautoload: false,
         method: function (){
             var vs = this;
             this.autoload = ['say'];
@@ -39,7 +39,7 @@ $(function (){
     $.vmodel.create({
         selector: '.content',
         model: '--md_09_3',
-        isinit: false,
+        isautoload: false,
         method: function (){
             var vs = this;
             this.autoload = ['say'];
@@ -55,7 +55,7 @@ $(function (){
     $.vmodel.create({
         selector: '.content',
         model: '--md_09_4',
-        isinit: false,
+        isautoload: false,
         method: function (){
             var vs = this;
             this.autoload = ['say'];
@@ -71,7 +71,7 @@ $(function (){
     $.vmodel.create({
         selector: '.content',
         model: '--md_09_5',
-        isinit: false,
+        isautoload: false,
         method: function (){
             var vs = this;
             this.autoload = ['say'];

@@ -5,7 +5,7 @@ $(function (){
     $.vmodel.create({
         selector: '.content',
         model: '--content_8_1',
-        isinit: true,
+        isautoload: true,
         method: function (){
             var vs = this;
             this.autoload = ['say'];
@@ -18,7 +18,7 @@ $(function (){
     $.vmodel.create({
         selector: '.content',
         model: '--content_8_2',
-        isinit: true,
+        isautoload: true,
         method: function (){
             var vs = this;
             this.autoload = ['say'];
@@ -33,7 +33,7 @@ $(function (){
     $.vmodel.create({
         selector: '.content',
         model: '--content_8_3',
-        isinit: true,
+        isautoload: true,
         method: function (){
             var vs = this;
             this.autoload = ['say'];

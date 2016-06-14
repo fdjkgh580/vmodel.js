@@ -15,7 +15,7 @@ $(function (){
     $.vmodel.create({
         selector: selector,
         model: "--content_3",
-        isinit: false, 
+        isautoload: false, 
         method: function (){
             var vs = this;
             this.autoload = ['say'];

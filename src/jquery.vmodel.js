@@ -13,6 +13,29 @@
     // 內部全域的輔助方法
     $.vmodel.api = new function (){
 
+        // 若前兩個字元是定位符號，就自動去除
+        this.remove_sign = function (str){
+            return (str.substring(0, 2) == "--") ? str.substring(2) : str;
+        }
+
+        /**
+         * 組合成一個陣列回傳參數
+         * @return  [選擇器, 倉儲名稱, 是否啟用 autoload, 實體化物件]
+         */
+        this.vmodel_param_match = function (p_1, p_2, p_3, p_4){
+
+            var selector = p_1;
+
+            // 去除定位符號
+            var model_name = this.remove_sign(p_2);
+
+            var isautoload = p_3;
+
+            var method    = new p_4();
+
+            return [selector, model_name, isautoload, method];
+        }
+
         // 物件排序
         this.obj_sort = function (obj){
             var temp = [];
@@ -115,7 +138,9 @@
 
     // 呼叫版本名稱
     $.vmodel.version = function (){
+
         return version;
+
     }
 
     
@@ -402,7 +427,9 @@
          * @param   msg         錯誤訊息    
          */
         this.msg_error = function (method_name, msg){
+
             console.log("錯誤：『" + selector + "』呼叫的 function 『" + method_name + "』：" + msg);
+        
         }
 
 
@@ -496,20 +523,22 @@
             {
                 if (!param.selector) throw("須要指定選擇器");
                 if (!param.model) throw("須要替模型命名");
-                if (param.isinit === undefined) throw("須要指定是否啟用");
+                if (param.isautoload === undefined) throw("須要指定是否啟用");
                 if (!param.method) throw("須要指定方法");
 
-
                 // 參數對應
-                var name       = param.model;
-                var isautoload = param.isinit;
-                var realobj    = param.method;
+                var pary       = $.vmodel.api.vmodel_param_match(param.selector, param.model, param.isautoload, param.method);
+                var selector   = pary[0];
+                var name       = pary[1]; 
+                var isautoload = pary[2]; 
+                var realobj    = pary[3];
 
                 // 擴充，外部不可使用這些關鍵字
                 var realobj    = local.ext_expend(realobj, name);
                 
                 // 取得 autoload 的方法陣列
                 var fnameary = $.vmodel.api.get_autoload_funame(realobj);
+                
 
                 // 先定義建構狀態
                 local.define_autoload_struct(realobj, fnameary);
@@ -543,49 +572,21 @@
         var local   = this;
 
 
-        // 若前兩個字元是定位符號，就自動去除
-        this.remove_sign = function (str){
-            return (str.substring(0, 2) == "--") ? str.substring(2) : str;
-        }
-
-        /**
-         * 組合成一個陣列回傳參數
-         * @return  [選擇器, 倉儲名稱, 是否啟用 autoload, 實體化物件]
-         */
-        this.param_match = function (p_1, p_2, p_3, p_4){
-
-            var selector = p_1;
-
-            // 去除定位符號
-            var model_name = local.remove_sign(p_2);
-
-            var isautoload = p_3;
-
-            var method    = new p_4();
-
-            return [selector, model_name, isautoload, method];
-        }
-
         this.main = function (p_1, p_2, p_3, p_4){
             
             // 參數對應
-            var pary       = local.param_match(p_1, p_2, p_3, p_4);
+            var pary       = $.vmodel.api.vmodel_param_match(p_1, p_2, p_3, p_4);
             var selector   = pary[0];
-            var model_name       = pary[1]; 
+            var model_name = pary[1]; 
             var isautoload = pary[2]; 
-            var method    = pary[3];
+            var method     = pary[3];
 
-            p_1 = p_2 = p_3 = p_4 = null;
-
-
-            $.vmodel.create({
+            return $.vmodel.create({
                 selector: selector,
                 model: '--' + model_name,
-                isinit: isautoload,
+                isautoload: isautoload,
                 method: method
             });
-
-
         }
 
         return local.main(p_1, p_2, p_3, p_4);        

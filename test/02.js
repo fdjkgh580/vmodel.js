@@ -3,7 +3,7 @@ $(function (){
     $.vmodel.create({
         selector: '.content',
         model: '--content_2',
-        isinit: false,
+        isautoload: false,
         method: function (){
             var vs = this;
             this.autoload = ['init'];
