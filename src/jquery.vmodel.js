@@ -35,6 +35,14 @@
             }
         }
 
+        // 確認必填參數
+        this.check_input_param = function (selector, model_name, isautoload, method) {
+            if (!selector)                throw("須要指定選擇器");
+            if (!model_name)              throw("須要替模型命名");
+            if (isautoload === undefined) throw("須要指定是否啟用");
+            if (!method)                  throw("須要指定方法");
+        }
+
         /**
          * 組合成一個陣列回傳參數
          * @return  [選擇器, 倉儲名稱, 是否啟用 autoload, 實體化物件]
@@ -541,11 +549,7 @@
 
                 // 判斷 jQ 版本是否允許
                 if (!$.vmodel.api.isallow_jqver(false)) throw ($.vmodel.api.isallow_jqver(true));
-                
-                if (!param.selector) throw("須要指定選擇器");
-                if (!param.model) throw("須要替模型命名");
-                if (param.isautoload === undefined) throw("須要指定是否啟用");
-                if (!param.method) throw("須要指定方法");
+                $.vmodel.api.check_input_param(param.selector, param.model, param.isautoload, param.method);
 
                 // 參數對應
                 var pary       = $.vmodel.api.vmodel_param_match(param.selector, param.model, param.isautoload, param.method);
@@ -599,7 +603,15 @@
 
                 // 判斷 jQ 版本是否允許
                 if (!$.vmodel.api.isallow_jqver(false)) throw ($.vmodel.api.isallow_jqver(true));
-                
+
+                $.vmodel.api.check_input_param(p_1, p_2, p_3, p_4);
+
+
+                if (p_1 === undefined || p_2 === undefined || p_3 === undefined || p_4 === undefined)
+                {
+                    throw ("$(selector).vmodel() 須要指定四個參數， selector, model_name, isautoload and method");
+                }
+
                 // 參數對應
                 var pary       = $.vmodel.api.vmodel_param_match(p_1, p_2, p_3, p_4);
                 var selector   = pary[0];
@@ -620,6 +632,7 @@
             }
 
         }
+
 
         return local.main(p_1, p_2, p_3, p_4);
 
