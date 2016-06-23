@@ -33,13 +33,18 @@
 
 h1{
     color: #BE2CA0;
-    font-size: 3em;
+    font-size: 2em;
 }
 h2 {
-    font-size: 1.5em;
+    font-size: 1.2em;
+}
+h3 {
+    font-size: 1em;
 }
 h2, h3 {
-    color: #D756BC;
+    font-size: 0.78em;
+    font-weight: 400;
+    color: #E571CD;
 }
 
 h1, h2, h3 {
@@ -51,7 +56,7 @@ h1, h2, h3 {
     font-family: "微軟正黑體";
 }
 li {
-    margin-bottom: 1em;
+    margin: 0;
 }
 body {
     font-size: 20px;
@@ -70,7 +75,7 @@ a:hover {
     text-decoration: underline;
 }
 p {
-    margin: 2em 2em;
+    margin: 0.05em;
 }
 
 .container {
