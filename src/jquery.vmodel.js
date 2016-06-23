@@ -19,19 +19,37 @@
         }
 
         /**
+         * 是否通過該版 vmodel 所允許的 jQuery 版本
+         * @param   is_err_msg              顯示錯誤訊息 true | 確認是否 false 
+         */
+        this.isallow_jqver = function (is_err_msg){
+
+            // 若要顯示錯誤訊息
+            if (is_err_msg == true) {
+                return 'Vmodel.js ' + $.vmodel.version() + ' 須要使用大於 jQuery 3.0.0 的版本';
+            }
+            // 判斷是否允許版本
+            else {
+                var jver = jQuery.fn.jquery.charAt(0);
+                return (jver == 3) ? true : false;
+            }
+        }
+
+        /**
          * 組合成一個陣列回傳參數
          * @return  [選擇器, 倉儲名稱, 是否啟用 autoload, 實體化物件]
          */
         this.vmodel_param_match = function (p_1, p_2, p_3, p_4){
 
-            var selector = p_1;
 
+            var selector   = p_1;
+            
             // 去除定位符號
             var model_name = this.remove_sign(p_2);
-
+            
             var isautoload = p_3;
-
-            var method    = new p_4();
+            
+            var method     = $.type(p_4) === "object" ? p_4 : new p_4();
 
             return [selector, model_name, isautoload, method];
         }
@@ -223,22 +241,22 @@
 
     /**
      * 取得視覺化屬性紀錄
-     * @param   name         倉儲名稱
+     * @param   model_name         倉儲名稱
      * @return               有找到會返回視覺化的屬性物件；反之為 false
      */
-    $.vmodel.history = function (name) {
+    $.vmodel.history = function (model_name) {
 
         var returnval = false;
 
         // 找到綁在跟目錄的視覺化屬性
-        var storage   = $.vmodel.get(name);
+        var storage   = $.vmodel.get(model_name);
         var json      = storage.root.attr("data-vmodel-history");
         if (!json) return false;
         var obj       = $.parseJSON(json);
 
         // 搜尋
         $.each(obj, function (key, info){
-            if (info.vname != name) return true;
+            if (info.vname != model_name) return true;
             returnval = info;
             return false;
         });
@@ -249,7 +267,7 @@
 
     /**
      * 取得倉儲
-     * @param   string            name    (選) 倉儲的存放名稱。當為空時，返回所有倉儲
+     * @param   string            model_name    (選) 倉儲的存放名稱。當為空時，返回所有倉儲
      * @param   bool              p_2     (選) 預設 false, 是否觸發倉儲 autoload
      * @param   function | bool   p_3     (選) 是否啟用監聽並添加視覺化屬性。
      *                                         注意，這是非同步。
@@ -258,7 +276,7 @@
      *                                         
      * @return  object
      */
-    $.vmodel.get = function (name, p_2, p_3){
+    $.vmodel.get = function (model_name, p_2, p_3){
 
         var local = this;
 
@@ -285,13 +303,13 @@
 
 
         // 視覺化屬性
-        this.display_attr = function (name, target_obj){
+        this.display_attr = function (model_name, target_obj){
 
             var d = new Date();
 
             // 建立一個物件
             var data = [{
-                vname: name, // 倉儲名稱
+                vname: model_name, // 倉儲名稱
                 status: true, // 完成
                 timestamp : Date.parse(d) + "." + d.getMilliseconds(), //時間戳記
             }];
@@ -313,40 +331,40 @@
         }
 
         // 僅做對應參數的輔助
-        this.param_match = function (name, p_2, p_3) {
+        this.param_match = function (model_name, p_2, p_3) {
             var returnary = [];
-            var type_name = $.type(name);
+            var type_name = $.type(model_name);
 
             // 返回所有倉儲
-            if (!name) {
-                returnary = [name, null, null];
+            if (!model_name) {
+                returnary = [model_name, null, null];
             }
             // 指定一個倉儲名稱
             else if (type_name == "string") {
-                returnary = [name, p_2, p_3];
+                returnary = [model_name, p_2, p_3];
             }
 
             return returnary;
         }
 
         // 重新命名
-        var pary     = local.param_match(name, p_2, p_3);
-        var name     = pary[0];
+        var pary     = local.param_match(model_name, p_2, p_3);
+        var model_name     = pary[0];
         var autoload = pary[1];
         var listen   = pary[2];
         pary = p_2 = p_3 = null;
 
 
         // 返回所有倉儲
-        if (!name) {
+        if (!model_name) {
             return $.vmodel.api.obj_sort(storage);
         }
 
-        var target_obj = storage[name];
+        var target_obj = storage[model_name];
         
         // 呼叫的倉儲並不存在
         if (!target_obj) {
-            console.log("呼叫的倉儲名稱 "+ name +" 不存在。");
+            console.log("呼叫的倉儲名稱 "+ model_name +" 不存在。");
             return false;
         }
 
@@ -379,7 +397,7 @@
                         clearInterval(iid);
 
                         // 視覺化添加屬性
-                        local.display_attr(name, target_obj);
+                        local.display_attr(model_name, target_obj);
 
                         // 觸發回調
                         if (type_listen == "boolean") return true;
@@ -393,20 +411,20 @@
         }
 
         // 無論是否觸發使用者的 autoload(), 最後都會返回該實體化的物件
-        return storage[name];
+        return storage[model_name];
     }
 
     /**
      * 刪除指定的倉儲
-     * @param   name (選)倉儲名稱, 不指定會清空所有倉儲
+     * @param   model_name (選)倉儲名稱, 不指定會清空所有倉儲
      */
-    $.vmodel.delete = function (name){
+    $.vmodel.delete = function (model_name){
         
-        if (!name && name != '') {
+        if (!model_name && model_name != '') {
             storage = {};
         } else {
-            if (storage[name]) {
-                delete storage[name];
+            if (storage[model_name]) {
+                delete storage[model_name];
             }
         }
         
@@ -442,8 +460,8 @@
         }
 
         // 外部擴充方法
-        this.ext_expend = function (obj, name){
-            var vname = (name != null) ? name : null;
+        this.ext_expend = function (obj, model_name){
+            var vname = (model_name != null) ? model_name : null;
             $.extend(obj, {
 
                 vname : vname,
@@ -462,11 +480,11 @@
 
                 /**
                  * 提供外部指定倉儲的模組化狀態。
-                 * @param   name   autoload 指定的陣列倉儲名稱。可以是單一名稱會陣列。
+                 * @param   model_name   autoload 指定的陣列倉儲名稱。可以是單一名稱會陣列。
                  *                 如 "say" 或 ['say', 'hello']
                  * @param   bool   (選) true:(預設)完成 | false : 未完成
                  */
-                struct : function (name, status) {
+                struct : function (model_name, status) {
 
                     if ($.type(status) != "boolean" && !status) {
                         status = true;
@@ -474,19 +492,19 @@
 
 
                     // 若使用字串
-                    if ($.type(name) == "string") {
-                        if ($.type(obj.fun_struct[name]) != "boolean") {
-                            console.log('找不到名稱為 ' + name + '的建構狀態');
+                    if ($.type(model_name) == "string") {
+                        if ($.type(obj.fun_struct[model_name]) != "boolean") {
+                            console.log('找不到名稱為 ' + model_name + '的建構狀態');
                             return false;
                         }
 
                         // 設定指定狀態
-                        obj.fun_struct[name] = status;
+                        obj.fun_struct[model_name] = status;
                     }
 
                     // 若是陣列如 ['say', 'hello']
-                    else if ($.type(name) == "array"){
-                        $.each(name, function (key, val){
+                    else if ($.type(model_name) == "array"){
+                        $.each(model_name, function (key, val){
                             obj.fun_struct[val] = status;
                         })
                     }
@@ -502,16 +520,16 @@
         }
 
         // 放入倉儲
-        this.put_storage = function (name, realobj){
+        this.put_storage = function (model_name, realobj){
 
-            if (name != null) {
+            if (model_name != null) {
 
                 // 檢查是否已存在
-                if (!storage[name]) {
-                    storage[name] = realobj;
+                if (!storage[model_name]) {
+                    storage[model_name] = realobj;
                 }
                 else {
-                    console.log("倉儲名稱『" + name + "』重複。");
+                    console.log("倉儲名稱『" + model_name + "』重複。");
                     return false;
                 }
             }
@@ -519,8 +537,11 @@
 
         this.main = function (param){
 
-            try 
-            {
+            try {
+
+                // 判斷 jQ 版本是否允許
+                if (!$.vmodel.api.isallow_jqver(false)) throw ($.vmodel.api.isallow_jqver(true));
+                
                 if (!param.selector) throw("須要指定選擇器");
                 if (!param.model) throw("須要替模型命名");
                 if (param.isautoload === undefined) throw("須要指定是否啟用");
@@ -529,12 +550,12 @@
                 // 參數對應
                 var pary       = $.vmodel.api.vmodel_param_match(param.selector, param.model, param.isautoload, param.method);
                 var selector   = pary[0];
-                var name       = pary[1]; 
+                var model_name = pary[1]; 
                 var isautoload = pary[2]; 
                 var realobj    = pary[3];
 
                 // 擴充，外部不可使用這些關鍵字
-                var realobj    = local.ext_expend(realobj, name);
+                var realobj    = local.ext_expend(realobj, model_name);
                 
                 // 取得 autoload 的方法陣列
                 var fnameary = $.vmodel.api.get_autoload_funame(realobj);
@@ -544,7 +565,7 @@
                 local.define_autoload_struct(realobj, fnameary);
 
                 // 放入倉儲
-                local.put_storage(name, realobj);
+                local.put_storage(model_name, realobj);
 
                 // 最後才觸發 autoload 。
                 // 這是因為當前的物件，才能被任何倉儲裡的方法取得。
@@ -556,8 +577,7 @@
                 
                 return this;
             }
-            catch(err)
-            {
+            catch(err) {
                 console.log(err);
                 return false;
             }
@@ -567,29 +587,41 @@
         return local.main(param);
     }
 
+
+
     $.fn.vmodel = function (p_1, p_2, p_3, p_4){
 
         var local   = this;
 
-
         this.main = function (p_1, p_2, p_3, p_4){
-            
-            // 參數對應
-            var pary       = $.vmodel.api.vmodel_param_match(p_1, p_2, p_3, p_4);
-            var selector   = pary[0];
-            var model_name = pary[1]; 
-            var isautoload = pary[2]; 
-            var method     = pary[3];
 
-            return $.vmodel.create({
-                selector: selector,
-                model: '--' + model_name,
-                isautoload: isautoload,
-                method: method
-            });
+            try {
+
+                // 判斷 jQ 版本是否允許
+                if (!$.vmodel.api.isallow_jqver(false)) throw ($.vmodel.api.isallow_jqver(true));
+                
+                // 參數對應
+                var pary       = $.vmodel.api.vmodel_param_match(p_1, p_2, p_3, p_4);
+                var selector   = pary[0];
+                var model_name = pary[1]; 
+                var isautoload = pary[2]; 
+                var method     = pary[3];
+
+                return $.vmodel.create({
+                    selector: selector,
+                    model: '--' + model_name,
+                    isautoload: isautoload,
+                    method: method
+                });
+            }
+            catch(err) {
+                console.log(err);
+                return false;
+            }
+
         }
 
-        return local.main(p_1, p_2, p_3, p_4);        
+        return local.main(p_1, p_2, p_3, p_4);
 
     }
 
