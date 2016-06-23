@@ -36,11 +36,11 @@
         }
 
         // 確認必填參數
-        this.check_input_param = function (selector, model_name, isautoload, method) {
-            if (!selector)                throw("須要指定選擇器");
-            if (!model_name)              throw("須要替模型命名");
-            if (isautoload === undefined) throw("須要指定是否啟用");
-            if (!method)                  throw("須要指定方法");
+        this.check_input_param = function (param) {
+            if (!param.selector)                throw("須要指定選擇器");
+            if (!param.model_name)              throw("須要替模型命名");
+            if (param.isautoload === undefined) throw("須要指定是否啟用");
+            if (!param.method)                  throw("須要指定方法");
         }
 
         /**
@@ -549,7 +549,14 @@
 
                 // 判斷 jQ 版本是否允許
                 if (!$.vmodel.api.isallow_jqver(false)) throw ($.vmodel.api.isallow_jqver(true));
-                $.vmodel.api.check_input_param(param.selector, param.model, param.isautoload, param.method);
+
+                // 確認必填參數
+                $.vmodel.api.check_input_param({
+                    selector : param.selector, 
+                    model_name : param.model, 
+                    isautoload : param.isautoload, 
+                    method : param.method
+                });
 
                 // 參數對應
                 var pary       = $.vmodel.api.vmodel_param_match(param.selector, param.model, param.isautoload, param.method);
@@ -604,13 +611,13 @@
                 // 判斷 jQ 版本是否允許
                 if (!$.vmodel.api.isallow_jqver(false)) throw ($.vmodel.api.isallow_jqver(true));
 
-                $.vmodel.api.check_input_param(p_1, p_2, p_3, p_4);
-
-
-                if (p_1 === undefined || p_2 === undefined || p_3 === undefined || p_4 === undefined)
-                {
-                    throw ("$(selector).vmodel() 須要指定四個參數， selector, model_name, isautoload and method");
-                }
+                // 確認必填參數
+                $.vmodel.api.check_input_param({
+                    selector : p_1, 
+                    model_name : p_2, 
+                    isautoload : p_3, 
+                    method : p_4
+                });
 
                 // 參數對應
                 var pary       = $.vmodel.api.vmodel_param_match(p_1, p_2, p_3, p_4);

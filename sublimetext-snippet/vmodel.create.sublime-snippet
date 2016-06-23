@@ -1,0 +1,21 @@
+<snippet>
+    <content>
+<![CDATA[\$.vmodel.create({
+    selector: '${1:selector}',
+    model: '--${2:model}',
+    isautoload: ${3:true},
+    method: function (){
+        var vs = this;
+        this.autoload = [${5:${4:init}}];
+        this.${4:init} = function (){
+            $6
+        }
+    }
+});
+$7
+]]>
+    </content>
+    <tabTrigger>vmodelcreate</tabTrigger>
+    <scope>source.js, text.html</scope>
+    <description>$.vmodel.create()</description>
+</snippet>
