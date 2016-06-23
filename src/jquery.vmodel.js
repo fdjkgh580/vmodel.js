@@ -1,6 +1,6 @@
 (function ($) {
 
-    var version = "1.5.4";
+    var version = "1.6.0";
 
     // 實體化的存放倉儲，提供內部呼叫。
     var storage = {}; 
