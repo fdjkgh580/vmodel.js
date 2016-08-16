@@ -2,7 +2,7 @@
   "name": "vmodel",
   "homepage": "https://github.com/fdjkgh580/vmodel.js",
   "authors": [
-    "jsn"
+    "JSN"
   ],
   "main": "src/jquery.vmodel.min.js",
   "dependencies": {
