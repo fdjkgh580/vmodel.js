@@ -1,6 +1,6 @@
 (function ($) {
 
-    var version = "1.6.0";
+    var version = "1.6.1";
 
     // 實體化的存放倉儲，提供內部呼叫。
     var storage = {}; 
@@ -600,49 +600,12 @@
 
 
 
-    $.fn.vmodel = function (p_1, p_2, p_3, p_4){
-
-        var local   = this;
-
-        this.main = function (p_1, p_2, p_3, p_4){
-
-            try {
-
-                // 判斷 jQ 版本是否允許
-                if (!$.vmodel.api.isallow_jqver(false)) throw ($.vmodel.api.isallow_jqver(true));
-
-                // 確認必填參數
-                $.vmodel.api.check_input_param({
-                    selector : p_1, 
-                    model_name : p_2, 
-                    isautoload : p_3, 
-                    method : p_4
-                });
-
-                // 參數對應
-                var pary       = $.vmodel.api.vmodel_param_match(p_1, p_2, p_3, p_4);
-                var selector   = pary[0];
-                var model_name = pary[1]; 
-                var isautoload = pary[2]; 
-                var method     = pary[3];
-
-                return $.vmodel.create({
-                    selector: selector,
-                    model: '--' + model_name,
-                    isautoload: isautoload,
-                    method: method
-                });
-            }
-            catch(err) {
-                console.log(err);
-                return false;
-            }
-
+    $.fn.vmodel = function (param){
+        if ($.type(param) !== "object") {
+            console.log("參數型態需要是 object");
+            return false;
         }
-
-
-        return local.main(p_1, p_2, p_3, p_4);
-
+        $.vmodel.create(param);
     }
 
 

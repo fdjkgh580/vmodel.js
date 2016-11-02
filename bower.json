@@ -6,10 +6,10 @@
   ],
   "main": "src/jquery.vmodel.min.js",
   "dependencies": {
-    "jquery": "3.0.0"
+    "jquery": ">3.0.0"
   },
   "devDependencies": {
-    "jquery": "3.0.0"
+    "jquery": ">3.0.0"
   },
   "keywords": [
     "jquery",

@@ -22,16 +22,20 @@
     $(function (){
         
         
-        
           
 
-        // $(".content").vmodel(".content", "--model", true, function (){
-        //     var vs = this;
-        //     this.autoload = ['init'];
-        //     this.init = function (){
-        //         vs.root.html(123)
-        //     }
-        // });
+        $().vmodel({
+            selector: '.content',
+            model: '--model',
+            isautoload: true,
+            method: function (){
+                var vs = this;
+                this.autoload = ['init'];
+                this.init = function (){
+                    vs.root.html(123)
+                }
+            }
+        });
         
         // $.vmodel.create({
         //     selector: '.content',
