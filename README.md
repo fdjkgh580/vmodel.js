@@ -36,7 +36,7 @@ $.vmodel.get('hello', true);
 - vs：方便在 method 內部呼叫根
 - vs.root：等於 $('.container')
 - vs.root.on：等於 $('.container').on(...);
-- vs.select：等於 .container
+- vs.selector：等於 .container
 - vs.struct('method_name'); 標記這個結構已完成，參閱後方 $.vmodel.get() 使用。
 - autoload：指定當初始化想要自動觸發的公開方法，可以是 [] 或是匿名函式。注意，匿名函式務必 return []。
 ````javascript
