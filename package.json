@@ -1,5 +1,5 @@
 {
-    "private": true,
+    "name": "zepto-lazyload",
     "devDependencies": {
         "grunt": "~0.4.5",
         "grunt-contrib-uglify": "~0.10.0",
