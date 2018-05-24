@@ -16,28 +16,39 @@
     <!-- <script src="06.js"></script> -->
     <!-- <script src="07.js"></script> -->
     <!-- <script src="08.js"></script> -->
-    <!-- <script src="09.js"></script> -->
+    <script src="09.js"></script>
     
     <script>
     $(function (){
+
+        // $.vmodel.create({
+        //     selector: 'body',
+        //     model: '--global/body',
+        //     isautoload: true,
+        //     method: function (){
+        //         var vs = this;
+        //         this.autoload = function (){
+        //             return ['init']
+        //         };
+        //         this.init = function (){
+        //             console.log('init 1')
+        //         }
+        //     }
+        // });
+
+        // $.vmodel.create({
+        //     selector: 'body',
+        //     model: '--global/body2',
+        //     isautoload: true,
+        //     method: function (){
+        //         var vs = this;
+        //         this.autoload = ['init'];
+        //         this.init = function (){
+        //             console.log('init 2')
+        //         }
+        //     }
+        // });
         
-        $.vmodel.create({
-            selector: 'body',
-            model: '--body',
-            isautoload: true,
-            method: function (){
-                var vs = this;
-                this.autoload = ['init'];
-                this.init = function (){
-                    console.log('BODY')
-                }
-            }
-        });
-
-        
-
-
-
 
         // $().vmodel({
         //     selector: '.content',
@@ -57,6 +68,7 @@
         //     model: '--model',
         //     isautoload: true,
         //     method: function (){
+        //         var vs = this;
         //         this.autoload = ['init'];
         //         this.init = function (){
         //             vs.root.html(123)
@@ -64,7 +76,6 @@
         //     }
         // });
         
-
 
 
     })

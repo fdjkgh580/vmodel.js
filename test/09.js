@@ -15,7 +15,7 @@ $(function (){
                 setTimeout(function (){
                     console.log('md_09_1 create.');
                     vs.struct('say');
-                }, sec * 0);
+                }, sec * 9);
             }
         }
     });
