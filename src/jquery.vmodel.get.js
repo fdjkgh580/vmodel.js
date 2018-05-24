@@ -17,7 +17,7 @@
 
         // 判斷是否可以觸發回調 callback，
         // 條件式當所有狀態都是 true
-        this.chk_trigger_callback = function (obj){
+        this.is_trigger_callback = function (obj){
 
             var allow = true;
 
@@ -36,10 +36,8 @@
             return (allow == false) ? false : true;
         }
 
-
-        // 視覺化屬性
-        this.display_attr = function (model_name, target_obj){
-
+        // 添加到結束紀錄盒
+        this.push_endbox = function (model_name){
             var d = new Date();
 
             // 建立一個物件
@@ -50,17 +48,27 @@
             }];
 
 
-            // 視覺狀態是否存在, 若存在代表已經有倉儲也是綁定在這個元素，而且已完成。
-            // 這時候就合併已存在的，與新的。
-            var attr = target_obj.root.attr("data-vmodel-history");
-            if (attr) {
-                var dej = $.parseJSON(attr);
-                dej.push(data[0]); // 務必使用 data[0] 剝除外面的陣列。
-                data = dej;
+            var exist_history_data = $.vmodel.api.endbox("get");
+
+            // 如果不是在結束紀錄盒中的第一個模組
+            if ($(exist_history_data).length > 0) {
+
+                // 合併已存在的，務必使用 data[0] 剝除外面的陣列。
+                exist_history_data.push(data[0]); 
+                
+                // 替換
+                data = exist_history_data;
             }
 
+            // 添加變數紀錄
+            $.vmodel.api.endbox("set", data);
 
-            //視覺狀態
+            return data;
+        }
+
+        // 視覺化屬性
+        this.set_display_attr = function (target_obj, data){
+
             var encode = JSON.stringify(data);
             target_obj.root.attr("data-vmodel-history", encode); 
         }
@@ -128,19 +136,24 @@
                 //監聽
                 var iid = setInterval(function (){
 
-                    // 若全部狀態都完成
-                    if (local.chk_trigger_callback(target_obj) == true) {
-                        clearInterval(iid);
+                    // 若全部狀態尚未完成
+                    if (local.is_trigger_callback(target_obj) === false) return true;
 
-                        // 視覺化添加屬性
-                        local.display_attr(model_name, target_obj);
+                    // 停止監聽
+                    clearInterval(iid);
 
-                        // 觸發回調
-                        if (type_listen == "boolean") return true;
-                        target_obj.vmodel_get_callback();
-                    }
+                    // 添加到結束紀錄盒
+                    var data = local.push_endbox(model_name)
 
-                }, 20);
+                    // 呈現在 html 屬性中
+                    local.set_display_attr(target_obj, data);
+
+                    // 觸發回調
+                    if (type_listen == "boolean") return true;
+                    
+                    target_obj.vmodel_get_callback();
+
+                }, 0);
 
                 return true
             }

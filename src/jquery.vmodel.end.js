@@ -54,12 +54,13 @@
             // 檢查每個倉儲的視覺化狀態
             $.each(storage, function (storage_name, obj){
 
-                var history = $.vmodel.history(obj.vname);
+                // 取得執行完成的歷史紀錄
+                var result = $.vmodel.history(obj.vname);
 
-                // false 代表還沒有完成，那就檢查下一個倉儲，且不觸發 callback
-                if (history == false) {
+                // 若遇到其中一個倉儲為 false 代表還沒有完成，那就直接中斷
+                if (result.status === false) {
                     iscallback = false;
-                    return true;
+                    return false;
                 }
 
                 iscallback = true;

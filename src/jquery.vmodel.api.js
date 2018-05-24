@@ -3,6 +3,18 @@
     // 內部全域的輔助方法
     $.vmodel.api = new function (){
 
+        var history_box = [];
+
+        // 執行結束紀錄盒
+        this.endbox = function (action, data){
+            if (action == "set"){
+                history_box = data;
+            }
+            else if (action == "get"){
+                return history_box;
+            }
+        }
+
         // 若前兩個字元是定位符號，就自動去除
         this.remove_sign = function (str){
             return (str.substring(0, 2) == "--") ? str.substring(2) : str;

@@ -4,6 +4,7 @@ $(function (){
 
     var sec = 650;
 
+
     $.vmodel.create({
         selector: '.content',
         model: '--md_09_1',
@@ -12,10 +13,10 @@ $(function (){
             var vs = this;
             this.autoload = ['say'];
             this.say = function (){
+                console.log('md_09_1 create.');
                 setTimeout(function (){
-                    console.log('md_09_1 create.');
                     vs.struct('say');
-                }, sec * 9);
+                }, sec * 6);
             }
         }
     });
@@ -28,8 +29,8 @@ $(function (){
             var vs = this;
             this.autoload = ['say'];
             this.say = function (){
+                console.log('md_09_2 create.');
                 setTimeout(function (){
-                    console.log('md_09_2 create.');
                     vs.struct('say');
                 }, sec * 1);
             }
@@ -44,8 +45,8 @@ $(function (){
             var vs = this;
             this.autoload = ['say'];
             this.say = function (){
+                console.log('md_09_3 create.');
                 setTimeout(function (){
-                    console.log('md_09_3 create.');
                     vs.struct('say');
                 }, sec * 2);
             }
@@ -60,29 +61,14 @@ $(function (){
             var vs = this;
             this.autoload = ['say'];
             this.say = function (){
+                console.log('md_09_4 create.');
                 setTimeout(function (){
-                    console.log('md_09_4 create.');
                     vs.struct('say');
                 }, sec * 3);
             }
         }
     });
     
-    $.vmodel.create({
-        selector: '.content',
-        model: '--md_09_5',
-        isautoload: false,
-        method: function (){
-            var vs = this;
-            this.autoload = ['say'];
-            this.say = function (){
-                setTimeout(function (){
-                    console.log('md_09_5 create.');
-                    vs.struct('say');
-                }, sec * 4);
-            }
-        }
-    });
     
 
     // 全部啟用
@@ -98,13 +84,10 @@ $(function (){
     $.vmodel.get("md_09_4", true, function (data){
         console.log(data.vname + " success.");
     });
-    $.vmodel.get("md_09_5", true, function (data){
-        console.log(data.vname + " success.");
-    });
 
 
-    $.vmodel.end(['md_09_1', 'md_09_2'], function (storage){
-        console.log('監聽的 md_09_1 與 md_09_2 完成');
+    $.vmodel.end(['md_09_3', 'md_09_4'], function (storage){
+        console.log('監聽的 md_09_3 與 md_09_4 完成');
         console.log(storage);
     });
     $.vmodel.end(function (storage){
