@@ -9,7 +9,9 @@ module.exports = {
     mode: 'production',
     
     entry: {
-        "jquery.vmodel": './src/jquery.vmodel.js'
+        'jquery.vmodel': './src/index.js'
+        // "jquery.vmodel": './src/jquery.vmodel.js',
+        // 'jquery.vmodeltest': './src/jquery.vmodeltest.js',
     },
     
     output: {

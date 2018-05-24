@@ -21,7 +21,23 @@
     <script>
     $(function (){
         
-          
+        $.vmodel.create({
+            selector: 'body',
+            model: '--body',
+            isautoload: true,
+            method: function (){
+                var vs = this;
+                this.autoload = ['init'];
+                this.init = function (){
+                    console.log('BODY')
+                }
+            }
+        });
+
+        
+
+
+
 
         // $().vmodel({
         //     selector: '.content',
@@ -36,17 +52,17 @@
         //     }
         // });
         
-        $.vmodel.create({
-            selector: '.content',
-            model: '--model',
-            isautoload: true,
-            method: function (){
-                this.autoload = ['init'];
-                this.init = function (){
-                    vs.root.html(123)
-                }
-            }
-        });
+        // $.vmodel.create({
+        //     selector: '.content',
+        //     model: '--model',
+        //     isautoload: true,
+        //     method: function (){
+        //         this.autoload = ['init'];
+        //         this.init = function (){
+        //             vs.root.html(123)
+        //         }
+        //     }
+        // });
         
 
 
