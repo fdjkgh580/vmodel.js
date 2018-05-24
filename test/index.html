@@ -7,8 +7,8 @@
 <body>
     <script src="jquery-3.0.0.min.js"></script>
     <!-- <script src="jquery-1.11.3.min.js"></script> -->
-    <script src="../src/jquery.vmodel.js"></script>
-    <script src="01.js"></script>
+    <script src="../dist/jquery.vmodel.min.js"></script>
+    <!-- <script src="01.js"></script> -->
     <!-- <script src="02.js"></script> -->
     <!-- <script src="03.js"></script> -->
     <!-- <script src="04.js"></script> -->
@@ -21,23 +21,9 @@
     <script>
     $(function (){
         
-        
           
 
-        $().vmodel({
-            selector: '.content',
-            model: '--model',
-            isautoload: true,
-            method: function (){
-                var vs = this;
-                this.autoload = ['init'];
-                this.init = function (){
-                    vs.root.html(123)
-                }
-            }
-        });
-        
-        // $.vmodel.create({
+        // $().vmodel({
         //     selector: '.content',
         //     model: '--model',
         //     isautoload: true,
@@ -49,6 +35,18 @@
         //         }
         //     }
         // });
+        
+        $.vmodel.create({
+            selector: '.content',
+            model: '--model',
+            isautoload: true,
+            method: function (){
+                this.autoload = ['init'];
+                this.init = function (){
+                    vs.root.html(123)
+                }
+            }
+        });
         
 
 
