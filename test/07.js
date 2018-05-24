@@ -17,7 +17,7 @@ $(function (){
     
     $.vmodel.get("content_7_1", true, function (){
         var result = $.vmodel.history('content_7_1');
-        if (result.vname == "content_7_1" && result.status == true) {
+        if (result.data.vname == "content_7_1" && result.status == true) {
             console.log('7-1');
         } 
     });
@@ -37,7 +37,7 @@ $(function (){
 
     $.vmodel.get("content_7_2", true, function (){
         var result = $.vmodel.history('content_7_2');
-        if (result.vname == "content_7_2" && result.status == true) {
+        if (result.data.vname == "content_7_2" && result.status == true) {
             console.log('7-2');
         } 
     });
@@ -57,7 +57,7 @@ $(function (){
     
     $.vmodel.get("window", true, function (){
         var result = $.vmodel.history('window');
-        if (result.vname == "window" && result.status == true) {
+        if (result.data.vname == "window" && result.status == true) {
             console.log('7-3');
         }
     });
@@ -77,7 +77,7 @@ $(function (){
 
     $.vmodel.get("document", true, function (){
         var result = $.vmodel.history('document');
-        if (result.vname == "document" && result.status == true) {
+        if (result.data.vname == "document" && result.status == true) {
             console.log('7-4');
             console.log('7: OK');
         }
