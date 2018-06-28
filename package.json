@@ -1,6 +1,6 @@
 {
   "name": "vmodel.js",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "main": "dist/jquery.vmodel.min.js",
   "description": "這是一個 jQuery 的 plugin，可以模組化你的 jQuery，易懂且方便維護。",
   "directories": {
