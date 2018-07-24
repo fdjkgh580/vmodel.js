@@ -1,5 +1,8 @@
 # 安裝
-- 現在可以透過 Bower 進行安裝。如 bower install vmodel#master 
+- 現在可以透過 NPM 進行安裝。
+````
+npm i vmodel.js
+````
 
 # API
 ## $.vmodel.create()
