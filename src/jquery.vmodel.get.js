@@ -128,7 +128,7 @@
                 if (type_listen == "function") {
                     // 必須先擴充到該模組底下，避免多個倉儲會互相干擾
                     target_obj.vmodel_get_callback = function (){
-                        listen(target_obj);
+                        listen.call(this, target_obj);
                     }
                 }
 
