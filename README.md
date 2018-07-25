@@ -1,18 +1,23 @@
 # 安裝
-- 現在可以透過 NPM 進行安裝。
+這是一個 jQuery 的模組套件，現在可以透過 NPM 進行安裝。
 ````
 npm i vmodel.js
+````
+````
+import 'vmodel.js'
 ````
 
 # API
 ## $.vmodel.create()
-建立一個封閉式的模組
+- 建立一個封閉式的模組。
+- 就像是 Class 概念，具有公開方法與私有方法。
+- 利用指定的根結點(selector)，在不同的事件中綁定可以避免不同模組間的干擾。
 
 ### 模板說明
 這個範例流程式這麼跑的
 - 定義好模組，包括模組名稱、綁定的根節點。
-- 透過 $.vmodel.get() 啟動，而不是 isautoload: true 啟動。(好處是當有多個 vmodel 模組需要相互呼叫的時候，才不會有呼叫不到模組的狀況發生。一般來說建議 isautoload: false 並使用 $.vmodel.get(model_name, true) 的方式啟動。)
-- vmodel 自動觸發了 init() 的方法
+- 建議透過 $.vmodel.get() 啟動，而不是 isautoload: true 啟動。(好處是當有多個 vmodel 模組需要相互呼叫的時候，才不會有呼叫不到模組的狀況發生。一般來說建議 isautoload: false 並使用 $.vmodel.get(model_name, true) 的方式啟動。)
+- 因為定義了 ````this.autoload = ['init']```` 所以 vmodel 一旦啟用，會自動觸發 init()
 ````javascript
 $.vmodel.create({
     selector: '.container',
